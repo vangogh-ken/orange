@@ -14,6 +14,7 @@
   <link href="${ctx}/s_/assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet">
   <link href="${ctx}/s_/assets/global/plugins/carousel-owl-carousel/owl-carousel/owl.carousel.css" rel="stylesheet">
   <link href="${ctx}/s_/assets/global/plugins/slider-layer-slider/css/layerslider.css" rel="stylesheet">
+  <link href="${ctx}/s_/assets/global/plugins/slider-revolution-slider/rs-plugin/css/settings.css" rel="stylesheet">
   <!-- Page level plugin styles END -->
 
   <!-- Theme styles START -->
@@ -21,6 +22,7 @@
   <link href="${ctx}/s_/assets/frontend/layout/css/style.css" rel="stylesheet">
   <link href="${ctx}/s_/assets/frontend/pages/css/style-shop.css" rel="stylesheet" type="text/css">
   <link href="${ctx}/s_/assets/frontend/pages/css/style-layer-slider.css" rel="stylesheet">
+  <link href="${ctx}/s_/assets/frontend/pages/css/style-revolution-slider.css" rel="stylesheet"><!-- metronic revo slider styles -->
   <link href="${ctx}/s_/assets/frontend/layout/css/style-responsive.css" rel="stylesheet">
   <link href="${ctx}/s_/assets/frontend/layout/css/themes/red.css" rel="stylesheet" id="style-color">
   <link href="${ctx}/s_/assets/frontend/layout/css/custom.css" rel="stylesheet">
