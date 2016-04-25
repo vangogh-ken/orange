@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mailreceive">
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		STATUS AS status,
+		ADDR_FROM AS addressFrom,
+		SUBJECT AS subject,
+		ADDR_CC AS addressCopy,
+		ATTACHEMENT AS attachment,
+		ID AS id,
+		CONTENT AS content,
+		FLAG AS flag,
+		ADDR_TO AS addressTo,
+		USER_ID AS userId,
+		RECEIVE_TIME AS receiveTime,
+		MSG_ID AS messageId
+	</sql>
+	<select id="query" parameterType="java.util.HashMap" resultType="MailReceive">
+		select
+		<include refid="selectId" />
+		from OUT_MAIL_RECEIVE
+		<where>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.addressFrom != null and t.addressFrom != ''">
+				and ADDR_FROM = #{t.addressFrom}
+			</if>
+			<if test="t.subject != null and t.subject != ''">
+				and SUBJECT = #{t.subject}
+			</if>
+			<if test="t.addressCopy != null and t.addressCopy != ''">
+				and ADDR_CC = #{t.addressCopy}
+			</if>
+			<if test="t.attachment != null and t.attachment != ''">
+				and ATTACHEMENT = #{t.attachment}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.content != null and t.content != ''">
+				and CONTENT = #{t.content}
+			</if>
+			<if test="t.flag != null and t.flag != ''">
+				and FLAG = #{t.flag}
+			</if>
+			<if test="t.addressTo != null and t.addressTo != ''">
+				and ADDR_TO = #{t.addressTo}
+			</if>
+			<if test="t.userId != null and t.userId != ''">
+				and USER_ID = #{t.userId}
+			</if>
+			<if test="t.receiveTime != null and t.receiveTime != ''">
+				and RECEIVE_TIME = #{t.receiveTime}
+			</if>
+			<if test="t.messageId != null and t.messageId != ''">
+				and MSG_ID = #{t.messageId}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="MailReceive"
+		resultType="MailReceive">
+		select
+		<include refid="selectId" />
+		from OUT_MAIL_RECEIVE
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="addressFrom != null and addressFrom != ''">
+				and ADDR_FROM = #{addressFrom}
+			</if>
+			<if test="subject != null and subject != ''">
+				and SUBJECT = #{subject}
+			</if>
+			<if test="addressCopy != null and addressCopy != ''">
+				and ADDR_CC = #{addressCopy}
+			</if>
+			<if test="attachment != null and attachment != ''">
+				and ATTACHEMENT = #{attachment}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="content != null and content != ''">
+				and CONTENT = #{content}
+			</if>
+			<if test="flag != null and flag != ''">
+				and FLAG = #{flag}
+			</if>
+			<if test="addressTo != null and addressTo != ''">
+				and ADDR_TO = #{addressTo}
+			</if>
+			<if test="userId != null and userId != ''">
+				and USER_ID = #{userId}
+			</if>
+			<if test="receiveTime != null and receiveTime != ''">
+				and RECEIVE_TIME = #{receiveTime}
+			</if>
+			<if test="messageId != null and messageId != ''">
+				and MSG_ID = #{messageId}
+			</if>
+			 ORDER BY CREATE_TIME DESC
+		</where>
+	</select>
+
+	<select id="getAll" resultType="MailReceive">
+		select
+		<include refid="selectId" />
+		from OUT_MAIL_RECEIVE
+	</select>
+	<select id="count" parameterType="MailReceive" resultType="int">
+		select count(0) from OUT_MAIL_RECEIVE
+		<where>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.addressFrom != null and t.addressFrom != ''">
+				and ADDR_FROM = #{t.addressFrom}
+			</if>
+			<if test="t.subject != null and t.subject != ''">
+				and SUBJECT = #{t.subject}
+			</if>
+			<if test="t.addressCopy != null and t.addressCopy != ''">
+				and ADDR_CC = #{t.addressCopy}
+			</if>
+			<if test="t.attachment != null and t.attachment != ''">
+				and ATTACHEMENT = #{t.attachment}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.content != null and t.content != ''">
+				and CONTENT = #{t.content}
+			</if>
+			<if test="t.flag != null and t.flag != ''">
+				and FLAG = #{t.flag}
+			</if>
+			<if test="t.addressTo != null and t.addressTo != ''">
+				and ADDR_TO = #{t.addressTo}
+			</if>
+			<if test="t.userId != null and t.userId != ''">
+				and USER_ID = #{t.userId}
+			</if>
+			<if test="t.receiveTime != null and t.receiveTime != ''">
+				and RECEIVE_TIME = #{t.receiveTime}
+			</if>
+			<if test="t.messageId != null and t.messageId != ''">
+				and MSG_ID = #{t.messageId}
+			</if>
+		</where>
+	</select>
+	<insert id="add" parameterType="MailReceive"> insert into OUT_MAIL_RECEIVE(
+		CREATE_TIME, STATUS, ADDR_FROM, SUBJECT, ADDR_CC, ATTACHEMENT, ID,
+		CONTENT, FLAG, ADDR_TO, USER_ID, RECEIVE_TIME, MSG_ID )values (
+		#{createTime}, #{status}, #{addressFrom}, #{subject}, #{addressCopy},
+		#{attachment}, UUID(), #{content}, #{flag}, #{addressTo}, #{userId},
+		#{receiveTime}, #{messageId} )
+	</insert>
+	<delete id="deleteById" parameterType="String">
+		delete from OUT_MAIL_RECEIVE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="MailReceive">
+		select
+		<include refid="selectId" />
+		from OUT_MAIL_RECEIVE where id=#{id}
+	</select>
+
+	<update id="update" parameterType="MailReceive">
+		update OUT_MAIL_RECEIVE
+		<set>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="addressFrom != null and addressFrom != ''">
+				ADDR_FROM=#{addressFrom},
+			</if>
+			<if test="subject != null and subject != ''">
+				SUBJECT=#{subject},
+			</if>
+			<if test="addressCopy != null and addressCopy != ''">
+				ADDR_CC=#{addressCopy},
+			</if>
+			<if test="attachment != null and attachment != ''">
+				ATTACHEMENT=#{attachment},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="content != null and content != ''">
+				CONTENT=#{content},
+			</if>
+			<if test="flag != null and flag != ''">
+				FLAG=#{flag},
+			</if>
+			<if test="addressTo != null and addressTo != ''">
+				ADDR_TO=#{addressTo},
+			</if>
+			<if test="userId != null and userId != ''">
+				USER_ID=#{userId},
+			</if>
+			<if test="receiveTime != null and receiveTime != ''">
+				RECEIVE_TIME=#{receiveTime},
+			</if>
+			<if test="messageId != null and messageId != ''">
+				MSG_ID=#{messageId},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

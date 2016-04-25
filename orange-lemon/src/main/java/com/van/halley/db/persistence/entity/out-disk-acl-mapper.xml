@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="diskacl">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		MODIFY_TIME AS modifyTime,
+		CREATE_TIME AS createTime,
+		OUT_DISK_SHARE_ID AS diskShareId,
+		ID AS id,
+		ACCESSARY_ID AS accessaryId,
+		DESCN AS descn,
+		DISP_INX AS displayIndex,
+		STATUS AS status
+	</sql>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultType="DiskAcl">
+		select
+		<include refid="selectId" />
+		from OUT_DISK_ACL
+		<where>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.diskShareId != null and t.diskShareId != ''">
+				and OUT_DISK_SHARE_ID = #{t.diskShareId}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.accessaryId != null and t.accessaryId != ''">
+				and ACCESSARY_ID = #{t.accessaryId}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="DiskAcl" resultType="DiskAcl">
+		select
+		<include refid="selectId" />
+		from OUT_DISK_ACL
+		<where>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="diskShareId != null and diskShareId != ''">
+				and OUT_DISK_SHARE_ID = #{diskShareId}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="accessaryId != null and accessaryId != ''">
+				and ACCESSARY_ID = #{accessaryId}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="DiskAcl">
+		select
+		<include refid="selectId" />
+		from OUT_DISK_ACL
+	</select>
+
+	<select id="count" parameterType="DiskAcl" resultType="int">
+		select count(0) from OUT_DISK_ACL
+		<where>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="diskShareId != null and diskShareId != ''">
+				and OUT_DISK_SHARE_ID = #{diskShareId}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="accessaryId != null and accessaryId != ''">
+				and ACCESSARY_ID = #{accessaryId}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="DiskAcl">
+		insert into OUT_DISK_ACL( MODIFY_TIME, CREATE_TIME, OUT_DISK_SHARE_ID,
+		ID, ACCESSARY_ID, DESCN, DISP_INX, STATUS )values ( #{modifyTime},
+		#{createTime}, #{diskShareId},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{accessaryId},
+		#{descn},
+		#{displayIndex},
+		#{status}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from OUT_DISK_ACL where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="DiskAcl">
+		select
+		<include refid="selectId" />
+		from OUT_DISK_ACL where id=#{id}
+	</select>
+
+	<update id="update" parameterType="DiskAcl">
+		update OUT_DISK_ACL
+		<set>
+			MODIFY_TIME=SYSDATE(),
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="diskShareId != null and diskShareId != ''">
+				OUT_DISK_SHARE_ID=#{diskShareId},
+			</if>
+			<if test="accessaryId != null and accessaryId != ''">
+				ACCESSARY_ID=#{accessaryId},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+		</set>
+		WHERE ID=#{id} AND MODIFY_TIME=#{modifyTime}
+	</update>
+
+	<delete id="deleteBatch" parameterType="java.util.List">
+		delete from OUT_DISK_ACL where ID IN
+		<foreach collection="list" item="t" index="index" open="("
+			separator="," close=")">
+			#{t.id}
+		</foreach>
+	</delete>
+
+	<update id="updateBatch" parameterType="java.util.List">
+		<foreach collection="list" item="t" index="index" open=""
+			close="" separator=";">
+			update OUT_DISK_ACL
+			<set>
+				MODIFY_TIME=SYSDATE(),
+				<if test="createTime != null and createTime != ''">
+					CREATE_TIME=#{createTime},
+				</if>
+				<if test="diskShareId != null and diskShareId != ''">
+					OUT_DISK_SHARE_ID=#{diskShareId},
+				</if>
+				<if test="accessaryId != null and accessaryId != ''">
+					ACCESSARY_ID=#{accessaryId},
+				</if>
+				<if test="descn != null and descn != ''">
+					DESCN=#{descn},
+				</if>
+				<if test="displayIndex != null and displayIndex != ''">
+					DISP_INX=#{displayIndex},
+				</if>
+				<if test="status != null and status != ''">
+					STATUS=#{status},
+				</if>
+			</set>
+			WHERE ID=#{id} AND MODIFY_TIME=#{modifyTime}
+		</foreach>
+	</update>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into OUT_DISK_ACL( MODIFY_TIME, CREATE_TIME, OUT_DISK_SHARE_ID,
+		ID, ACCESSARY_ID, DESCN, DISP_INX, STATUS )values 
+		<foreach collection="list" item="t" index="index" separator=",">
+			(
+			#{t.modifyTime},
+			#{t.createTime},
+			#{t.diskShareId},
+			<if test="t.id != null and t.id != '' ">
+				#{t.id},
+			</if>
+			<if test="t.id == null or t.id == '' ">
+				UUID(),
+			</if>
+			#{t.accessaryId},
+			#{t.descn},
+			#{t.displayIndex},
+			#{t.status}
+			)
+		</foreach>
+		
+	</insert>
+</mapper>

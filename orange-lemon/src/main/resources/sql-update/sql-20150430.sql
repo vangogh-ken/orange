@@ -1,0 +1,1 @@
+ALTER TABLE out_report_conf CHANGE DATA_SQL DATA_SQL TEXT;

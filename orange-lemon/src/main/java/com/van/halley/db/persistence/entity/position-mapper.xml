@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="position">
+	<sql id="selectId">
+		DESCN AS descn,
+		ID AS id,
+		CREATE_TIME AS createTime,
+		STATUS AS status,
+		PRIORITY AS priority,
+		GRADE AS grade,
+		MODIFY_TIME AS modifyTime,
+		POSITION_NAME AS positionName,
+		DISP_INX AS displayIndex,
+		ORG_ENTITY_ID
+	</sql>
+	
+	<resultMap id="positionMap" type="com.van.halley.db.persistence.entity.Position">
+        <id property="id" column="ID" />
+        <result property="positionName" column="POSITION_NAME" />
+        <result property="priority" column="PRIORITY" />
+        <result property="grade" column="GRADE" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="orgEntity" column="ORG_ENTITY_ID" select="orgentity.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" resultMap="positionMap">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_POSITION
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.orgEntity != null and t.orgEntity != ''">
+				and ORG_ENTITY_ID = #{t.orgEntity.id}
+			</if>
+			<if test="t.priority != null and t.priority != ''">
+				and PRIORITY = #{t.priority}
+			</if>
+			<if test="t.grade != null and t.grade != ''">
+				and GRADE = #{t.grade}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.positionName != null and t.positionName != ''">
+				and POSITION_NAME = #{t.positionName}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="Position" resultMap="positionMap">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_POSITION
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				and ORG_ENTITY_ID = #{orgEntity.id}
+			</if>
+			<if test="priority != null and priority != ''">
+				and PRIORITY = #{priority}
+			</if>
+			<if test="grade != null and grade != ''">
+				and GRADE = #{grade}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="positionName != null and positionName != ''">
+				and POSITION_NAME = #{positionName}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+		
+		ORDER BY PRIORITY, POSITION_NAME ASC
+	</select>
+
+	<select id="getAll" resultMap="positionMap">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_POSITION ORDER BY ORG_ENTITY_ID ASC
+	</select>
+
+	<select id="count" parameterType="Position" resultType="int">
+		select count(0) from SYS_AUTH_POSITION
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.orgEntity != null and t.orgEntity != ''">
+				and ORG_ENTITY_ID = #{t.orgEntity.id}
+			</if>
+			<if test="t.priority != null and t.priority != ''">
+				and PRIORITY = #{t.priority}
+			</if>
+			<if test="t.grade != null and t.grade != ''">
+				and GRADE = #{t.grade}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.positionName != null and t.positionName != ''">
+				and POSITION_NAME = #{t.positionName}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="Position">
+		insert into SYS_AUTH_POSITION( DESCN, ID, CREATE_TIME, STATUS,
+		ORG_ENTITY_ID, PRIORITY, GRADE, MODIFY_TIME, POSITION_NAME, DISP_INX
+		)values ( #{descn},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{createTime},
+		#{status},
+		#{orgEntity.id},
+		#{priority},
+		#{grade},
+		#{modifyTime},
+		#{positionName},
+		#{displayIndex}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from SYS_AUTH_POSITION where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="positionMap">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_POSITION where id=#{id}
+	</select>
+	
+	<!-- 获取流程节点权限 -->
+	<select id="getByBpmConfigNodeId" parameterType="String" resultMap="positionMap" flushCache="true">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_POSITION where id in (SELECT AUTH_ID FROM BPM_CONF_AUTH where AUTH_TYPE='P' AND BPM_NODE_ID=#{bpmConfigNodeId})
+		ORDER BY POSITION_NAME ASC
+	</select>
+
+	<update id="update" parameterType="Position">
+		update SYS_AUTH_POSITION
+		<set>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				ORG_ENTITY_ID=#{orgEntity.id},
+			</if>
+			<if test="priority != null and priority != ''">
+				PRIORITY=#{priority},
+			</if>
+			<if test="grade != null and grade != ''">
+				GRADE=#{grade},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="positionName != null and positionName != ''">
+				POSITION_NAME=#{positionName},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="motorcadedispatch">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		MOTOR_DRIVER AS motorcadeDriver,
+		RETURN_TIME AS returnTime,
+		BOX_NUMBER AS boxNumber,
+		BOX_COUNT AS boxCount,
+		RETURN_ADDRESS AS returnAddress,
+		PICK_TIME AS pickTime,
+		CARGO_NAME AS cargoName,
+		DISPATCH_NUMBER AS dispatchNumber,
+		ID AS id,
+		LOAD_TIME AS loadTime,
+		MOTOR_TRUCK AS motorcadeTruck,
+		MODIFY_TIME AS modifyTime,
+		PICK_ADDRESS AS pickAddress,
+		CARGO_WEIGHT AS cargoWeight,
+		DISP_INX AS displayIndex,
+		LOAD_ADDRESS AS loadAddress,
+		CARGO_CAPACITY AS cargoCapacity,
+		BOX_TYPE AS boxType,
+		STATUS AS status,
+		DEPARTURE AS departure,
+		DISPATCH_DEDUCT AS dispatchDeduct,
+		DESTINATION AS destination,
+		DESCN AS descn,
+		DELEGATE_PART AS delegatePart,
+		CARGO_UNIT AS cargoUnit,
+		ORDER_NUMBER AS orderNumber,
+		DELEGATE_TIME AS delegateTime
+	</sql>
+	
+	<resultMap id="motorcadeDispatchMap" type="com.van.halley.db.persistence.entity.MotorcadeDispatch" >
+        <id property="id" column="ID" />
+        <result property="dispatchNumber" column="DISPATCH_NUMBER" />
+        <result property="orderNumber" column="ORDER_NUMBER" />
+        <result property="delegatePart" column="DELEGATE_PART" />
+        <result property="delegateTime" column="DELEGATE_TIME" />
+        <result property="cargoName" column="CARGO_NAME" />
+        <result property="cargoUnit" column="CARGO_UNIT" />
+        <result property="cargoWeight" column="CARGO_WEIGHT" />
+        <result property="cargoCapacity" column="CARGO_CAPACITY" />
+        <result property="boxType" column="BOX_TYPE" />
+        <result property="boxCount" column="BOX_COUNT" />
+        <result property="boxNumber" column="BOX_NUMBER" />
+        <result property="pickAddress" column="PICK_ADDRESS" />
+        <result property="pickTime" column="PICK_TIME" />
+        <result property="loadAddress" column="LOAD_ADDRESS" />
+        <result property="loadTime" column="LOAD_TIME" />
+        <result property="returnAddress" column="RETURN_ADDRESS" />
+        <result property="returnTime" column="RETURN_TIME" />
+        <result property="motorcadeTruck" column="MOTOR_TRUCK" />
+        <result property="motorcadeDriver" column="MOTOR_DRIVER" />
+        <result property="departure" column="DEPARTURE" />
+        <result property="destination" column="DESTINATION" />
+        <result property="dispatchDeduct" column="DISPATCH_DEDUCT" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <collection property="motorcadeFees" column="ID" select="motorcadefee.getByMotorcadeDispatchId"></collection>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="motorcadeDispatchMap">
+		select
+		<include refid="selectId" />
+		from MOTOR_DISPATCH
+		<where>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.motorcadeDriver != null and t.motorcadeDriver != ''">
+				and MOTOR_DRIVER = #{t.motorcadeDriver}
+			</if>
+			<if test="t.returnTime != null and t.returnTime != ''">
+				and RETURN_TIME = #{t.returnTime}
+			</if>
+			<if test="t.boxNumber != null and t.boxNumber != ''">
+				and BOX_NUMBER = #{t.boxNumber}
+			</if>
+			<if test="t.boxCount != null and t.boxCount != ''">
+				and BOX_COUNT = #{t.boxCount}
+			</if>
+			<if test="t.returnAddress != null and t.returnAddress != ''">
+				and RETURN_ADDRESS = #{t.returnAddress}
+			</if>
+			<if test="t.pickTime != null and t.pickTime != ''">
+				and PICK_TIME = #{t.pickTime}
+			</if>
+			<if test="t.cargoName != null and t.cargoName != ''">
+				and CARGO_NAME = #{t.cargoName}
+			</if>
+			<if test="t.dispatchNumber != null and t.dispatchNumber != ''">
+				and DISPATCH_NUMBER = #{t.dispatchNumber}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.loadTime != null and t.loadTime != ''">
+				and LOAD_TIME = #{t.loadTime}
+			</if>
+			<if test="t.motorcadeTruck != null and t.motorcadeTruck != ''">
+				and MOTOR_TRUCK = #{t.motorcadeTruck}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.pickAddress != null and t.pickAddress != ''">
+				and PICK_ADDRESS = #{t.pickAddress}
+			</if>
+			<if test="t.cargoWeight != null and t.cargoWeight != ''">
+				and CARGO_WEIGHT = #{t.cargoWeight}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.loadAddress != null and t.loadAddress != ''">
+				and LOAD_ADDRESS = #{t.loadAddress}
+			</if>
+			<if test="t.cargoCapacity != null and t.cargoCapacity != ''">
+				and CARGO_CAPACITY = #{t.cargoCapacity}
+			</if>
+			<if test="t.boxType != null and t.boxType != ''">
+				and BOX_TYPE = #{t.boxType}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.departure != null and t.departure != ''">
+				and DEPARTURE = #{t.departure}
+			</if>
+			<if test="t.dispatchDeduct != null and t.dispatchDeduct != ''">
+				and DISPATCH_DEDUCT = #{t.dispatchDeduct}
+			</if>
+			<if test="t.destination != null and t.destination != ''">
+				and DESTINATION = #{t.destination}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.delegatePart != null and t.delegatePart != ''">
+				and DELEGATE_PART = #{t.delegatePart}
+			</if>
+			<if test="t.cargoUnit != null and t.cargoUnit != ''">
+				and CARGO_UNIT = #{t.cargoUnit}
+			</if>
+			<if test="t.orderNumber != null and t.orderNumber != ''">
+				and ORDER_NUMBER = #{t.orderNumber}
+			</if>
+			<if test="t.delegateTime != null and t.delegateTime != ''">
+				and DELEGATE_TIME = #{t.delegateTime}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="MotorcadeDispatch"
+		resultMap="motorcadeDispatchMap">
+		select
+		<include refid="selectId" />
+		from MOTOR_DISPATCH
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="motorcadeDriver != null and motorcadeDriver != ''">
+				and MOTOR_DRIVER = #{motorcadeDriver}
+			</if>
+			<if test="returnTime != null and returnTime != ''">
+				and RETURN_TIME = #{returnTime}
+			</if>
+			<if test="boxNumber != null and boxNumber != ''">
+				and BOX_NUMBER = #{boxNumber}
+			</if>
+			<if test="boxCount != null and boxCount != ''">
+				and BOX_COUNT = #{boxCount}
+			</if>
+			<if test="returnAddress != null and returnAddress != ''">
+				and RETURN_ADDRESS = #{returnAddress}
+			</if>
+			<if test="pickTime != null and pickTime != ''">
+				and PICK_TIME = #{pickTime}
+			</if>
+			<if test="cargoName != null and cargoName != ''">
+				and CARGO_NAME = #{cargoName}
+			</if>
+			<if test="dispatchNumber != null and dispatchNumber != ''">
+				and DISPATCH_NUMBER = #{dispatchNumber}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="loadTime != null and loadTime != ''">
+				and LOAD_TIME = #{loadTime}
+			</if>
+			<if test="motorcadeTruck != null and motorcadeTruck != ''">
+				and MOTOR_TRUCK = #{motorcadeTruck}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="pickAddress != null and pickAddress != ''">
+				and PICK_ADDRESS = #{pickAddress}
+			</if>
+			<if test="cargoWeight != null and cargoWeight != ''">
+				and CARGO_WEIGHT = #{cargoWeight}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="loadAddress != null and loadAddress != ''">
+				and LOAD_ADDRESS = #{loadAddress}
+			</if>
+			<if test="cargoCapacity != null and cargoCapacity != ''">
+				and CARGO_CAPACITY = #{cargoCapacity}
+			</if>
+			<if test="boxType != null and boxType != ''">
+				and BOX_TYPE = #{boxType}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="departure != null and departure != ''">
+				and DEPARTURE = #{departure}
+			</if>
+			<if test="dispatchDeduct != null and dispatchDeduct != ''">
+				and DISPATCH_DEDUCT = #{dispatchDeduct}
+			</if>
+			<if test="destination != null and destination != ''">
+				and DESTINATION = #{destination}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="delegatePart != null and delegatePart != ''">
+				and DELEGATE_PART = #{delegatePart}
+			</if>
+			<if test="cargoUnit != null and cargoUnit != ''">
+				and CARGO_UNIT = #{cargoUnit}
+			</if>
+			<if test="orderNumber != null and orderNumber != ''">
+				and ORDER_NUMBER = #{orderNumber}
+			</if>
+			<if test="delegateTime != null and delegateTime != ''">
+				and DELEGATE_TIME = #{delegateTime}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="motorcadeDispatchMap">
+		select
+		<include refid="selectId" />
+		from MOTOR_DISPATCH
+	</select>
+
+	<select id="count" parameterType="MotorcadeDispatch" resultType="int">
+		select count(0) from MOTOR_DISPATCH
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="motorcadeDriver != null and motorcadeDriver != ''">
+				and MOTOR_DRIVER = #{motorcadeDriver}
+			</if>
+			<if test="returnTime != null and returnTime != ''">
+				and RETURN_TIME = #{returnTime}
+			</if>
+			<if test="boxNumber != null and boxNumber != ''">
+				and BOX_NUMBER = #{boxNumber}
+			</if>
+			<if test="boxCount != null and boxCount != ''">
+				and BOX_COUNT = #{boxCount}
+			</if>
+			<if test="returnAddress != null and returnAddress != ''">
+				and RETURN_ADDRESS = #{returnAddress}
+			</if>
+			<if test="pickTime != null and pickTime != ''">
+				and PICK_TIME = #{pickTime}
+			</if>
+			<if test="cargoName != null and cargoName != ''">
+				and CARGO_NAME = #{cargoName}
+			</if>
+			<if test="dispatchNumber != null and dispatchNumber != ''">
+				and DISPATCH_NUMBER = #{dispatchNumber}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="loadTime != null and loadTime != ''">
+				and LOAD_TIME = #{loadTime}
+			</if>
+			<if test="motorcadeTruck != null and motorcadeTruck != ''">
+				and MOTOR_TRUCK = #{motorcadeTruck}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="pickAddress != null and pickAddress != ''">
+				and PICK_ADDRESS = #{pickAddress}
+			</if>
+			<if test="cargoWeight != null and cargoWeight != ''">
+				and CARGO_WEIGHT = #{cargoWeight}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="loadAddress != null and loadAddress != ''">
+				and LOAD_ADDRESS = #{loadAddress}
+			</if>
+			<if test="cargoCapacity != null and cargoCapacity != ''">
+				and CARGO_CAPACITY = #{cargoCapacity}
+			</if>
+			<if test="boxType != null and boxType != ''">
+				and BOX_TYPE = #{boxType}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="departure != null and departure != ''">
+				and DEPARTURE = #{departure}
+			</if>
+			<if test="dispatchDeduct != null and dispatchDeduct != ''">
+				and DISPATCH_DEDUCT = #{dispatchDeduct}
+			</if>
+			<if test="destination != null and destination != ''">
+				and DESTINATION = #{destination}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="delegatePart != null and delegatePart != ''">
+				and DELEGATE_PART = #{delegatePart}
+			</if>
+			<if test="cargoUnit != null and cargoUnit != ''">
+				and CARGO_UNIT = #{cargoUnit}
+			</if>
+			<if test="orderNumber != null and orderNumber != ''">
+				and ORDER_NUMBER = #{orderNumber}
+			</if>
+			<if test="delegateTime != null and delegateTime != ''">
+				and DELEGATE_TIME = #{delegateTime}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="MotorcadeDispatch">
+		insert into MOTOR_DISPATCH( CREATE_TIME, MOTOR_DRIVER, RETURN_TIME,
+		BOX_NUMBER, BOX_COUNT, RETURN_ADDRESS, PICK_TIME, CARGO_NAME,
+		DISPATCH_NUMBER, ID, LOAD_TIME, MOTOR_TRUCK, MODIFY_TIME,
+		PICK_ADDRESS, CARGO_WEIGHT, DISP_INX, LOAD_ADDRESS, CARGO_CAPACITY,
+		BOX_TYPE, STATUS, DEPARTURE, DISPATCH_DEDUCT, DESTINATION, DESCN,
+		DELEGATE_PART, CARGO_UNIT, ORDER_NUMBER, DELEGATE_TIME )values (
+		#{createTime}, #{motorcadeDriver}, #{returnTime}, #{boxNumber},
+		#{boxCount}, #{returnAddress}, #{pickTime}, #{cargoName},
+		#{dispatchNumber},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{loadTime},
+		#{motorcadeTruck},
+		#{modifyTime},
+		#{pickAddress},
+		#{cargoWeight},
+		#{displayIndex},
+		#{loadAddress},
+		#{cargoCapacity},
+		#{boxType},
+		#{status},
+		#{departure},
+		#{dispatchDeduct},
+		#{destination},
+		#{descn},
+		#{delegatePart},
+		#{cargoUnit},
+		#{orderNumber},
+		#{delegateTime}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from MOTOR_DISPATCH where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="motorcadeDispatchMap">
+		select
+		<include refid="selectId" />
+		from MOTOR_DISPATCH where id=#{id}
+	</select>
+
+	<update id="update" parameterType="MotorcadeDispatch">
+		update MOTOR_DISPATCH
+		<set>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="motorcadeDriver != null and motorcadeDriver != ''">
+				MOTOR_DRIVER=#{motorcadeDriver},
+			</if>
+			<if test="returnTime != null and returnTime != ''">
+				RETURN_TIME=#{returnTime},
+			</if>
+			<if test="boxNumber != null and boxNumber != ''">
+				BOX_NUMBER=#{boxNumber},
+			</if>
+			<if test="boxCount != null and boxCount != ''">
+				BOX_COUNT=#{boxCount},
+			</if>
+			<if test="returnAddress != null and returnAddress != ''">
+				RETURN_ADDRESS=#{returnAddress},
+			</if>
+			<if test="pickTime != null and pickTime != ''">
+				PICK_TIME=#{pickTime},
+			</if>
+			<if test="cargoName != null and cargoName != ''">
+				CARGO_NAME=#{cargoName},
+			</if>
+			<if test="dispatchNumber != null and dispatchNumber != ''">
+				DISPATCH_NUMBER=#{dispatchNumber},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="loadTime != null and loadTime != ''">
+				LOAD_TIME=#{loadTime},
+			</if>
+			<if test="motorcadeTruck != null and motorcadeTruck != ''">
+				MOTOR_TRUCK=#{motorcadeTruck},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="pickAddress != null and pickAddress != ''">
+				PICK_ADDRESS=#{pickAddress},
+			</if>
+			<if test="cargoWeight != null and cargoWeight != ''">
+				CARGO_WEIGHT=#{cargoWeight},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="loadAddress != null and loadAddress != ''">
+				LOAD_ADDRESS=#{loadAddress},
+			</if>
+			<if test="cargoCapacity != null and cargoCapacity != ''">
+				CARGO_CAPACITY=#{cargoCapacity},
+			</if>
+			<if test="boxType != null and boxType != ''">
+				BOX_TYPE=#{boxType},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="departure != null and departure != ''">
+				DEPARTURE=#{departure},
+			</if>
+			<if test="dispatchDeduct != null and dispatchDeduct != ''">
+				DISPATCH_DEDUCT=#{dispatchDeduct},
+			</if>
+			<if test="destination != null and destination != ''">
+				DESTINATION=#{destination},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="delegatePart != null and delegatePart != ''">
+				DELEGATE_PART=#{delegatePart},
+			</if>
+			<if test="cargoUnit != null and cargoUnit != ''">
+				CARGO_UNIT=#{cargoUnit},
+			</if>
+			<if test="orderNumber != null and orderNumber != ''">
+				ORDER_NUMBER=#{orderNumber},
+			</if>
+			<if test="delegateTime != null and delegateTime != ''">
+				DELEGATE_TIME=#{delegateTime},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

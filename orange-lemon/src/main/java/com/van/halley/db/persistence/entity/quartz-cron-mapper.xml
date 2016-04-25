@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="quartzcron">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CRON_EXPRESSION AS cronExpression,
+		MODIFY_TIME AS modifyTime,
+		CREATE_TIME AS createTime,
+		ID AS id,
+		DESCN AS descn,
+		CRON_NAME AS cronName,
+		DISP_INX AS displayIndex,
+		STATUS AS status
+	</sql>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultType="QuartzCron">
+		select
+		<include refid="selectId" />
+		from QUARTZ_CRON
+		<where>
+			<if test="t.cronExpression != null and t.cronExpression != ''">
+				and CRON_EXPRESSION = #{t.cronExpression}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.cronName != null and t.cronName != ''">
+				and CRON_NAME = #{t.cronName}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="QuartzCron" resultType="QuartzCron">
+		select
+		<include refid="selectId" />
+		from QUARTZ_CRON
+		<where>
+			<if test="cronExpression != null and cronExpression != ''">
+				and CRON_EXPRESSION = #{cronExpression}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="cronName != null and cronName != ''">
+				and CRON_NAME = #{cronName}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="QuartzCron">
+		select
+		<include refid="selectId" />
+		from QUARTZ_CRON
+	</select>
+
+	<select id="count" parameterType="QuartzCron" resultType="int">
+		select count(0) from QUARTZ_CRON
+		<where>
+			<if test="cronExpression != null and cronExpression != ''">
+				and CRON_EXPRESSION = #{cronExpression}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="cronName != null and cronName != ''">
+				and CRON_NAME = #{cronName}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="QuartzCron">
+		insert into QUARTZ_CRON( CRON_EXPRESSION, MODIFY_TIME, CREATE_TIME,
+		ID, DESCN, CRON_NAME, DISP_INX, STATUS )values ( #{cronExpression},
+		#{modifyTime}, #{createTime},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{descn},
+		#{cronName},
+		#{displayIndex},
+		#{status}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from QUARTZ_CRON where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="QuartzCron">
+		select
+		<include refid="selectId" />
+		from QUARTZ_CRON where id=#{id}
+	</select>
+	
+	<select id="getByCronExpression" parameterType="String" resultType="QuartzCron">
+		select
+		<include refid="selectId" />
+		from QUARTZ_CRON where CRON_EXPRESSION=#{cronExpression}
+	</select>
+
+	<update id="update" parameterType="QuartzCron">
+		update QUARTZ_CRON
+		<set>
+			<if test="cronExpression != null and cronExpression != ''">
+				CRON_EXPRESSION=#{cronExpression},
+			</if>
+			MODIFY_TIME=SYSDATE(),
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="cronName != null and cronName != ''">
+				CRON_NAME=#{cronName},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+		</set>
+		WHERE ID=#{id}
+	</update>
+</mapper>

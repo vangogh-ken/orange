@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freightdelegate">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		DELEGATE_FILE AS delegateFile,
+		STATUS AS status,
+		LOCK_STATUS AS lockStatus,
+		ID AS id,
+		DESCN AS descn,
+		EXECUTE_STATUS AS executeStatus,
+		PLACE_TIME AS placeTime,
+		DELEGATE_NUMBER AS delegateNumber,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		
+		FRE_ACTION_ID,
+		FRE_PART_ID,
+		ORG_ENTITY_ID,
+		USER_ID
+	</sql>
+	
+	<resultMap id="freightDelegateMap" type="com.van.halley.db.persistence.entity.FreightDelegate">
+        <id property="id" column="ID" />
+        <result property="delegateNumber" column="DELEGATE_NUMBER" />
+        <result property="executeStatus" column="EXECUTE_STATUS" />
+        <result property="lockStatus" column="LOCK_STATUS" />
+        <result property="placeTime" column="placeTime" />
+        <result property="delegateFile" column="DELEGATE_FILE" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="freightAction" column="FRE_ACTION_ID" select="freightaction.getById" ></association>
+        <association property="freightPart" column="FRE_PART_ID" select="freightpart.getById" ></association>
+        <association property="orgEntity" column="ORG_ENTITY_ID" select="orgentity.getById" ></association>
+        <association property="owner" column="USER_ID" select="user.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" resultMap="freightDelegateMap" useCache="false">
+		select
+		<include refid="selectId" />
+		from FRE_DELEGATE
+		<where>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.delegateFile != null and t.delegateFile != ''">
+				and DELEGATE_FILE = #{t.delegateFile}
+			</if>
+			<if test="t.orgEntity != null and t.orgEntity != ''">
+				and ORG_ENTITY_ID = #{t.orgEntity.id}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.freightPart != null and t.freightPart != ''">
+				and FRE_PART_ID = #{t.freightPart.id}
+			</if>
+			<if test="t.lockStatus != null and t.lockStatus != ''">
+				and LOCK_STATUS = #{t.lockStatus}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.freightAction != null and t.freightAction != ''">
+				and FRE_ACTION_ID = #{t.freightAction.id}
+			</if>
+			<if test="t.executeStatus != null and t.executeStatus != ''">
+				and EXECUTE_STATUS = #{t.executeStatus}
+			</if>
+			<if test="t.placeTime != null and t.placeTime != ''">
+				and PLACE_TIME = #{t.placeTime}
+			</if>
+			<if test="t.owner != null and t.owner != ''">
+				and USER_ID = #{t.owner.id}
+			</if>
+			<if test="t.delegateNumber != null and t.delegateNumber != ''">
+				and DELEGATE_NUMBER = #{t.delegateNumber}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FreightDelegate"
+		resultMap="freightDelegateMap">
+		select
+		<include refid="selectId" />
+		from FRE_DELEGATE
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="delegateFile != null and delegateFile != ''">
+				and DELEGATE_FILE = #{delegateFile}
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				and ORG_ENTITY_ID = #{orgEntity.id}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="freightPart != null and freightPart != ''">
+				and FRE_PART_ID = #{freightPart.id}
+			</if>
+			<if test="lockStatus != null and lockStatus != ''">
+				and LOCK_STATUS = #{lockStatus}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="freightAction != null and freightAction != ''">
+				and FRE_ACTION_ID = #{freightAction.id}
+			</if>
+			<if test="executeStatus != null and executeStatus != ''">
+				and EXECUTE_STATUS = #{executeStatus}
+			</if>
+			<if test="placeTime != null and placeTime != ''">
+				and PLACE_TIME = #{placeTime}
+			</if>
+			<if test="owner != null and owner != ''">
+				and USER_ID = #{owner.id}
+			</if>
+			<if test="delegateNumber != null and delegateNumber != ''">
+				and DELEGATE_NUMBER = #{delegateNumber}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="freightDelegateMap">
+		select
+		<include refid="selectId" />
+		from FRE_DELEGATE
+	</select>
+
+	<select id="count" parameterType="FreightDelegate" resultType="int">
+		select count(0) from FRE_DELEGATE
+		<where>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.delegateFile != null and t.delegateFile != ''">
+				and DELEGATE_FILE = #{t.delegateFile}
+			</if>
+			<if test="t.orgEntity != null and t.orgEntity != ''">
+				and ORG_ENTITY_ID = #{t.orgEntity.id}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.freightPart != null and t.freightPart != ''">
+				and FRE_PART_ID = #{t.freightPart.id}
+			</if>
+			<if test="t.lockStatus != null and t.lockStatus != ''">
+				and LOCK_STATUS = #{t.lockStatus}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.freightAction != null and t.freightAction != ''">
+				and FRE_ACTION_ID = #{t.freightAction.id}
+			</if>
+			<if test="t.executeStatus != null and t.executeStatus != ''">
+				and EXECUTE_STATUS = #{t.executeStatus}
+			</if>
+			<if test="t.placeTime != null and t.placeTime != ''">
+				and PLACE_TIME = #{t.placeTime}
+			</if>
+			<if test="t.owner != null and t.owner != ''">
+				and USER_ID = #{t.owner.id}
+			</if>
+			<if test="t.delegateNumber != null and t.delegateNumber != ''">
+				and DELEGATE_NUMBER = #{t.delegateNumber}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FreightDelegate">
+		insert into FRE_DELEGATE( CREATE_TIME, DELEGATE_FILE, ORG_ENTITY_ID, STATUS,
+		FRE_PART_ID, LOCK_STATUS, ID, DESCN, FRE_ACTION_ID, EXECUTE_STATUS,
+		PLACE_TIME, USER_ID, DELEGATE_NUMBER, MODIFY_TIME, DISP_INX )values (
+		#{createTime}, #{delegateFile}, #{orgEntity.id}, #{status},
+		#{freightPart.id}, #{lockStatus},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{descn},
+		#{freightAction.id},
+		#{executeStatus},
+		#{placeTime},
+		#{owner.id},
+		#{delegateNumber},
+		#{modifyTime},
+		#{displayIndex}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FRE_DELEGATE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="freightDelegateMap">
+		select
+		<include refid="selectId" />
+		from FRE_DELEGATE where id=#{id}
+	</select>
+	
+	<select id="getByFreightActionId" parameterType="String" resultMap="freightDelegateMap" flushCache="true">
+		select
+		<include refid="selectId" />
+		from FRE_DELEGATE where FRE_ACTION_ID=#{freightActionId} ORDER BY CREATE_TIME DESC
+	</select>
+
+	<update id="update" parameterType="FreightDelegate">
+		update FRE_DELEGATE
+		<set>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="delegateFile != null and delegateFile != ''">
+				DELEGATE_FILE=#{delegateFile},
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				ORG_ENTITY_ID=#{orgEntity.id},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="freightPart != null and freightPart != ''">
+				FRE_PART_ID=#{freightPart.id},
+			</if>
+			<if test="lockStatus != null and lockStatus != ''">
+				LOCK_STATUS=#{lockStatus},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="freightAction != null and freightAction != ''">
+				FRE_ACTION_ID=#{freightAction.id},
+			</if>
+			<if test="executeStatus != null and executeStatus != ''">
+				EXECUTE_STATUS=#{executeStatus},
+			</if>
+			<if test="placeTime != null and placeTime != ''">
+				PLACE_TIME=#{placeTime},
+			</if>
+			<if test="owner != null and owner != ''">
+				USER_ID=#{owner.id},
+			</if>
+			<if test="delegateNumber != null and delegateNumber != ''">
+				DELEGATE_NUMBER=#{delegateNumber},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

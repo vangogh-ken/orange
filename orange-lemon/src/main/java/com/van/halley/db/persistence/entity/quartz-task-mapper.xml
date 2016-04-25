@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="quartztask">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		
+		MODIFY_TIME AS modifyTime,
+		TASK_KEY AS taskKey,
+		BEAN_CLASS AS beanClass,
+		CREATE_TIME AS createTime,
+		METHOD_NAME AS methodName,
+		TASK_NAME AS taskName,
+		ID AS id,
+		SPRING_ID AS springId,
+		DESCN AS descn,
+		DISP_INX AS displayIndex,
+		STATUS AS status,
+		
+		QUARTZ_GROUP_ID
+	</sql>
+	
+	<resultMap id="quartzTaskMap" type="com.van.halley.db.persistence.entity.QuartzTask">
+        <id property="id" column="ID" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="taskKey" column="TASK_KEY" />
+        <result property="beanClass" column="BEAN_CLASS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="methodName" column="METHOD_NAME" />
+        <result property="taskName" column="TASK_NAME" />
+        <result property="springId" column="SPRING_ID" />
+        <result property="descn" column="DESCN" />
+        <result property="displayIndex" column="DISP_INX" />
+        <result property="status" column="STATUS" />
+        
+        <association property="quartzGroup" column="QUARTZ_GROUP_ID" select="quartzgroup.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="quartzTaskMap">
+		select
+		<include refid="selectId" />
+		from QUARTZ_TASK
+		<where>
+			<if test="t.quartzGroup != null and t.quartzGroup != ''">
+				and QUARTZ_GROUP_ID = #{t.quartzGroup.id}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.taskKey != null and t.taskKey != ''">
+				and TASK_KEY = #{t.taskKey}
+			</if>
+			<if test="t.beanClass != null and t.beanClass != ''">
+				and BEAN_CLASS = #{t.beanClass}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.methodName != null and t.methodName != ''">
+				and METHOD_NAME = #{t.methodName}
+			</if>
+			<if test="t.taskName != null and t.taskName != ''">
+				and TASK_NAME = #{t.taskName}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.springId != null and t.springId != ''">
+				and SPRING_ID = #{t.springId}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="QuartzTask" resultMap="quartzTaskMap">
+		select
+		<include refid="selectId" />
+		from QUARTZ_TASK
+		<where>
+			<if test="quartzGroup != null and quartzGroup != ''">
+				and QUARTZ_GROUP_ID = #{quartzGroup.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="taskKey != null and taskKey != ''">
+				and TASK_KEY = #{taskKey}
+			</if>
+			<if test="beanClass != null and beanClass != ''">
+				and BEAN_CLASS = #{beanClass}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="methodName != null and methodName != ''">
+				and METHOD_NAME = #{methodName}
+			</if>
+			<if test="taskName != null and taskName != ''">
+				and TASK_NAME = #{taskName}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="springId != null and springId != ''">
+				and SPRING_ID = #{springId}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="quartzTaskMap">
+		select
+		<include refid="selectId" />
+		from QUARTZ_TASK
+	</select>
+
+	<select id="count" parameterType="QuartzTask" resultType="int">
+		select count(0) from QUARTZ_TASK
+		<where>
+			<if test="quartzGroup != null and quartzGroup != ''">
+				and QUARTZ_GROUP_ID = #{quartzGroup.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="taskKey != null and taskKey != ''">
+				and TASK_KEY = #{taskKey}
+			</if>
+			<if test="beanClass != null and beanClass != ''">
+				and BEAN_CLASS = #{beanClass}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="methodName != null and methodName != ''">
+				and METHOD_NAME = #{methodName}
+			</if>
+			<if test="taskName != null and taskName != ''">
+				and TASK_NAME = #{taskName}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="springId != null and springId != ''">
+				and SPRING_ID = #{springId}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="QuartzTask">
+		insert into QUARTZ_TASK( QUARTZ_GROUP_ID, MODIFY_TIME, TASK_KEY,
+		BEAN_CLASS, CREATE_TIME, METHOD_NAME, TASK_NAME, ID, SPRING_ID, DESCN,
+		DISP_INX, STATUS )values ( #{quartzGroup.id}, #{modifyTime}, #{taskKey},
+		#{beanClass}, #{createTime}, #{methodName}, #{taskName},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{springId},
+		#{descn},
+		#{displayIndex},
+		#{status}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from QUARTZ_TASK where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="quartzTaskMap">
+		select
+		<include refid="selectId" />
+		from QUARTZ_TASK where id=#{id}
+	</select>
+	
+	<select id="getByTaskKey" parameterType="String" resultMap="quartzTaskMap">
+		select
+		<include refid="selectId" />
+		from QUARTZ_TASK where TASK_KEY=#{taskKey}
+	</select>
+	
+	<!-- 获取用户的任务权限 -->
+	<select id="getByPositionId" parameterType="String" resultMap="quartzTaskMap">
+		SELECT 
+		<include refid="selectId" />
+		FROM QUARTZ_TASK WHERE STATUS='T' AND ID in(SELECT QUARTZ_TASK_ID FROM SYS_AUTH_ROLE_QUARTZ 
+		WHERE ROLE_ID in(SELECT ROLE_ID FROM SYS_AUTH_POSITION_ROLE WHERE POSITION_ID=#{positionId}))
+		ORDER BY QUARTZ_GROUP_ID, DISP_INX ASC
+	</select>
+	
+	<!-- 角色与任务之间的关联-->
+	<select id="getByRoleId" parameterType="String" resultMap="quartzTaskMap">
+		select
+		<include refid="selectId" />
+		from QUARTZ_TASK where STATUS='T' AND id in (SELECT QUARTZ_TASK_ID FROM SYS_AUTH_ROLE_QUARTZ where ROLE_ID=#{roleId})
+		ORDER BY QUARTZ_GROUP_ID, DISP_INX ASC
+	</select>
+	<insert id="addRoleQuartz" parameterType="RoleQuartz">
+		insert into SYS_AUTH_ROLE_QUARTZ(ID, ROLE_ID, QUARTZ_TASK_ID) values (UUID(), #{roleId}, #{quartzTaskId})
+	</insert>
+	<delete id="deleteRoleQuartz" parameterType="String">
+		delete from SYS_AUTH_ROLE_QUARTZ where ROLE_ID=#{roleId}
+	</delete>
+
+	<update id="update" parameterType="QuartzTask">
+		update QUARTZ_TASK
+		<set>
+			<if test="quartzGroup != null and quartzGroup != ''">
+				QUARTZ_GROUP_ID=#{quartzGroup.id},
+			</if>
+			MODIFY_TIME=SYSDATE(),
+			<if test="taskKey != null and taskKey != ''">
+				TASK_KEY=#{taskKey},
+			</if>
+			<if test="beanClass != null and beanClass != ''">
+				BEAN_CLASS=#{beanClass},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="methodName != null and methodName != ''">
+				METHOD_NAME=#{methodName},
+			</if>
+			<if test="taskName != null and taskName != ''">
+				TASK_NAME=#{taskName},
+			</if>
+			<if test="springId != null and springId != ''">
+				SPRING_ID=#{springId},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+		</set>
+		WHERE ID=#{id}
+	</update>
+</mapper>

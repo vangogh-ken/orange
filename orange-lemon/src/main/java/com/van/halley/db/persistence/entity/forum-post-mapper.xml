@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="forumpost">
+	<sql id="selectId">
+		ID AS id,
+		CONTENT AS content,
+		CREATE_TIME AS createTime,
+		MODIFY_TIME AS modifyTime,
+		PRIORITY AS priority,
+		FORUM_TOPIC_ID AS forumTopicId,
+		USER_ID
+	</sql>
+	
+	<resultMap id="forumPostResult" type="com.van.halley.db.persistence.entity.ForumPost">
+        <id property="id" column="ID" />
+        <result property="content" column="CONTENT" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="priority" column="PRIORITY" />
+        <result property="forumTopicId" column="FORUM_TOPIC_ID" />
+        <association property="user" column="USER_ID" select="user.getById"></association>
+    </resultMap>
+    
+	<select id="query" parameterType="java.util.HashMap" resultMap="forumPostResult">
+		select
+		<include refid="selectId" />
+		from OUT_FORUM_POST
+		<where>
+			<if test="t.id != null and t.id != ''">
+				ID = #{t.id}
+			</if>
+			<if test="t.forumTopic != null and t.forumTopic != ''">
+				and FORUM_TOPIC_ID = #{t.forumTopicId}
+			</if>
+			<if test="t.content != null and t.content != ''">
+				and CONTENT = #{t.content}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.user != null and t.user != ''">
+				and USER_ID = #{t.user.id}
+			</if>
+			<if test="t.priority != null and t.priority != ''">
+				and PRIORITY = #{t.priority}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+	<select id="queryForList" parameterType="ForumPost"
+		resultMap="forumPostResult">
+		select
+		<include refid="selectId" />
+		from OUT_FORUM_POST
+		<where>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="forumTopic != null and forumTopic != ''">
+				and FORUM_TOPIC_ID = #{forumTopicId}
+			</if>
+			<if test="content != null and content != ''">
+				and CONTENT = #{content}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="user != null and user != ''">
+				and USER_ID = #{user.id}
+			</if>
+			<if test="priority != null and priority != ''">
+				and PRIORITY = #{priority}
+			</if>
+		</where>
+	</select>
+	<select id="getAll" resultMap="forumPostResult">
+		select
+		<include refid="selectId" />
+		from OUT_FORUM_POST
+	</select>
+	<select id="count" parameterType="ForumPost" resultType="int">
+		select count(0) from OUT_FORUM_POST
+		<where>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="forumTopic != null and.forumTopic != ''">
+				and FORUM_TOPIC_ID = #{forumTopicId}
+			</if>
+			<if test="content != null and content != ''">
+				and CONTENT = #{content}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="user != null and user != ''">
+				and USER_ID = #{user.id}
+			</if>
+			<if test="priority != null and priority != ''">
+				and PRIORITY = #{priority}
+			</if>
+		</where>
+	</select>
+	<insert id="add" parameterType="ForumPost"> 
+	insert into OUT_FORUM_POST( ID, FORUM_TOPIC_ID, CONTENT, CREATE_TIME, MODIFY_TIME, 
+	USER_ID, PRIORITY )values 
+	(UUID(), #{forumTopicId}, #{content}, #{createTime}, #{modifyTime},
+		#{user.id}, #{priority} )
+	</insert>
+	<delete id="deleteById" parameterType="String"> 
+		delete from OUT_FORUM_POST where id=#{id}
+	</delete>
+	<select id="getById" parameterType="String" resultMap="forumPostResult">
+		select
+		<include refid="selectId" />
+		from OUT_FORUM_POST where id=#{id}
+	</select>
+	
+	<select id="getByForumTopicId" parameterType="String" resultMap="forumPostResult">
+		select
+		<include refid="selectId" />
+		from OUT_FORUM_POST where FORUM_TOPIC_ID = #{forumTopicId} ORDER BY CREATE_TIME DESC
+	</select>
+	
+	<update id="update" parameterType="ForumPost">
+		update OUT_FORUM_POST
+		<set>
+			<if test="id != null and id != ''">
+				id=#{id},
+			</if>
+			<if test="forumTopic != null and forumTopic != ''">
+				FORUM_TOPIC_ID=#{forumTopicId},
+			</if>
+			<if test="content != null and content != ''">
+				CONTENT=#{content},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="user != null and user != ''">
+				USER_ID=#{user.id},
+			</if>
+			<if test="priority != null and priority != ''">
+				PRIORITY=#{priority}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="loginlog">
+   <!-- 以下与实体类的中字段一致 -->
+   <sql id="selectId">
+       ID AS id,
+       USER_ID,
+       LOGIN_TIME AS loginTime,
+       LOGOUT_TIME AS logoutTime,
+       IP AS ipAddress
+   </sql>
+   
+   	<resultMap id="loginLogResult" type="com.van.halley.db.persistence.entity.LoginLog">
+        <id property="id" column="ID" />
+        <result property="loginTime" column="LOGIN_TIME" />
+        <result property="logoutTime" column="LOGOUT_TIME" />
+        <result property="ipAddress" column="IP" />
+        <association property="user" column="USER_ID" select="user.getById"></association>
+    </resultMap>
+    
+   <!-- 查询 -->
+   <select id="query" parameterType="LoginLog" resultMap="loginLogResult">
+   	   select 
+			<include refid="selectId" />
+ 		from SYS_INFO_LOG_LOGIN
+   	   <where>
+   	   	  <if test="t.ipAddress != null and  t.ipAddress != '' ">
+	        IP = #{t.ipAddress}
+	       </if>
+   	       <if test="t.user != null and  t.user != '' ">
+	        and USER_ID = #{t.user.id}
+	       </if>
+	       <if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+   	   </where>
+   	  
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+   </select>
+   
+   <!-- 总页数 -->
+   <select id="count" resultType="int" parameterType="LoginLog">
+   	   select count(0) from SYS_INFO_LOG_LOGIN
+   </select>
+   
+   <select id="getById" parameterType="String" resultType="LoginLog">
+		select
+		<include refid="selectId" />
+		from SYS_INFO_LOG_LOGIN where ID=#{ID}
+	</select>
+   
+   <!-- 新增用户登陆记录 -->
+   <insert id="add" parameterType="LoginLog">
+     insert into SYS_INFO_LOG_LOGIN(ID, USER_ID, IP)values(
+     <if test="id != null and id != '' ">
+			#{id},
+		</if>
+
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{user.id},
+		#{ipAddress}
+		)
+   </insert>
+   
+   <update id="update" parameterType="LoginLog">
+		update SYS_INFO_LOG_LOGIN
+		<set>
+		<if test="user != null and user != ''">
+				USER_ID=#{user.id},
+		  </if>
+		  <if test="ipAddress != null and ipAddress != ''">
+				IP=#{ipAddress},
+		  </if>
+		  <if test="loginTime != null and loginTime != ''">
+				LOGIN_TIME=#{loginTime},
+		  </if>
+		  <if test="logoutTime != null and logoutTime != ''">
+				LOGOUT_TIME=#{logoutTime}
+		  </if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

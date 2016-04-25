@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mailsend">
+	<sql id="selectId">
+		CONTENT AS content,
+		ID AS id,
+		CREATE_TIME AS createTime,
+		FLAG AS flag,
+		STATUS AS status,
+		SUBJECT AS subject,
+		ADDR_FROM AS addressFrom,
+		USER_ID AS userId,
+		ADDR_TO AS addressTo,
+		SEND_TIME AS sendTime,
+		ADDR_CC AS addressCopy,
+		ATTACHEMENT AS attachment
+	</sql>
+	<select id="query" parameterType="java.util.HashMap" resultType="MailSend">
+		select
+		<include refid="selectId" />
+		from OUT_MAIL_SEND
+		<where>
+			<if test="t.content != null and t.content != ''">
+				and CONTENT = #{t.content}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.flag != null and t.flag != ''">
+				and FLAG = #{t.flag}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.subject != null and t.subject != ''">
+				and SUBJECT = #{t.subject}
+			</if>
+			<if test="t.addressFrom != null and t.addressFrom != ''">
+				and ADDR_FROM = #{t.addressFrom}
+			</if>
+			<if test="t.userId != null and t.userId != ''">
+				and USER_ID = #{t.userId}
+			</if>
+			<if test="t.addressTo != null and t.addressTo != ''">
+				and ADDR_TO = #{t.addressTo}
+			</if>
+			<if test="t.sendTime != null and t.sendTime != ''">
+				and SEND_TIME = #{t.sendTime}
+			</if>
+			<if test="t.addressCopy != null and t.addressCopy != ''">
+				and ADDR_CC = #{t.addressCopy}
+			</if>
+			<if test="t.attachment != null and t.attachment != ''">
+				and ATTACHEMENT = #{t.attachment}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="MailSend" resultType="MailSend">
+		select
+		<include refid="selectId" />
+		from OUT_MAIL_SEND
+		<where>
+			<if test="content != null and content != ''">
+				and CONTENT = #{content}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="flag != null and flag != ''">
+				and FLAG = #{flag}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="subject != null and subject != ''">
+				and SUBJECT = #{subject}
+			</if>
+			<if test="addressFrom != null and addressFrom != ''">
+				and ADDR_FROM = #{addressFrom}
+			</if>
+			<if test="userId != null and userId != ''">
+				and USER_ID = #{userId}
+			</if>
+			<if test="addressTo != null and addressTo != ''">
+				and ADDR_TO = #{addressTo}
+			</if>
+			<if test="sendTime != null and sendTime != ''">
+				and SEND_TIME = #{sendTime}
+			</if>
+			<if test="addressCopy != null and addressCopy != ''">
+				and ADDR_CC = #{addressCopy}
+			</if>
+			<if test="attachment != null and attachment != ''">
+				and ATTACHEMENT = #{attachment}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="MailSend">
+		select
+		<include refid="selectId" />
+		from OUT_MAIL_SEND
+	</select>
+	<select id="count" parameterType="MailSend" resultType="int">
+		select count(0) from OUT_MAIL_SEND
+		<where>
+			<if test="t.content != null and t.content != ''">
+				and CONTENT = #{t.content}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.flag != null and t.flag != ''">
+				and FLAG = #{t.flag}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.subject != null and t.subject != ''">
+				and SUBJECT = #{t.subject}
+			</if>
+			<if test="t.addressFrom != null and t.addressFrom != ''">
+				and ADDR_FROM = #{t.addressFrom}
+			</if>
+			<if test="t.userId != null and t.userId != ''">
+				and USER_ID = #{t.userId}
+			</if>
+			<if test="t.addressTo != null and t.addressTo != ''">
+				and ADDR_TO = #{t.addressTo}
+			</if>
+			<if test="t.sendTime != null and t.sendTime != ''">
+				and SEND_TIME = #{t.sendTime}
+			</if>
+			<if test="t.addressCopy != null and t.addressCopy != ''">
+				and ADDR_CC = #{t.addressCopy}
+			</if>
+			<if test="t.attachment != null and t.attachment != ''">
+				and ATTACHEMENT = #{t.attachment}
+			</if>
+		</where>
+	</select>
+	<insert id="add" parameterType="MailSend"> insert into OUT_MAIL_SEND(
+		CONTENT, ID, CREATE_TIME, FLAG, STATUS, SUBJECT, ADDR_FROM, USER_ID,
+		ADDR_TO, SEND_TIME, ADDR_CC, ATTACHEMENT )values ( #{content}, UUID(),
+		#{createTime}, #{flag}, #{status}, #{subject}, #{addressFrom},
+		#{userId}, #{addressTo}, #{sendTime}, #{addressCopy}, #{attachment} )
+	</insert>
+	<delete id="deleteById" parameterType="String">
+		delete from OUT_MAIL_SEND where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="MailSend">
+		select
+		<include refid="selectId" />
+		from OUT_MAIL_SEND where id=#{id}
+	</select>
+
+	<update id="update" parameterType="MailSend">
+		update OUT_MAIL_SEND
+		<set>
+			<if test="content != null and content != ''">
+				CONTENT=#{content},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="flag != null and flag != ''">
+				FLAG=#{flag},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="subject != null and subject != ''">
+				SUBJECT=#{subject},
+			</if>
+			<if test="addressFrom != null and addressFrom != ''">
+				ADDR_FROM=#{addressFrom},
+			</if>
+			<if test="userId != null and userId != ''">
+				USER_ID=#{userId},
+			</if>
+			<if test="addressTo != null and addressTo != ''">
+				ADDR_TO=#{addressTo},
+			</if>
+			<if test="sendTime != null and sendTime != ''">
+				SEND_TIME=#{sendTime},
+			</if>
+			<if test="addressCopy != null and addressCopy != ''">
+				ADDR_CC=#{addressCopy},
+			</if>
+			<if test="attachment != null and attachment != ''">
+				ATTACHEMENT=#{attachment},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

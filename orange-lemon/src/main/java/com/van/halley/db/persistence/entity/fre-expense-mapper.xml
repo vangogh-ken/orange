@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freightexpense">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		EXCHANGE_RATE AS exchangeRate,
+		COUNT_UNIT AS countUnit,
+		CURRENCY AS currency,
+		ID AS id,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		INCOME_OR_EXPENSE AS incomeOrExpense,
+		STATUS AS status,
+		EXPENSE_NUMBER AS expenseNumber,
+		PREDICT_COUNT AS predictCount,
+		ACTUAL_COUNT AS actualCount,
+		DESCN AS descn,
+		PRICE AS price,
+		ACTUAL AS actual,
+		
+		FRE_EXPENSE_TYPE_ID,
+		FAS_INVOICE_TYPE_ID,
+		FRE_ORDER_ID,
+		FRE_PRICE_ID,
+		FRE_PART_ID_A,
+		FRE_PART_ID_B,
+		FRE_ACTION_ID,
+		FRE_STATEMENT_ID,
+		
+		USER_ID,
+		ORG_ENTITY_ID
+	</sql>
+	
+	<resultMap id="freightExpenseMap" type="com.van.halley.db.persistence.entity.FreightExpense">
+        <id property="id" column="ID" />
+        <result property="incomeOrExpense" column="INCOME_OR_EXPENSE" />
+        <result property="price" column="PRICE" />
+        <result property="actual" column="ACTUAL" />
+        
+        <result property="countUnit" column="COUNT_UNIT" />
+        <result property="currency" column="CURRENCY" />
+        <result property="exchangeRate" column="EXCHANGE_RATE" />
+        <result property="predictCount" column="PREDICT_COUNT" />
+        <result property="actualCount" column="ACTUAL_COUNT" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="freightExpenseType" column="FRE_EXPENSE_TYPE_ID" select="freightexpensetype.getById" ></association>
+        <association property="fasInvoiceType" column="FAS_INVOICE_TYPE_ID" select="fasinvoicetype.getById" ></association>
+        <association property="freightPartA" column="FRE_PART_ID_A" select="freightpart.getById" ></association>
+        <association property="freightPartB" column="FRE_PART_ID_B" select="freightpart.getById" ></association>
+        <association property="freightPrice" column="FRE_PRICE_ID" select="freightprice.getById" ></association>
+        <association property="freightOrder" column="FRE_ORDER_ID" select="freightorder.getById" ></association>
+        <association property="freightAction" column="FRE_ACTION_ID" select="freightaction.getById" ></association>
+        <association property="freightStatement" column="FRE_STATEMENT_ID" select="freightstatement.getById" ></association>
+        <association property="creator" column="USER_ID" select="user.getById" ></association>
+        <association property="orgEntity" column="ORG_ENTITY_ID" select="orgentity.getById" ></association>
+        
+        <collection property="freightOrderBoxs" column="ID" select="freightorderbox.getByFreightExpenseId"></collection>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" resultMap="freightExpenseMap" useCache="false">
+		select
+		<include refid="selectId" />
+		from FRE_EXPENSE
+		<where>
+			<if test="t.freightPartA != null and t.freightPartA != ''">
+				and FRE_PART_ID_A = #{t.freightPartA.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.freightPartB != null and t.freightPartB != ''">
+				and FRE_PART_ID_B = #{t.freightPartB.id}
+			</if>
+			<if test="t.exchangeRate != null and t.exchangeRate != ''">
+				and EXCHANGE_RATE = #{t.exchangeRate}
+			</if>
+			<if test="t.countUnit != null and t.countUnit != ''">
+				and COUNT_UNIT = #{t.countUnit}
+			</if>
+			<if test="t.currency != null and t.currency != ''">
+				and CURRENCY = #{t.currency}
+			</if>
+			<if test="t.creator != null and t.creator != ''">
+				and USER_ID = #{t.creator.id}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.incomeOrExpense != null and t.incomeOrExpense != ''">
+				and INCOME_OR_EXPENSE = #{t.incomeOrExpense}
+			</if>
+			<if test="t.freightExpenseType != null and t.freightExpenseType != ''">
+				and FRE_EXPENSE_TYPE_ID = #{t.freightExpenseType.id}
+			</if>
+			<if test="t.freightStatement != null and t.freightStatement != ''">
+				and FRE_STATEMENT_ID = #{t.freightStatement.id}
+			</if>
+			<if test="t.orgEntity != null and t.orgEntity != ''">
+				and ORG_ENTITY_ID = #{t.orgEntity.id}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.expenseNumber != null and t.expenseNumber != ''">
+				and EXPENSE_NUMBER = #{t.expenseNumber}
+			</if>
+			<if test="t.predictCount != null and t.predictCount != ''">
+				and PREDICT_COUNT = #{t.predictCount}
+			</if>
+			<if test="t.actualCount != null and t.actualCount != ''">
+				and ACTUAL_COUNT = #{t.actualCount}
+			</if>
+			<if test="t.fasInvoiceType != null and t.fasInvoiceType != ''">
+				and FAS_INVOICE_TYPE_ID = #{t.fasInvoiceType.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.freightAction != null and t.freightAction != ''">
+				and FRE_ACTION_ID = #{t.freightAction.id}
+			</if>
+			<if test="t.freightOrder != null and t.freightOrder != ''">
+				and FRE_ORDER_ID = #{t.freightOrder.id}
+			</if>
+			<if test="t.price != null and t.price != ''">
+				and PRICE = #{t.price}
+			</if>
+			<if test="t.actual != null and t.actual != ''">
+				and ACTUAL = #{t.actual}
+			</if>
+			<if test="t.freightPrice != null and t.freightPrice != ''">
+				and FRE_PRICE_ID = #{t.freightPrice.id}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FreightExpense"
+		resultMap="freightExpenseMap">
+		select
+		<include refid="selectId" />
+		from FRE_EXPENSE
+		<where>
+			<if test="freightPartA != null and freightPartA != ''">
+				and FRE_PART_ID_A = #{freightPartA.id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="freightPartB != null and freightPartB != ''">
+				and FRE_PART_ID_B = #{freightPartB.id}
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				and EXCHANGE_RATE = #{exchangeRate}
+			</if>
+			<if test="countUnit != null and countUnit != ''">
+				and COUNT_UNIT = #{countUnit}
+			</if>
+			<if test="currency != null and currency != ''">
+				and CURRENCY = #{currency}
+			</if>
+			<if test="creator != null and creator != ''">
+				and USER_ID = #{creator.id}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="incomeOrExpense != null and incomeOrExpense != ''">
+				and INCOME_OR_EXPENSE = #{incomeOrExpense}
+			</if>
+			<if test="freightExpenseType != null and freightExpenseType != ''">
+				and FRE_EXPENSE_TYPE_ID = #{freightExpenseType.id}
+			</if>
+			<if test="freightStatement != null and freightStatement != ''">
+				and FRE_STATEMENT_ID = #{freightStatement.id}
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				and ORG_ENTITY_ID = #{orgEntity.id}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="expenseNumber != null and expenseNumber != ''">
+				and EXPENSE_NUMBER = #{expenseNumber}
+			</if>
+			<if test="predictCount != null and predictCount != ''">
+				and PREDICT_COUNT = #{predictCount}
+			</if>
+			<if test="actualCount != null and actualCount != ''">
+				and ACTUAL_COUNT = #{actualCount}
+			</if>
+			<if test="fasInvoiceType != null and fasInvoiceType != ''">
+				and FAS_INVOICE_TYPE_ID = #{fasInvoiceType.id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="freightAction != null and freightAction != ''">
+				and FRE_ACTION_ID = #{freightAction.id}
+			</if>
+			<if test="freightOrder != null and freightOrder != ''">
+				and FRE_ORDER_ID = #{freightOrder.id}
+			</if>
+			<if test="price != null and price != ''">
+				and PRICE = #{price}
+			</if>
+			<if test="actual != null and actual != ''">
+				and ACTUAL = #{actual}
+			</if>
+			<if test="freightPrice != null and freightPrice != ''">
+				and FRE_PRICE_ID = #{freightPrice.id}
+			</if>
+		</where>
+		
+		ORDER BY INCOME_OR_EXPENSE DESC, FRE_PART_ID_B, FRE_EXPENSE_TYPE_ID
+	</select>
+
+	<select id="getAll" resultMap="freightExpenseMap">
+		select
+		<include refid="selectId" />
+		from FRE_EXPENSE ORDER BY FRE_ORDER_ID, INCOME_OR_EXPENSE, FRE_PART_ID_B, FRE_EXPENSE_TYPE_ID
+	</select>
+
+	<select id="count" parameterType="FreightExpense" resultType="int">
+		select count(0) from FRE_EXPENSE
+		<where>
+			<if test="freightPartA != null and freightPartA != ''">
+				and FRE_PART_ID_A = #{freightPartA.id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="freightPartB != null and freightPartB != ''">
+				and FRE_PART_ID_B = #{freightPartB.id}
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				and EXCHANGE_RATE = #{exchangeRate}
+			</if>
+			<if test="countUnit != null and countUnit != ''">
+				and COUNT_UNIT = #{countUnit}
+			</if>
+			<if test="currency != null and currency != ''">
+				and CURRENCY = #{currency}
+			</if>
+			<if test="creator != null and creator != ''">
+				and USER_ID = #{creator.id}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="incomeOrExpense != null and incomeOrExpense != ''">
+				and INCOME_OR_EXPENSE = #{incomeOrExpense}
+			</if>
+			<if test="freightExpenseType != null and freightExpenseType != ''">
+				and FRE_EXPENSE_TYPE_ID = #{freightExpenseType.id}
+			</if>
+			<if test="freightStatement != null and freightStatement != ''">
+				and FRE_STATEMENT_ID = #{freightStatement.id}
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				and ORG_ENTITY_ID = #{orgEntity.id}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="expenseNumber != null and expenseNumber != ''">
+				and EXPENSE_NUMBER = #{expenseNumber}
+			</if>
+			<if test="predictCount != null and predictCount != ''">
+				and PREDICT_COUNT = #{predictCount}
+			</if>
+			<if test="actualCount != null and actualCount != ''">
+				and ACTUAL_COUNT = #{actualCount}
+			</if>
+			<if test="fasInvoiceType != null and fasInvoiceType != ''">
+				and FAS_INVOICE_TYPE_ID = #{fasInvoiceType.id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="freightAction != null and freightAction != ''">
+				and FRE_ACTION_ID = #{freightAction.id}
+			</if>
+			<if test="freightOrder != null and freightOrder != ''">
+				and FRE_ORDER_ID = #{freightOrder.id}
+			</if>
+			<if test="price != null and price != ''">
+				and PRICE = #{price}
+			</if>
+			<if test="actual != null and actual != ''">
+				and ACTUAL = #{actual}
+			</if>
+			<if test="freightPrice != null and freightPrice != ''">
+				and FRE_PRICE_ID = #{freightPrice.id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FreightExpense">
+		insert into FRE_EXPENSE( FRE_PART_ID_A, CREATE_TIME, FRE_PART_ID_B,
+		EXCHANGE_RATE, COUNT_UNIT, CURRENCY, USER_ID, ID, MODIFY_TIME,
+		DISP_INX, INCOME_OR_EXPENSE, FRE_EXPENSE_TYPE_ID, FRE_STATEMENT_ID,
+		ORG_ENTITY_ID, STATUS, EXPENSE_NUMBER, PREDICT_COUNT, ACTUAL_COUNT,
+		FAS_INVOICE_TYPE_ID, DESCN, FRE_ACTION_ID,
+		FRE_ORDER_ID, PRICE, ACTUAL, FRE_PRICE_ID )values ( #{freightPartA.id},
+		#{createTime}, #{freightPartB.id}, #{exchangeRate}, #{countUnit},
+		#{currency}, #{creator.id},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{modifyTime},
+		#{displayIndex},
+		#{incomeOrExpense},
+		#{freightExpenseType.id},
+		#{freightStatement.id},
+		#{orgEntity.id},
+		#{status},
+		#{expenseNumber},
+		#{predictCount},
+		#{actualCount},
+		#{fasInvoiceType.id},
+		#{descn},
+		#{freightAction.id},
+		#{freightOrder.id},
+		#{price},
+		#{actual},
+		#{freightPrice.id}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FRE_EXPENSE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="freightExpenseMap">
+		select
+		<include refid="selectId" />
+		from FRE_EXPENSE where id=#{id}
+	</select>
+	
+	<select id="getInternalExpense" parameterType="FreightExpense" resultMap="freightExpenseMap">
+		select
+		<include refid="selectId" />
+		from FRE_EXPENSE 
+		WHERE 
+		FRE_EXPENSE_TYPE_ID=#{freightExpenseType.id} 
+		AND FRE_PART_ID_A = #{freightPartA.id} 
+		AND FRE_PART_ID_B = #{freightPartB.id} 
+		AND FRE_ACTION_ID 
+		IN(SELECT ID FROM FRE_ACTION WHERE FRE_MAINTAIN_ID 
+		IN(SELECT ID FROM FRE_MAINTAIN WHERE FRE_ORDER_ID=#{freightOrder.id}))
+		AND FRE_ORDER_ID IS NULL
+	</select>
+	
+	<!-- 获取具体动作的普通费用 -->
+	<select id="getNormalByFreightActionId" parameterType="String" resultMap="freightExpenseMap">
+		select
+		<include refid="selectId" />
+		from FRE_EXPENSE 
+		WHERE 
+		FRE_ACTION_ID = #{freightActionId}
+		AND FRE_ORDER_ID=(SELECT FRE_ORDER_ID FROM FRE_MAINTAIN WHERE ID=(SELECT FRE_MAINTAIN_ID FROM FRE_ACTION WHERE ID=#{freightActionId}))
+	</select>
+	
+	<!-- 获取具体动作的内部费用 -->
+	<select id="getInternalByFreightActionId" parameterType="String" resultMap="freightExpenseMap">
+		select
+		<include refid="selectId" />
+		from FRE_EXPENSE 
+		WHERE 
+		FRE_ACTION_ID =#{freightActionId}
+		AND FRE_ORDER_ID IS NULL
+	</select>
+	
+	<!-- 删除具体动作的内部费用 -->
+	<select id="deleteInternalByFreightActionId" parameterType="String" resultMap="freightExpenseMap">
+		DELETE
+		from FRE_EXPENSE 
+		WHERE 
+		FRE_ACTION_ID =#{freightActionId}
+		AND FRE_ORDER_ID IS NULL
+	</select>
+	
+	<select id="getNormalExpense" parameterType="FreightExpense" resultMap="freightExpenseMap">
+		select
+		<include refid="selectId" />
+		from FRE_EXPENSE
+		WHERE 
+		FRE_EXPENSE_TYPE_ID=#{freightExpenseType.id} 
+		AND FRE_PART_ID_A = #{freightPartA.id}
+		AND FRE_PART_ID_B = #{freightPartB.id} 
+		AND FRE_ORDER_ID=#{freightOrder.id}
+	</select>
+	
+	<select id="getByFreightOrderId" parameterType="String" resultMap="freightExpenseMap" flushCache="true" >
+		select
+		<include refid="selectId" />
+		from FRE_EXPENSE 
+		WHERE FRE_ORDER_ID=#{freightOrderId} ORDER BY EXPENSE_NUMBER DESC
+	</select>
+	
+	<select id="getByFreightStatementId" parameterType="String" resultMap="freightExpenseMap" flushCache="true">
+		select
+		<include refid="selectId" />
+		from FRE_EXPENSE 
+		WHERE FRE_STATEMENT_ID=#{freightStatementId} ORDER BY EXPENSE_NUMBER ASC
+	</select>
+
+	<update id="update" parameterType="FreightExpense" >
+		update FRE_EXPENSE
+		<set>
+			<if test="freightPartA != null and freightPartA != ''">
+				FRE_PART_ID_A=#{freightPartA.id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="freightPartB != null and freightPartB != ''">
+				FRE_PART_ID_B=#{freightPartB.id},
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				EXCHANGE_RATE=#{exchangeRate},
+			</if>
+			<if test="countUnit != null and countUnit != ''">
+				COUNT_UNIT=#{countUnit},
+			</if>
+			<if test="currency != null and currency != ''">
+				CURRENCY=#{currency},
+			</if>
+			<if test="creator != null and creator != ''">
+				USER_ID=#{creator.id},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="incomeOrExpense != null and incomeOrExpense != ''">
+				INCOME_OR_EXPENSE=#{incomeOrExpense},
+			</if>
+			<if test="freightExpenseType != null and freightExpenseType != ''">
+				FRE_EXPENSE_TYPE_ID=#{freightExpenseType.id},
+			</if>
+			<if test="freightStatement != null and freightStatement != ''">
+				FRE_STATEMENT_ID=#{freightStatement.id},
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				ORG_ENTITY_ID=#{orgEntity.id},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="expenseNumber != null and expenseNumber != ''">
+				EXPENSE_NUMBER=#{expenseNumber},
+			</if>
+			<if test="predictCount != null and predictCount != ''">
+				PREDICT_COUNT=#{predictCount},
+			</if>
+			<if test="actualCount != null and actualCount != ''">
+				ACTUAL_COUNT=#{actualCount},
+			</if>
+			<if test="fasInvoiceType != null and fasInvoiceType != ''">
+				FAS_INVOICE_TYPE_ID=#{fasInvoiceType.id},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="freightAction != null and freightAction != ''">
+				FRE_ACTION_ID=#{freightAction.id},
+			</if>
+			<if test="freightOrder != null and freightOrder != ''">
+				FRE_ORDER_ID=#{freightOrder.id},
+			</if>
+			<if test="price != null and price != ''">
+				PRICE=#{price},
+			</if>
+			<if test="actual != null and actual != ''">
+				ACTUAL=#{actual},
+			</if>
+			<if test="freightPrice != null and freightPrice != ''">
+				FRE_PRICE_ID=#{freightPrice.id},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

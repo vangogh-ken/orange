@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reportparam">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		VCOLUMN AS vColumn,
+		STATUS AS status,
+		PARAM_COLUMN AS paramColumn,
+		STRING_VALUE AS stringValue,
+		REP_TEMPLATE_ID AS reportTemplateId,
+		DOUBLE_VALUE AS doubleValue,
+		CAN_SELECT AS canSelect,
+		VATTR_ID AS vAttrId,
+		VCLS_ID AS vClsId,
+		DESCN AS descn,
+		ID AS id,
+		VFILTER_ID AS vFilterId,
+		DEAULT_VALUE AS defaultValue,
+		REQUIRED AS required,
+		MODIFY_TIME AS modifyTime,
+		PARAM_NAME AS paramName,
+		DISP_INX AS displayIndex,
+		INT_VALUE AS intValue,
+		DATE_VALUE AS dateValue,
+		PARAM_TYPE AS paramType
+	</sql>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultType="ReportParam">
+		select
+		<include refid="selectId" />
+		from REP_PARAM
+		<where>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.vColumn != null and t.vColumn != ''">
+				and VCOLUMN = #{t.vColumn}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.paramColumn != null and t.paramColumn != ''">
+				and PARAM_COLUMN = #{t.paramColumn}
+			</if>
+			<if test="t.stringValue != null and t.stringValue != ''">
+				and STRING_VALUE = #{t.stringValue}
+			</if>
+			<if test="t.reportTemplateId != null and t.reportTemplateId != ''">
+				and REP_TEMPLATE_ID = #{t.reportTemplateId}
+			</if>
+			<if test="t.doubleValue != null and t.doubleValue != ''">
+				and DOUBLE_VALUE = #{t.doubleValue}
+			</if>
+			<if test="t.canSelect != null and t.canSelect != ''">
+				and CAN_SELECT = #{t.canSelect}
+			</if>
+			<if test="t.vAttrId != null and t.vAttrId != ''">
+				and VATTR_ID = #{t.vAttrId}
+			</if>
+			<if test="t.vClsId != null and t.vClsId != ''">
+				and VCLS_ID = #{t.vClsId}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.vFilterId != null and t.vFilterId != ''">
+				and VFILTER_ID = #{t.vFilterId}
+			</if>
+			<if test="t.defaultValue != null and t.defaultValue != ''">
+				and DEAULT_VALUE = #{t.defaultValue}
+			</if>
+			<if test="t.required != null and t.required != ''">
+				and REQUIRED = #{t.required}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.paramName != null and t.paramName != ''">
+				and PARAM_NAME = #{t.paramName}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.intValue != null and t.intValue != ''">
+				and INT_VALUE = #{t.intValue}
+			</if>
+			<if test="t.dateValue != null and t.dateValue != ''">
+				and DATE_VALUE = #{t.dateValue}
+			</if>
+			<if test="t.paramType != null and t.paramType != ''">
+				and PARAM_TYPE = #{t.paramType}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="ReportParam"
+		resultType="ReportParam">
+		select
+		<include refid="selectId" />
+		from REP_PARAM
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="vColumn != null and vColumn != ''">
+				and VCOLUMN = #{vColumn}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="paramColumn != null and paramColumn != ''">
+				and PARAM_COLUMN = #{paramColumn}
+			</if>
+			<if test="stringValue != null and stringValue != ''">
+				and STRING_VALUE = #{stringValue}
+			</if>
+			<if test="reportTemplateId != null and reportTemplateId != ''">
+				and REP_TEMPLATE_ID = #{reportTemplateId}
+			</if>
+			<if test="doubleValue != null and doubleValue != ''">
+				and DOUBLE_VALUE = #{doubleValue}
+			</if>
+			<if test="canSelect != null and canSelect != ''">
+				and CAN_SELECT = #{canSelect}
+			</if>
+			<if test="vAttrId != null and vAttrId != ''">
+				and VATTR_ID = #{vAttrId}
+			</if>
+			<if test="vClsId != null and vClsId != ''">
+				and VCLS_ID = #{vClsId}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="vFilterId != null and vFilterId != ''">
+				and VFILTER_ID = #{vFilterId}
+			</if>
+			<if test="defaultValue != null and defaultValue != ''">
+				and DEAULT_VALUE = #{defaultValue}
+			</if>
+			<if test="required != null and required != ''">
+				and REQUIRED = #{required}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="paramName != null and paramName != ''">
+				and PARAM_NAME = #{paramName}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="intValue != null and intValue != ''">
+				and INT_VALUE = #{intValue}
+			</if>
+			<if test="dateValue != null and dateValue != ''">
+				and DATE_VALUE = #{dateValue}
+			</if>
+			<if test="paramType != null and paramType != ''">
+				and PARAM_TYPE = #{paramType}
+			</if>
+		</where>
+			ORDER BY REP_TEMPLATE_ID, DISP_INX ASC
+	</select>
+
+	<select id="getAll" resultType="ReportParam">
+		select
+		<include refid="selectId" />
+		from REP_PARAM
+	</select>
+
+	<select id="count" parameterType="ReportParam" resultType="int">
+		select count(0) from REP_PARAM
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="vColumn != null and vColumn != ''">
+				and VCOLUMN = #{vColumn}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="paramColumn != null and paramColumn != ''">
+				and PARAM_COLUMN = #{paramColumn}
+			</if>
+			<if test="stringValue != null and stringValue != ''">
+				and STRING_VALUE = #{stringValue}
+			</if>
+			<if test="reportTemplateId != null and reportTemplateId != ''">
+				and REP_TEMPLATE_ID = #{reportTemplateId}
+			</if>
+			<if test="doubleValue != null and doubleValue != ''">
+				and DOUBLE_VALUE = #{doubleValue}
+			</if>
+			<if test="canSelect != null and canSelect != ''">
+				and CAN_SELECT = #{canSelect}
+			</if>
+			<if test="vAttrId != null and vAttrId != ''">
+				and VATTR_ID = #{vAttrId}
+			</if>
+			<if test="vClsId != null and vClsId != ''">
+				and VCLS_ID = #{vClsId}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="vFilterId != null and vFilterId != ''">
+				and VFILTER_ID = #{vFilterId}
+			</if>
+			<if test="defaultValue != null and defaultValue != ''">
+				and DEAULT_VALUE = #{defaultValue}
+			</if>
+			<if test="required != null and required != ''">
+				and REQUIRED = #{required}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="paramName != null and paramName != ''">
+				and PARAM_NAME = #{paramName}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="intValue != null and intValue != ''">
+				and INT_VALUE = #{intValue}
+			</if>
+			<if test="dateValue != null and dateValue != ''">
+				and DATE_VALUE = #{dateValue}
+			</if>
+			<if test="paramType != null and paramType != ''">
+				and PARAM_TYPE = #{paramType}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="ReportParam">
+		insert into REP_PARAM( CREATE_TIME, VCOLUMN, STATUS, PARAM_COLUMN,
+		STRING_VALUE, REP_TEMPLATE_ID, DOUBLE_VALUE, CAN_SELECT, VATTR_ID,
+		VCLS_ID, DESCN, ID, VFILTER_ID, DEAULT_VALUE, REQUIRED, MODIFY_TIME,
+		PARAM_NAME, DISP_INX, INT_VALUE, DATE_VALUE, PARAM_TYPE )values (
+		#{createTime}, #{vColumn}, #{status}, #{paramColumn}, #{stringValue},
+		#{reportTemplateId}, #{doubleValue}, #{canSelect}, #{vAttrId},
+		#{vClsId}, #{descn},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{vFilterId},
+		#{defaultValue},
+		#{required},
+		#{modifyTime},
+		#{paramName},
+		#{displayIndex},
+		#{intValue},
+		#{dateValue},
+		#{paramType}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from REP_PARAM where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="ReportParam">
+		select
+		<include refid="selectId" />
+		from REP_PARAM where id=#{id}
+	</select>
+	
+	<select id="getByReportTemplateId" parameterType="String" resultType="ReportParam">
+		select
+		<include refid="selectId" />
+		from REP_PARAM where REP_TEMPLATE_ID=#{reportTemplateId}
+	</select>
+
+	<update id="update" parameterType="ReportParam">
+		update REP_PARAM
+		<set>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="vColumn != null and vColumn != ''">
+				VCOLUMN=#{vColumn},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="paramColumn != null and paramColumn != ''">
+				PARAM_COLUMN=#{paramColumn},
+			</if>
+			<if test="stringValue != null and stringValue != ''">
+				STRING_VALUE=#{stringValue},
+			</if>
+			<if test="reportTemplateId != null and reportTemplateId != ''">
+				REP_TEMPLATE_ID=#{reportTemplateId},
+			</if>
+			<if test="doubleValue != null and doubleValue != ''">
+				DOUBLE_VALUE=#{doubleValue},
+			</if>
+			<if test="canSelect != null and canSelect != ''">
+				CAN_SELECT=#{canSelect},
+			</if>
+			<if test="vAttrId != null and vAttrId != ''">
+				VATTR_ID=#{vAttrId},
+			</if>
+			<if test="vClsId != null and vClsId != ''">
+				VCLS_ID=#{vClsId},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="vFilterId != null and vFilterId != ''">
+				VFILTER_ID=#{vFilterId},
+			</if>
+			<if test="defaultValue != null and defaultValue != ''">
+				DEAULT_VALUE=#{defaultValue},
+			</if>
+			<if test="required != null and required != ''">
+				REQUIRED=#{required},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="paramName != null and paramName != ''">
+				PARAM_NAME=#{paramName},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="intValue != null and intValue != ''">
+				INT_VALUE=#{intValue},
+			</if>
+			<if test="dateValue != null and dateValue != ''">
+				DATE_VALUE=#{dateValue},
+			</if>
+			<if test="paramType != null and paramType != ''">
+				PARAM_TYPE=#{paramType},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

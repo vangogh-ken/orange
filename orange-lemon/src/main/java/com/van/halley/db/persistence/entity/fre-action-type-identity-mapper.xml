@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freightactiontypeidentity">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		DESCN AS descn,
+		FRE_ACTION_TYPE_ID AS freightActionTypeId,
+		ID AS id,
+		CREATE_TIME AS createTime,
+		ASSIGNEE_USER_ID AS assigneeUserId,
+		STATUS AS status,
+		CANDIDATE_GROUP_ID AS candidateGroupId,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex
+	</sql>
+
+	<select id="query" parameterType="java.util.HashMap" resultType="FreightActionTypeIdentity" useCache="false">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_TYPE_IDENTITY
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.freightActionTypeId != null and t.freightActionTypeId != ''">
+				and FRE_ACTION_TYPE_ID = #{t.freightActionTypeId}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.assigneeUserId != null and t.assigneeUserId != ''">
+				and ASSIGNEE_USER_ID = #{t.assigneeUserId}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.candidateGroupId != null and t.candidateGroupId != ''">
+				and CANDIDATE_GROUP_ID = #{t.candidateGroupId}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FreightActionTypeIdentity"
+		resultType="FreightActionTypeIdentity">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_TYPE_IDENTITY
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="freightActionTypeId != null and freightActionTypeId != ''">
+				and FRE_ACTION_TYPE_ID = #{freightActionTypeId}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="assigneeUserId != null and assigneeUserId != ''">
+				and ASSIGNEE_USER_ID = #{assigneeUserId}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="candidateGroupId != null and candidateGroupId != ''">
+				and CANDIDATE_GROUP_ID = #{candidateGroupId}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="FreightActionTypeIdentity">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_TYPE_IDENTITY
+	</select>
+
+	<select id="count" parameterType="FreightActionTypeIdentity"
+		resultType="int">
+		select count(0) from FRE_ACTION_TYPE_IDENTITY
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.freightActionTypeId != null and t.freightActionTypeId != ''">
+				and FRE_ACTION_TYPE_ID = #{t.freightActionTypeId}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.assigneeUserId != null and t.assigneeUserId != ''">
+				and ASSIGNEE_USER_ID = #{t.assigneeUserId}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.candidateGroupId != null and t.candidateGroupId != ''">
+				and CANDIDATE_GROUP_ID = #{t.candidateGroupId}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FreightActionTypeIdentity">
+		insert into FRE_ACTION_TYPE_IDENTITY( DESCN, FRE_ACTION_TYPE_ID, ID,
+		CREATE_TIME, ASSIGNEE_USER_ID, STATUS, CANDIDATE_GROUP_ID,
+		MODIFY_TIME, DISP_INX )values ( #{descn}, #{freightActionTypeId},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{createTime},
+		#{assigneeUserId},
+		#{status},
+		#{candidateGroupId},
+		#{modifyTime},
+		#{displayIndex}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FRE_ACTION_TYPE_IDENTITY where id=#{id}
+	</delete>
+	
+	<delete id="deleteByFreightActionTypeId" parameterType="String">
+		delete from FRE_ACTION_TYPE_IDENTITY where FRE_ACTION_TYPE_ID=#{freightActionTypeId}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="FreightActionTypeIdentity">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_TYPE_IDENTITY where id=#{id}
+	</select>
+
+	<update id="update" parameterType="FreightActionTypeIdentity">
+		update FRE_ACTION_TYPE_IDENTITY
+		<set>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="freightActionTypeId != null and freightActionTypeId != ''">
+				FRE_ACTION_TYPE_ID=#{freightActionTypeId},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="assigneeUserId != null and assigneeUserId != ''">
+				ASSIGNEE_USER_ID=#{assigneeUserId},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="candidateGroupId != null and candidateGroupId != ''">
+				CANDIDATE_GROUP_ID=#{candidateGroupId},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

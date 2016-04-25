@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bpmconfigoperation">
+	<sql id="selectId">
+		ID AS id,
+		ENABLE AS enable,
+		COMMAND AS command,
+		TYPE_ID,
+		NODE_ID
+	</sql>
+	
+	<resultMap id="bpmConfigOperationResult" type="com.van.halley.db.persistence.entity.BpmConfigOperation">
+        <id property="id" column="ID" />
+        <result property="enable" column="ENABLE" />
+        <result property="command" column="COMMAND" />
+        
+        <association property="bpmOperationType" column="TYPE_ID" select="bpmoperationtype.getById" ></association>
+        <association property="bpmConfigNode" column="NODE_ID" select="bpmconfignode.getById" ></association>
+    </resultMap>
+	
+	<select id="query" parameterType="java.util.HashMap" resultMap="bpmConfigOperationResult">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_OPERATION
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			
+			<if test="t.enable != null and t.enable != ''">
+				and ENABLE = #{t.enable}
+			</if>
+			<if test="t.bpmConfigNode != null and t.bpmConfigNode != ''">
+				and NODE_ID = #{t.bpmConfigNode.id}
+			</if>
+			<if test="t.bpmOperationType != null and t.bpmOperationType != ''">
+				and TYPE_ID = #{t.bpmOperationType.id}
+			</if>
+			<if test="t.command != null and t.command != ''">
+				and COMMAND = #{t.command}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+	
+	<select id="queryForList" parameterType="BpmConfigOperation" resultMap="bpmConfigOperationResult">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_OPERATION
+		<where>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="bpmOperationType != null and bpmOperationType != ''">
+				and TYPE_ID = #{bpmOperationType.id}
+			</if>
+			<if test="enable != null and enable != ''">
+				and ENABLE = #{enable}
+			</if>
+			<if test="bpmConfigNode != null and bpmConfigNode != ''">
+				and NODE_ID = #{bpmConfigNode.id}
+			</if>
+			<if test="command != null and command != ''">
+				and COMMAND = #{command}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getAll" resultMap="bpmConfigOperationResult">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_OPERATION
+	</select>
+	
+	<select id="count" parameterType="BpmConfigOperation" resultType="int">
+		select count(0) from BPM_CONF_OPERATION
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.bpmOperationType != null and t.bpmOperationType != ''">
+				and TYPE_ID = #{t.bpmOperationType.id}
+			</if>
+			<if test="t.enable != null and t.enable != ''">
+				and ENABLE = #{t.enable}
+			</if>
+			<if test="t.bpmConfigNode != null and t.bpmConfigNode != ''">
+				and NODE_ID = #{t.bpmConfigNode.id}
+			</if>
+			<if test="t.command != null and t.command != ''">
+				and COMMAND = #{t.command}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="add" parameterType="BpmConfigOperation"> 
+		insert into BPM_CONF_OPERATION(ID, TYPE_ID, ENABLE, NODE_ID, COMMAND)values 
+		(UUID(), #{bpmOperationType.id}, #{enable},#{bpmConfigNode.id}, #{command})
+	</insert>
+	
+	<delete id="deleteById" parameterType="String"> delete from
+		BPM_CONF_OPERATION where id=#{id}
+	</delete>
+	
+	<select id="getById" parameterType="String" resultMap="bpmConfigOperationResult">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_OPERATION where id=#{id}
+	</select>
+	
+	<update id="update" parameterType="BpmConfigOperation">
+		update BPM_CONF_OPERATION
+		<set>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="bpmOperationType != null and bpmOperationType != ''">
+				TYPE_ID = #{bpmOperationType.id}
+			</if>
+			<if test="enable != null and enable != ''">
+				ENABLE = #{enable}
+			</if>
+			<if test="bpmConfigNode != null and bpmConfigNode != ''">
+				NODE_ID=#{bpmConfigNode.id},
+			</if>
+			<if test="command != null and command != ''">
+				COMMAND=#{command},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

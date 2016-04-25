@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+	<!-- 以下与实体类的中字段一致 -->
+	<sql id="selectId">
+		ID id,
+		USER_NAME AS userName,
+		PASSWORD AS password,
+		DISPLAY_NAME AS displayName,
+		REG_TIME AS regTime,
+		HIRE_TIME AS hireTime,
+		FIRE_TIME AS fireTime,
+		LEVEL AS level,
+		STATUS status,
+		POSITION_ID
+	</sql>
+	
+	<resultMap id="userResult" type="com.van.halley.db.persistence.entity.User">
+        <id property="id" column="ID" />
+        <result property="userName" column="USER_NAME" />
+        <result property="displayName" column="DISPLAY_NAME" />
+        <result property="password" column="PASSWORD" />
+        <result property="regTime" column="REG_TIME" />
+        <result property="hireTime" column="HIRE_TIME" />
+        <result property="fireTime" column="FIRE_TIME" />
+        
+        <result property="level" column="LEVEL" />
+        
+        <association property="position" column="POSITION_ID" select="position.getById" ></association>
+        <association property="userBase" column="ID" select="userbase.getByUserId" ></association>
+        
+        <collection property="roles" column="POSITION_ID" select="role.getRoleByPositionId"></collection>
+        <!--
+        <collection property="resources" column="ID" select="resource.getResourceByUserId"></collection>
+        -->
+    </resultMap>
+	
+	<select id="query" parameterType="java.util.HashMap" resultMap="userResult">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_USER
+		<where>
+			<if test="t.userName != null and t.userName != ''">
+				and USER_NAME like '%${t.userName}%'
+			</if>
+			<if test="t.displayName != null and t.displayName != ''">
+				and DISPLAY_NAME like '%${t.displayName}%'
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS=#{t.status}
+			</if>
+			<if test="t.position != null and t.position != ''">
+				AND POSITION_ID=#{t.position.id},
+			</if>
+			<if test="t.hireTime != null and t.hireTime != ''">
+				AND HIRE_TIME=#{t.hireTime}
+			</if>
+			<if test="t.fireTime != null and t.fireTime != ''">
+				AND FIRE_TIME=#{t.fireTime}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+
+	</select>
+	
+	<select id="queryForList" parameterType="User" resultMap="userResult">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_USER
+		<where>
+			<if test="userName != null and userName != ''">
+				and USER_NAME =#{t.userName}
+			</if>
+			<if test="displayName != null and displayName != ''">
+				and DISPLAY_NAME = #{displayName}
+			</if>
+			<if test="position != null and position != ''">
+				AND POSITION_ID=#{position.id},
+			</if>
+			<if test="hireTime != null and hireTime != ''">
+				AND HIRE_TIME=#{hireTime}
+			</if>
+			<if test="fireTime != null and fireTime != ''">
+				AND FIRE_TIME=#{fireTime}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getAll" resultMap="userResult">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_USER 
+		ORDER BY CONVERT( DISPLAY_NAME USING gbk ) COLLATE gbk_chinese_ci ASC
+	</select>
+	
+	<!-- 总记录数 -->
+	<select id="count" parameterType="User" resultType="int">
+		select count(0) from SYS_AUTH_USER
+		<where>
+			<if test="userName != null and userName != ''">
+				AND USER_NAME like '%${userName}%'
+			</if>
+			<if test="displayName != null and displayName != ''">
+				AND DISPLAY_NAME like '%${displayName}%'
+			</if>
+			<if test="hireTime != null and hireTime != ''">
+				AND HIRE_TIME=#{hireTime}
+			</if>
+			<if test="fireTime != null and fireTime != ''">
+				AND FIRE_TIME=#{fireTime}
+			</if>
+		</where>
+	</select>
+	<!-- 增加用户 -->
+	<insert id="add" parameterType="User">
+		INSERT INTO SYS_AUTH_USER(
+		ID, USER_NAME,PASSWORD,DISPLAY_NAME,STATUS,LEVEL, REG_TIME, HIRE_TIME, FIRE_TIME, POSITION_ID
+		)
+		values (
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{userName},#{password},#{displayName},#{status},#{level},#{regTime},#{hireTime},#{fireTime}, #{position.id}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from SYS_AUTH_USER where ID=#{ID}
+	</delete>
+	
+	<select id="getById" parameterType="String" resultMap="userResult">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_USER where ID=#{ID}
+	</select>
+	
+	<!-- 根据职位获取 -->
+	<select id="getByPositionId" parameterType="String" resultMap="userResult">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_USER where POSITION_ID=#{positionId}
+	</select>
+	<!-- 根据角色获取 -->
+	<select id="getByRoleId" parameterType="String" resultMap="userResult">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_USER where POSITION_ID IN(SELECT POSITION_ID FROM SYS_AUTH_POSITION_ROLE WHERE ROLE_ID=#{roleId})
+	</select>
+	
+	<select id="getUnderling" parameterType="String" resultMap="userResult">
+		select
+		<include refid="selectId" />
+		FROM SYS_AUTH_USER WHERE POSITION_ID IN(SELECT ID FROM SYS_AUTH_POSITION WHERE ORG_ENTITY_ID IN (SELECT ID FROM SYS_AUTH_ORG_ENTITY WHERE DUTY_USER_ID=#{userId}));
+	</select>
+	
+	<select id="getByOrgEntityId" parameterType="String" resultMap="userResult">
+		select
+		<include refid="selectId" />
+		FROM SYS_AUTH_USER WHERE POSITION_ID IN(SELECT ID FROM SYS_AUTH_POSITION WHERE ORG_ENTITY_ID=#{orgEntityId})
+	</select>
+	
+	<select id="getByDisplayName" parameterType="String" resultMap="userResult">
+		select 
+		<include refid="selectId" />
+		from SYS_AUTH_USER where DISPLAY_NAME=#{displayName}
+	</select>
+	
+	<!-- 动作执行委派-->
+	<select id="getActionAssignByFreightActionTypeId" parameterType="String" resultMap="userResult">
+		select 
+		<include refid="selectId" />
+		from SYS_AUTH_USER where ID IN (SELECT ASSIGNEE_USER_ID FROM FRE_ACTION_TYPE_IDENTITY WHERE FRE_ACTION_TYPE_ID=#{freightActionTypeId})
+	</select>
+	<insert id="addActionAssign" parameterType="FreightActionTypeIdentity" >
+		insert into FRE_ACTION_TYPE_IDENTITY(ID, FRE_ACTION_TYPE_ID, ASSIGNEE_USER_ID) values (UUID(), #{freightActionTypeId}, #{userId})
+	</insert>
+	<delete id="deleteActionAssign" parameterType="String" >
+		delete from FRE_ACTION_TYPE_IDENTITY where FRE_ACTION_TYPE_ID=#{freightActionTypeId}
+	</delete>
+	 
+	<!-- 获取组织机构内职位最高的 , 暂时用职级，应当用priority-->
+	<select id="getTopByOrgEntityId" parameterType="String" resultMap="userResult" flushCache="true">
+		<!--  
+		select
+		<include refid="selectId" />
+		FROM SYS_AUTH_USER WHERE POSITION_ID IN (SELECT ID FROM SYS_AUTH_POSITION WHERE ORG_ENTITY_ID=#{orgEntityId} AND 
+		GRADE = (SELECT MAX(GRADE) FROM SYS_AUTH_POSITION WHERE ORG_ENTITY_ID=#{orgEntityId})) 
+		AND STATUS='T'
+		-->
+		
+		select
+		<include refid="selectId" />
+		FROM SYS_AUTH_USER WHERE POSITION_ID IN (SELECT ID FROM SYS_AUTH_POSITION WHERE ORG_ENTITY_ID=#{orgEntityId} AND 
+		GRADE = 
+		(SELECT MAX(GRADE) FROM SYS_AUTH_POSITION AS P WHERE P.ORG_ENTITY_ID=#{orgEntityId} AND EXISTS (SELECT 1 FROM (SELECT POSITION_ID FROM SYS_AUTH_USER GROUP BY POSITION_ID HAVING COUNT(1) > 0) AS T WHERE T.POSITION_ID=P.ID))) 
+		AND STATUS='T'
+	</select>
+	<!-- 获取组织机构内职位相应职级的 -->
+	<select id="getNextByOrgEntityId" parameterType="java.util.HashMap" resultMap="userResult" flushCache="true">
+		select
+		<include refid="selectId" />
+		FROM SYS_AUTH_USER WHERE POSITION_ID IN (SELECT ID FROM SYS_AUTH_POSITION WHERE ORG_ENTITY_ID=#{orgEntityId} AND 
+		GRADE =#{grade}) 
+		AND STATUS='T'
+	</select>
+	
+	
+	<!-- 组织机构负责人之间的关联-->
+	<select id="getGafferByOrgEntityId" parameterType="String" resultMap="userResult" flushCache="true">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_USER where id in (SELECT USER_ID FROM  SYS_AUTH_ORG_ENTITY_IDENTITY where ORG_ENTITY_ID=#{orgEntityId})
+	</select>
+	<insert id="addGaffer" parameterType="OrgEntityIdentity" >
+		insert into SYS_AUTH_ORG_ENTITY_IDENTITY(ID, PRIORITY, ORG_ENTITY_ID, USER_ID) values (UUID(), #{priority}, #{orgEntityId}, #{userId})
+	</insert>
+	<delete id="deleteGaffer" parameterType="String" >
+		delete from SYS_AUTH_ORG_ENTITY_IDENTITY where ORG_ENTITY_ID=#{orgEntityId}
+	</delete>
+	
+	<!-- 获取流程节点权限 -->
+	<select id="getByBpmConfigNodeId" parameterType="String" resultMap="userResult" flushCache="true">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_USER where id in (SELECT AUTH_ID FROM BPM_CONF_AUTH where AUTH_TYPE='U' AND BPM_NODE_ID=#{bpmConfigNodeId})
+		ORDER BY DISPLAY_NAME ASC
+	</select>
+	 
+	 
+	<!-- 不能对同一张表进行update和select,因此就得修改SQL语句 -->
+	<update id="update" parameterType="User">
+		update SYS_AUTH_USER
+		<set>
+			<if test="userName != null and userName != ''">
+				USER_NAME=#{userName},
+			</if>
+			<if test="password != null and password != ''">
+				PASSWORD=#{password},
+			</if>
+			<if test="displayName != null and displayName != ''">
+				DISPLAY_NAME=#{displayName},
+			</if>
+			<if test="level != null and level != ''">
+				LEVEL=#{level},
+			</if>
+			<if test="regTime != null and regTime != ''">
+				REG_TIME=#{regTime},
+			</if>
+			<if test="hireTime != null and hireTime != ''">
+				HIRE_TIME=#{hireTime},
+			</if>
+			<if test="fireTime != null and fireTime != ''">
+				FIRE_TIME=#{fireTime},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="position != null and position != ''">
+				POSITION_ID=#{position.id},
+			</if>
+		</set>
+			where ID=#{id} 
+	</update>
+	
+	<!-- 验证用户登陆 -->
+	<select id="countUser" parameterType="User" resultType="int">
+	    select count(*) from SYS_AUTH_USER where 
+	    USER_NAME=#{userName} and PASSWORD=#{password}
+	</select>
+	
+	<!-- 根据用户名查出 -->
+	<select id="getByUserName" parameterType="String" resultMap="userResult">
+	  select 
+		<include refid="selectId" />
+	  from SYS_AUTH_USER where USER_NAME=#{userName}
+	</select>
+	<!-- 用于判断用户名是否重复  -->
+	<select id="countByUserName" parameterType="String" resultType="int">
+	  select count(*) from SYS_AUTH_USER where USER_NAME=#{userName}
+	</select>
+	
+	<!-- 用于判断用户名是否重复  -->
+	<select id="countByDisplayName" parameterType="String" resultType="int">
+	  select count(*) from SYS_AUTH_USER where DISPLAY_NAME=#{displayName}
+	</select>
+</mapper>

@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="crmcustomer">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		COUNTRY AS country,
+		CARGO_CONDITION AS cargoCondition,
+		ADDRESS AS address,
+		CITY AS city,
+		FOLLOW_TYPE AS followType,
+		CREDIT_GRADE AS creditGrade,
+		CONTACT_POSITION AS contactPosition,
+		CONTACT_PERSON AS contactPerson,
+		DESCN AS descn,
+		CUSTOMER_NAME AS customerName,
+		
+		CUSTOMER_Type AS customerType,
+		MODIFY_TIME AS modifyTime,
+		PROVINCE AS province,
+		CREATE_TIME AS createTime,
+		TRANSPORT_TYPE AS transportType,
+		ID AS id,
+		CONTACT_MAIL AS contactMail,
+		CONTACT_PHONE AS contactPhone,
+		CUSTOMER_GRADE AS customerGrade,
+		DISP_INX AS displayIndex,
+		STATUS AS status,
+		
+		USER_ID,
+		ORG_ENTITY_ID
+	</sql>
+	
+	<resultMap id="crmCustomerMap" type="com.van.halley.db.persistence.entity.CrmCustomer">
+        <id property="id" column="ID" />
+        <result property="customerType" column="CUSTOMER_Type" />
+        <result property="customerName" column="CUSTOMER_NAME" />
+        <result property="customerGrade" column="CUSTOMER_GRADE" />
+        <result property="creditGrade" column="CREDIT_GRADE" />
+        <result property="cargoCondition" column="CARGO_CONDITION" />
+        <result property="transportType" column="TRANSPORT_TYPE" />
+        
+        <result property="address" column="ADDRESS" />
+        <result property="country" column="COUNTRY" />
+        <result property="province" column="PROVINCE" />
+        <result property="city" column="CITY" />
+        
+        <result property="contactPerson" column="CONTACT_PERSON" />
+        <result property="contactPosition" column="CONTACT_POSITION" />
+        <result property="contactPhone" column="CONTACT_PHONE" />
+        <result property="contactMail" column="CONTACT_MAIL" />
+        <result property="followType" column="FOLLOW_TYPE" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="orgEntity" column="ORG_ENTITY_ID" select="orgentity.getById" ></association>
+        <association property="follower" column="USER_ID" select="user.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="crmCustomerMap">
+		select
+		<include refid="selectId" />
+		from CRM_CUSTOMER
+		<where>
+			<if test="t.country != null and t.country != ''">
+				and COUNTRY = #{t.country}
+			</if>
+			<if test="t.cargoCondition != null and t.cargoCondition != ''">
+				and CARGO_CONDITION = #{t.cargoCondition}
+			</if>
+			<if test="t.address != null and t.address != ''">
+				and ADDRESS = #{t.address}
+			</if>
+			<if test="t.follower != null and t.follower != ''">
+				and USER_ID = #{t.follower.id}
+			</if>
+			<if test="t.city != null and t.city != ''">
+				and CITY = #{t.city}
+			</if>
+			<if test="t.followType != null and t.followType != ''">
+				and FOLLOW_TYPE = #{t.followType}
+			</if>
+			<if test="t.creditGrade != null and t.creditGrade != ''">
+				and CREDIT_GRADE = #{t.creditGrade}
+			</if>
+			<if test="t.contactPosition != null and t.contactPosition != ''">
+				and CONTACT_POSITION = #{t.contactPosition}
+			</if>
+			<if test="t.contactPerson != null and t.contactPerson != ''">
+				and CONTACT_PERSON = #{t.contactPerson}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.customerName != null and t.customerName != ''">
+				and CUSTOMER_NAME = #{t.customerName}
+			</if>
+			<if test="t.orgEntity != null and t.orgEntity != ''">
+				and ORG_ENTITY_ID = #{t.orgEntity.id}
+			</if>
+			<if test="t.customerType != null and t.customerType != ''">
+				and CUSTOMER_Type = #{t.customerType}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.province != null and t.province != ''">
+				and PROVINCE = #{t.province}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.transportType != null and t.transportType != ''">
+				and TRANSPORT_TYPE = #{t.transportType}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.contactMail != null and t.contactMail != ''">
+				and CONTACT_MAIL = #{t.contactMail}
+			</if>
+			<if test="t.contactPhone != null and t.contactPhone != ''">
+				and CONTACT_PHONE = #{t.contactPhone}
+			</if>
+			<if test="t.customerGrade != null and t.customerGrade != ''">
+				and CUSTOMER_GRADE = #{t.customerGrade}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="CrmCustomer"
+		resultMap="crmCustomerMap">
+		select
+		<include refid="selectId" />
+		from CRM_CUSTOMER
+		<where>
+			<if test="country != null and country != ''">
+				and COUNTRY = #{country}
+			</if>
+			<if test="cargoCondition != null and cargoCondition != ''">
+				and CARGO_CONDITION = #{cargoCondition}
+			</if>
+			<if test="address != null and address != ''">
+				and ADDRESS = #{address}
+			</if>
+			<if test="follower != null and follower != ''">
+				and USER_ID = #{follower.id}
+			</if>
+			<if test="city != null and city != ''">
+				and CITY = #{city}
+			</if>
+			<if test="followType != null and followType != ''">
+				and FOLLOW_TYPE = #{followType}
+			</if>
+			<if test="creditGrade != null and creditGrade != ''">
+				and CREDIT_GRADE = #{creditGrade}
+			</if>
+			<if test="contactPosition != null and contactPosition != ''">
+				and CONTACT_POSITION = #{contactPosition}
+			</if>
+			<if test="contactPerson != null and contactPerson != ''">
+				and CONTACT_PERSON = #{contactPerson}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="customerName != null and customerName != ''">
+				and CUSTOMER_NAME = #{customerName}
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				and ORG_ENTITY_ID = #{orgEntity.id}
+			</if>
+			<if test="customerType != null and customerType != ''">
+				and CUSTOMER_Type = #{customerType}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="province != null and province != ''">
+				and PROVINCE = #{province}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="transportType != null and transportType != ''">
+				and TRANSPORT_TYPE = #{transportType}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="contactMail != null and contactMail != ''">
+				and CONTACT_MAIL = #{contactMail}
+			</if>
+			<if test="contactPhone != null and contactPhone != ''">
+				and CONTACT_PHONE = #{contactPhone}
+			</if>
+			<if test="customerGrade != null and customerGrade != ''">
+				and CUSTOMER_GRADE = #{customerGrade}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="crmCustomerMap">
+		select
+		<include refid="selectId" />
+		from CRM_CUSTOMER
+	</select>
+
+	<select id="count" parameterType="CrmCustomer" resultType="int">
+		select count(0) from CRM_CUSTOMER
+		<where>
+			<if test="country != null and country != ''">
+				and COUNTRY = #{country}
+			</if>
+			<if test="cargoCondition != null and cargoCondition != ''">
+				and CARGO_CONDITION = #{cargoCondition}
+			</if>
+			<if test="address != null and address != ''">
+				and ADDRESS = #{address}
+			</if>
+			<if test="follower != null and follower != ''">
+				and USER_ID = #{follower.id}
+			</if>
+			<if test="city != null and city != ''">
+				and CITY = #{city}
+			</if>
+			<if test="followType != null and followType != ''">
+				and FOLLOW_TYPE = #{followType}
+			</if>
+			<if test="creditGrade != null and creditGrade != ''">
+				and CREDIT_GRADE = #{creditGrade}
+			</if>
+			<if test="contactPosition != null and contactPosition != ''">
+				and CONTACT_POSITION = #{contactPosition}
+			</if>
+			<if test="contactPerson != null and contactPerson != ''">
+				and CONTACT_PERSON = #{contactPerson}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="customerName != null and customerName != ''">
+				and CUSTOMER_NAME = #{customerName}
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				and ORG_ENTITY_ID = #{orgEntity.id}
+			</if>
+			<if test="customerType != null and customerType != ''">
+				and CUSTOMER_Type = #{customerType}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="province != null and province != ''">
+				and PROVINCE = #{province}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="transportType != null and transportType != ''">
+				and TRANSPORT_TYPE = #{transportType}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="contactMail != null and contactMail != ''">
+				and CONTACT_MAIL = #{contactMail}
+			</if>
+			<if test="contactPhone != null and contactPhone != ''">
+				and CONTACT_PHONE = #{contactPhone}
+			</if>
+			<if test="customerGrade != null and customerGrade != ''">
+				and CUSTOMER_GRADE = #{customerGrade}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="CrmCustomer">
+		insert into CRM_CUSTOMER( COUNTRY, CARGO_CONDITION, ADDRESS, USER_ID,
+		CITY, FOLLOW_TYPE, CREDIT_GRADE, CONTACT_POSITION, CONTACT_PERSON,
+		DESCN, CUSTOMER_NAME, ORG_ENTITY_ID, CUSTOMER_Type, MODIFY_TIME,
+		PROVINCE, CREATE_TIME, TRANSPORT_TYPE, ID, CONTACT_MAIL,
+		CONTACT_PHONE, CUSTOMER_GRADE, DISP_INX, STATUS )values ( #{country},
+		#{cargoCondition}, #{address}, #{follower.id}, #{city}, #{followType},
+		#{creditGrade}, #{contactPosition}, #{contactPerson}, #{descn},
+		#{customerName}, #{orgEntity.id}, #{customerType}, #{modifyTime},
+		#{province}, #{createTime}, #{transportType},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{contactMail},
+		#{contactPhone},
+		#{customerGrade},
+		#{displayIndex},
+		#{status}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from CRM_CUSTOMER where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="crmCustomerMap">
+		select
+		<include refid="selectId" />
+		from CRM_CUSTOMER where id=#{id}
+	</select>
+
+	<update id="update" parameterType="CrmCustomer">
+		update CRM_CUSTOMER
+		<set>
+			<if test="country != null and country != ''">
+				COUNTRY=#{country},
+			</if>
+			<if test="cargoCondition != null and cargoCondition != ''">
+				CARGO_CONDITION=#{cargoCondition},
+			</if>
+			<if test="address != null and address != ''">
+				ADDRESS=#{address},
+			</if>
+			<if test="follower != null and follower != ''">
+				USER_ID=#{follower.id},
+			</if>
+			<if test="city != null and city != ''">
+				CITY=#{city},
+			</if>
+			<if test="followType != null and followType != ''">
+				FOLLOW_TYPE=#{followType},
+			</if>
+			<if test="creditGrade != null and creditGrade != ''">
+				CREDIT_GRADE=#{creditGrade},
+			</if>
+			<if test="contactPosition != null and contactPosition != ''">
+				CONTACT_POSITION=#{contactPosition},
+			</if>
+			<if test="contactPerson != null and contactPerson != ''">
+				CONTACT_PERSON=#{contactPerson},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="customerName != null and customerName != ''">
+				CUSTOMER_NAME=#{customerName},
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				ORG_ENTITY_ID=#{orgEntity.id},
+			</if>
+			<if test="customerType != null and customerType != ''">
+				CUSTOMER_Type=#{customerType},
+			</if>
+			MODIFY_TIME=SYSDATE(),
+			<if test="province != null and province != ''">
+				PROVINCE=#{province},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="transportType != null and transportType != ''">
+				TRANSPORT_TYPE=#{transportType},
+			</if>
+			<if test="contactMail != null and contactMail != ''">
+				CONTACT_MAIL=#{contactMail},
+			</if>
+			<if test="contactPhone != null and contactPhone != ''">
+				CONTACT_PHONE=#{contactPhone},
+			</if>
+			<if test="customerGrade != null and customerGrade != ''">
+				CUSTOMER_GRADE=#{customerGrade},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+		</set>
+		WHERE ID=#{id}
+	</update>
+</mapper>

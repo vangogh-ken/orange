@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freightactiontype">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		DESCN AS descn,
+		PRIME AS prime,
+		TYPE_NAME AS typeName,
+		ID AS id,
+		CREATE_TIME AS createTime,
+		SCOPE AS scope,
+		STATUS AS status,
+		MODIFY_TIME AS modifyTime,
+		INTERNAL AS internal,
+		DISP_INX AS displayIndex,
+		DELEGATE AS delegate,
+		DELEGATE_TEMPLATE_ID
+	</sql>
+	
+	<resultMap id="freightActionTypeMap" type="com.van.halley.db.persistence.entity.FreightActionType">
+        <id property="id" column="ID" />
+        <result property="typeName" column="TYPE_NAME" />
+        <result property="delegate" column="DELEGATE" />
+        <result property="internal" column="INTERNAL" />
+        <result property="prime" column="PRIME" />
+        <result property="scope" column="SCOPE" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="assignee" column="ID" select="user.getActionAssignByFreightActionTypeId" ></association>
+        <association property="freightDelegateTemplate" column="DELEGATE_TEMPLATE_ID" select="freightdelegatetemplate.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" resultMap="freightActionTypeMap" useCache="false">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_TYPE
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.prime != null and t.prime != ''">
+				and PRIME = #{t.prime}
+			</if>
+			<if test="t.typeName != null and t.typeName != ''">
+				AND TYPE_NAME LIKE CONCAT('%','${t.typeName}','%' ) 
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.scope != null and t.scope != ''">
+				and SCOPE = #{t.scope}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.internal != null and t.internal != ''">
+				and INTERNAL = #{t.internal}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if
+				test="t.freightDelegateTemplate != null and t.freightDelegateTemplate != ''">
+				and DELEGATE_TEMPLATE_ID = #{t.freightDelegateTemplate.id}
+			</if>
+			<if test="t.delegate != null and t.delegate != ''">
+				and DELEGATE = #{t.delegate}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FreightActionType"
+		resultMap="freightActionTypeMap">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_TYPE
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="prime != null and prime != ''">
+				and PRIME = #{prime}
+			</if>
+			<if test="typeName != null and typeName != ''">
+				and TYPE_NAME = #{typeName}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="scope != null and scope != ''">
+				and SCOPE = #{scope}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="internal != null and internal != ''">
+				and INTERNAL = #{internal}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if
+				test="freightDelegateTemplate != null and freightDelegateTemplate != ''">
+				and DELEGATE_TEMPLATE_ID = #{freightDelegateTemplate.id}
+			</if>
+			<if test="delegate != null and delegate != ''">
+				and DELEGATE = #{delegate}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="freightActionTypeMap">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_TYPE WHERE STATUS='T' ORDER BY TYPE_NAME ASC
+	</select>
+
+	<select id="count" parameterType="FreightActionType" resultType="int">
+		select count(0) from FRE_ACTION_TYPE
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.prime != null and t.prime != ''">
+				and PRIME = #{t.prime}
+			</if>
+			<if test="t.typeName != null and t.typeName != ''">
+				and TYPE_NAME = #{t.typeName}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.scope != null and t.scope != ''">
+				and SCOPE = #{t.scope}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.internal != null and t.internal != ''">
+				and INTERNAL = #{t.internal}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if
+				test="t.freightDelegateTemplate != null and t.freightDelegateTemplate != ''">
+				and DELEGATE_TEMPLATE_ID = #{t.freightDelegateTemplate.id}
+			</if>
+			<if test="t.delegate != null and t.delegate != ''">
+				and DELEGATE = #{t.delegate}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FreightActionType">
+		insert into FRE_ACTION_TYPE( DESCN, PRIME, TYPE_NAME, ID, CREATE_TIME,
+		SCOPE, STATUS, MODIFY_TIME, INTERNAL, DISP_INX, DELEGATE_TEMPLATE_ID,
+		DELEGATE )values ( #{descn}, #{prime}, #{typeName},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{createTime},
+		#{scope},
+		#{status},
+		#{modifyTime},
+		#{internal},
+		#{displayIndex},
+		#{freightDelegateTemplate.id},
+		#{delegate}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FRE_ACTION_TYPE where id=#{id}
+	</delete>
+	<!-- 删除操作与动作的关联 -->
+	<delete id="deleteByMaintainTypeId" parameterType="String">
+		delete from FRE_MAINTAIN_ACTION where FRE_MAINTAIN_TYPE_ID=#{freightMaintainTypeId}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="freightActionTypeMap">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_TYPE where id=#{id}
+	</select>
+	<!-- 查看与操作关联 的动作-->
+	<select id="getByMaintainTypeId" parameterType="String" resultMap="freightActionTypeMap" flushCache="true">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_TYPE where id IN (SELECT FRE_ACTION_TYPE_ID FROM FRE_MAINTAIN_ACTION WHERE FRE_MAINTAIN_TYPE_ID=#{freightMaintainTypeId})
+	</select>
+
+	<update id="update" parameterType="FreightActionType">
+		update FRE_ACTION_TYPE
+		<set>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="prime != null and prime != ''">
+				PRIME=#{prime},
+			</if>
+			<if test="typeName != null and typeName != ''">
+				TYPE_NAME=#{typeName},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="scope != null and scope != ''">
+				SCOPE=#{scope},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="internal != null and internal != ''">
+				INTERNAL=#{internal},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if
+				test="freightDelegateTemplate != null and freightDelegateTemplate != ''">
+				DELEGATE_TEMPLATE_ID=#{freightDelegateTemplate.id},
+			</if>
+			<if test="delegate != null and delegate != ''">
+				DELEGATE=#{delegate},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

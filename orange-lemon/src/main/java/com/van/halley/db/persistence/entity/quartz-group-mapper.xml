@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="quartzgroup">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		GROUP_NAME AS groupName,
+		MODIFY_TIME AS modifyTime,
+		CREATE_TIME AS createTime,
+		ID AS id,
+		DESCN AS descn,
+		GROUP_KEY AS groupKey,
+		DISP_INX AS displayIndex,
+		STATUS AS status
+	</sql>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultType="QuartzGroup">
+		select
+		<include refid="selectId" />
+		from QUARTZ_GROUP
+		<where>
+			<if test="t.groupName != null and t.groupName != ''">
+				and GROUP_NAME = #{t.groupName}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.groupKey != null and t.groupKey != ''">
+				and GROUP_KEY = #{t.groupKey}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="QuartzGroup"
+		resultType="QuartzGroup">
+		select
+		<include refid="selectId" />
+		from QUARTZ_GROUP
+		<where>
+			<if test="groupName != null and groupName != ''">
+				and GROUP_NAME = #{groupName}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="groupKey != null and groupKey != ''">
+				and GROUP_KEY = #{groupKey}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="QuartzGroup">
+		select
+		<include refid="selectId" />
+		from QUARTZ_GROUP
+	</select>
+
+	<select id="count" parameterType="QuartzGroup" resultType="int">
+		select count(0) from QUARTZ_GROUP
+		<where>
+			<if test="groupName != null and groupName != ''">
+				and GROUP_NAME = #{groupName}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="groupKey != null and groupKey != ''">
+				and GROUP_KEY = #{groupKey}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="QuartzGroup">
+		insert into QUARTZ_GROUP( GROUP_NAME, MODIFY_TIME, CREATE_TIME, ID,
+		DESCN, GROUP_KEY, DISP_INX, STATUS )values ( #{groupName},
+		#{modifyTime}, #{createTime},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{descn},
+		#{groupKey},
+		#{displayIndex},
+		#{status}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from QUARTZ_GROUP where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="QuartzGroup">
+		select
+		<include refid="selectId" />
+		from QUARTZ_GROUP where id=#{id}
+	</select>
+
+	<update id="update" parameterType="QuartzGroup">
+		update QUARTZ_GROUP
+		<set>
+			<if test="groupName != null and groupName != ''">
+				GROUP_NAME=#{groupName},
+			</if>
+			MODIFY_TIME=SYSDATE(),
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="groupKey != null and groupKey != ''">
+				GROUP_KEY=#{groupKey},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+		</set>
+		WHERE ID=#{id}
+	</update>
+</mapper>

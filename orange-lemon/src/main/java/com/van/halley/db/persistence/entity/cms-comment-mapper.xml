@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cmscomment">
+	<sql id="selectId">
+		ID AS id,
+		TITLE AS title,
+		CONTENT AS content,
+		STATUS AS status,
+		CREATE_TIME AS createTime,
+		ARTICLE_ID,
+		USER_ID
+	</sql>
+	
+	<resultMap id="cmsCommentResult" type="com.van.halley.db.persistence.entity.CmsComment">
+        <id property="id" column="ID" />
+        <result property="title" column="TITLE" />
+        <result property="content" column="CONTENT" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        
+        <association property="cmsArticle" column="ARTICLE_ID" select="cmsarticle.getById" ></association>
+        <association property="poster" column="USER_ID" select="user.getById" ></association>
+        <collection property="cmsFavorites" column="ID" select="cmsfavorite.getByCommentId"></collection>
+    </resultMap>
+    
+	<select id="query" parameterType="java.util.HashMap" resultMap="cmsCommentResult" >
+		select
+		<include refid="selectId" />
+		from OUT_CMS_COMMENT
+		<where>
+			<if test="t.content != null and t.content != ''">
+				and CONTENT = #{t.content}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.title != null and t.title != ''">
+				and TITLE = #{t.title}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.cmsArticle != null and t.cmsArticle != ''">
+				and ARTICLE_ID = #{t.cmsArticle.id}
+			</if>
+			<if test="t.poster != null and t.poster != ''">
+				and USER_ID = #{t.poster.id}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="CmsComment" resultMap="cmsCommentResult">
+		select
+		<include refid="selectId" />
+		from OUT_CMS_COMMENT
+		<where>
+			<if test="content != null and content != ''">
+				and CONTENT = #{content}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="title != null and title != ''">
+				and TITLE = #{title}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="cmsArticle != null and cmsArticle != ''">
+				and ARTICLE_ID = #{cmsArticle.id}
+			</if>
+			<if test="poster != null and poster != ''">
+				and USER_ID = #{poster.id}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="cmsCommentResult">
+		select
+		<include refid="selectId" />
+		from OUT_CMS_COMMENT
+	</select>
+	
+	<select id="getByActicleId" parameterType="String" resultMap="cmsCommentResult">
+		select
+		<include refid="selectId" />
+		from OUT_CMS_COMMENT WHERE ARTICLE_ID=#{acticleId} ORDER BY CREATE_TIME DESC
+	</select>
+	
+	<select id="count" parameterType="CmsComment" resultType="int">
+		select count(0) from OUT_CMS_COMMENT
+		<where>
+			<if test="t.content != null and t.content != ''">
+				and CONTENT = #{t.content}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.title != null and t.title != ''">
+				and TITLE = #{t.title}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.cmsArticle != null and t.cmsArticle != ''">
+				and ARTICLE_ID = #{t.cmsArticle.id}
+			</if>
+			<if test="t.poster != null and t.poster != ''">
+				and USER_ID = #{t.poster.id}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="add" parameterType="CmsComment"> 
+		insert into OUT_CMS_COMMENT(
+		CONTENT, ID, CREATE_TIME, TITLE, STATUS, ARTICLE_ID, USER_ID )values (
+		#{content}, UUID(), #{createTime}, #{title}, #{status}, #{cmsArticle.id},
+		#{poster.id} )
+	</insert>
+	
+	<delete id="deleteById" parameterType="String">
+		delete from OUT_CMS_COMMENT where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="cmsCommentResult">
+		select
+		<include refid="selectId" />
+		from OUT_CMS_COMMENT where id=#{id}
+	</select>
+
+	<update id="update" parameterType="CmsComment">
+		update OUT_CMS_COMMENT
+		<set>
+			<if test="content != null and content != ''">
+				CONTENT=#{content},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="title != null and title != ''">
+				TITLE=#{title},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="cmsArticle != null and cmsArticle != ''">
+				ARTICLE_ID=#{cmsArticle.id},
+			</if>
+			<if test="poster != null and poster != ''">
+				USER_ID=#{poster.id},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

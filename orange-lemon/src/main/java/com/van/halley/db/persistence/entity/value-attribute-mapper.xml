@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="valueattribute">
+	<sql id="selectId">
+		ID AS id,
+		ATTR_NAME AS attributeName,
+		COLUMN_NAME AS columnName,
+		VCLS_ID,
+		DESCN AS descn,
+		STATUS AS status,
+		CREATE_TIME AS createTime,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex
+	</sql>
+	
+	<resultMap id="valueAttributeResult" type="com.van.halley.db.persistence.entity.ValueAttribute">
+        <id property="id" column="ID" />
+        <result property="attributeName" column="ATTR_NAME" />
+        <result property="columnName" column="COLUMN_NAME" />
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="valueClass" column="VCLS_ID" select="valueclass.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" resultMap="valueAttributeResult">
+		select
+		<include refid="selectId" />
+		from SYS_DIC_VALUE_ATTR
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.attributeName != null and t.attributeName != ''">
+				and ATTR_NAME = #{t.attributeName}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.columnName != null and t.columnName != ''">
+				and COLUMN_NAME = #{t.columnName}
+			</if>
+			<if test="t.valueClass != null and t.valueClass != ''">
+				and VCLS_ID = #{t.valueClass.id}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="ValueAttribute"
+		resultMap="valueAttributeResult">
+		select
+		<include refid="selectId" />
+		from SYS_DIC_VALUE_ATTR
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="attributeName != null and attributeName != ''">
+				and ATTR_NAME = #{attributeName}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="columnName != null and columnName != ''">
+				and COLUMN_NAME = #{columnName}
+			</if>
+			<if test="valueClass != null and valueClass != ''">
+				and VCLS_ID = #{valueClass.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="valueAttributeResult">
+		select
+		<include refid="selectId" />
+		from SYS_DIC_VALUE_ATTR
+	</select>
+
+	<select id="count" parameterType="ValueAttribute" resultType="int">
+		select count(0) from SYS_DIC_VALUE_ATTR
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.attributeName != null and t.attributeName != ''">
+				and ATTR_NAME = #{t.attributeName}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.columnName != null and t.columnName != ''">
+				and COLUMN_NAME = #{t.columnName}
+			</if>
+			<if test="t.valueClass != null and t.valueClass != ''">
+				and VCLS_ID = #{t.valueClass.id}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="ValueAttribute"> insert into SYS_DIC_VALUE_ATTR(
+		DESCN, ATTR_NAME, ID, CREATE_TIME, STATUS, COLUMN_NAME, VCLS_ID,
+		MODIFY_TIME, DISP_INX )values ( #{descn}, #{attributeName}, UUID(),
+		#{createTime}, #{status}, #{columnName}, #{valueClass.id}, #{modifyTime},
+		#{displayIndex} )
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from SYS_DIC_VALUE_ATTR where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="valueAttributeResult">
+		select
+		<include refid="selectId" />
+		from SYS_DIC_VALUE_ATTR where id=#{id}
+	</select>
+
+	<update id="update" parameterType="ValueAttribute">
+		update SYS_DIC_VALUE_ATTR
+		<set>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="attributeName != null and attributeName != ''">
+				ATTR_NAME=#{attributeName},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="columnName != null and columnName != ''">
+				COLUMN_NAME=#{columnName},
+			</if>
+			<if test="valueClass != null and valueClass != ''">
+				VCLS_ID=#{valueClass.id},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

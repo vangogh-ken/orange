@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="docinfo">
+	<sql id="selectId">
+		ID AS id,
+		CREATE_TIME AS createTime,
+		DOC_NAME AS docName,
+		TYPE_ID,
+		USER_ID,
+		PARTICIPATE AS participate,
+		MODIFY_TIME AS modifyTime,
+		DOC_DATA AS docData,
+		ETERNAL AS eternal
+	</sql>
+	
+	<resultMap id="docInfoResult" type="com.van.halley.db.persistence.entity.DocInfo">
+        <id property="id" column="ID" />
+        <result property="docName" column="DOC_NAME" />
+        <result property="docData" column="DOC_DATA" />
+        <result property="eternal" column="ETERNAL" />
+        <result property="participate" column="PARTICIPATE" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        
+        <association property="owner" column="USER_ID" select="user.getById" ></association>
+        <association property="docType" column="TYPE_ID" select="doctype.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" resultMap="docInfoResult" >
+		select
+		<include refid="selectId" />
+		from OUT_DOC_INFO
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime} 
+				<!-- 
+				AND CREATE_TIME  &gt; date_format(#{t.createTime},'%Y-%c-%d')
+	        	AND CREATE_TIME &lt;= date_format(#{t.createTime},'%Y-%c-%d %H:%i:%s')
+	        	-->
+			</if>
+			<if test="t.docName != null and t.docName != ''">
+				and DOC_NAME = #{t.docName}
+			</if>
+			<if test="t.docType != null and t.docType != ''">
+				and TYPE_ID = #{t.docType.id}
+			</if>
+			<if test="t.owner != null and t.owner != ''">
+				and USER_ID = #{t.owner.id}
+			</if>
+			<if test="t.participate != null and t.participate != ''">
+				and PARTICIPATE = #{t.participate}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.docData != null and t.docData != ''">
+				and DOC_DATA = #{t.docData}
+			</if>
+			<if test="t.eternal != null and t.eternal != ''">
+				and ETERNAL = #{t.eternal}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="DocInfo" resultMap="docInfoResult">
+		select
+		<include refid="selectId" />
+		from OUT_DOC_INFO
+		<where>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="docName != null and docName != ''">
+				and DOC_NAME = #{docName}
+			</if>
+			<if test="docType != null and docType != ''">
+				and TYPE_ID = #{docType.id}
+			</if>
+			<if test="owner != null and owner != ''">
+				and USER_ID = #{owner.id}
+			</if>
+			<if test="participate != null and participate != ''">
+				and PARTICIPATE = #{participate}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="docData != null and docData != ''">
+				and DOC_DATA = #{docData}
+			</if>
+			<if test="eternal != null and eternal != ''">
+				and ETERNAL = #{eternal}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="docInfoResult">
+		select
+		<include refid="selectId" />
+		from OUT_DOC_INFO
+	</select>
+
+	<select id="count" parameterType="DocInfo" resultType="int">
+		select count(0) from OUT_DOC_INFO
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.docName != null and t.docName != ''">
+				and DOC_NAME = #{t.docName}
+			</if>
+			<if test="t.docType != null and t.docType != ''">
+				and TYPE_ID = #{t.docType.id}
+			</if>
+			<if test="t.owner != null and t.owner != ''">
+				and USER_ID = #{t.owner.id}
+			</if>
+			<if test="t.participate != null and t.participate != ''">
+				and PARTICIPATE = #{t.participate}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.docData != null and t.docData != ''">
+				and DOC_DATA = #{t.docData}
+			</if>
+			<if test="t.eternal != null and t.eternal != ''">
+				and ETERNAL = #{t.eternal}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="DocInfo"> insert into OUT_DOC_INFO( ID,
+		CREATE_TIME, DOC_NAME, TYPE_ID, USER_ID, PARTICIPATE, MODIFY_TIME,
+		DOC_DATA, ETERNAL )values (UUID(), #{createTime}, #{docName},
+		#{docType.id}, #{owner.id}, #{participate}, #{modifyTime}, #{docData},
+		#{eternal} )
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from OUT_DOC_INFO where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="docInfoResult">
+		select
+		<include refid="selectId" />
+		from OUT_DOC_INFO where id=#{id}
+	</select>
+	
+	<!-- 获取临时文件 -->
+	<select id="getUnEternalDoc" resultMap="docInfoResult">
+		select
+		<include refid="selectId" />
+		FROM OUT_DOC_INFO D
+		WHERE D.ETERNAL='F' 
+		<!--  
+		AND MODIFY_TIME LIKE CONCAT('%', date_format(current_timestamp + INTERVAL keep_day * 86400 SECOND,'%Y-%c-%d'), '%')
+		修改时间小于当前时间减去保持天数的时间则为临时文件
+		-->
+		AND D.MODIFY_TIME &gt; date_format(current_timestamp + INTERVAL (SELECT T.LIMIT_DAY_COUNT FROM OUT_DOC_TYPE T WHERE T.ID = D.TYPE_ID) * 86400 SECOND,'%Y-%c-%d')
+	</select>
+
+	<update id="update" parameterType="DocInfo">
+		update OUT_DOC_INFO
+		<set>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="docName != null and docName != ''">
+				DOC_NAME=#{docName},
+			</if>
+			<if test="docType != null and docType != ''">
+				TYPE_ID=#{docType.id},
+			</if>
+			<if test="owner != null and owner != ''">
+				USER_ID=#{owner.id},
+			</if>
+			<if test="participate != null and participate != ''">
+				PARTICIPATE=#{participate},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="docData != null and docData != ''">
+				DOC_DATA=#{docData},
+			</if>
+			<if test="eternal != null and eternal != ''">
+				ETERNAL=#{eternal},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

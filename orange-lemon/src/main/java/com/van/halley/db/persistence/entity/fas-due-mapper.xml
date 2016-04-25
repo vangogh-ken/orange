@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fasdue">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		DUE_COUNT AS dueCount,
+		STATUS AS status,
+		EXCHANGE_RATE AS exchangeRate,
+		ACTUAL_COUNT AS actualCount,
+		CURRENCY AS currency,
+		ID AS id,
+		DESCN AS descn,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		DUE_NUMBER AS dueNumber,
+		DUE_TIME AS dueTime,
+		
+		FRE_PART_ID_PAY,
+		FAS_ACCOUNT_ID_PAY,
+		
+		FRE_PART_ID_DUE,
+		FAS_ACCOUNT_ID_DUE
+	</sql>
+	
+	<resultMap id="fasDueMap" type="com.van.halley.db.persistence.entity.FasDue">
+        <id property="id" column="ID" />
+        <result property="currency" column="CURRENCY" />
+        <result property="exchangeRate" column="EXCHANGE_RATE" />
+        <result property="dueCount" column="DUE_COUNT" />
+        <result property="actualCount" column="ACTUAL_COUNT" />
+        
+        <result property="dueNumber" column="DUE_NUMBER" />
+        <result property="dueTime" column="DUE_TIME" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="payPart" column="FRE_PART_ID_PAY" select="freightpart.getById" ></association>
+        <association property="payAccount" column="FAS_ACCOUNT_ID_PAY" select="fasaccount.getById" ></association>
+        <association property="duePart" column="FRE_PART_ID_DUE" select="freightpart.getById" ></association>
+        <association property="dueAccount" column="FAS_ACCOUNT_ID_DUE" select="fasaccount.getById" ></association>
+        <collection property="fasReconciles" column="ID" select="fasreconcile.getByFasDueId"></collection>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="fasDueMap">
+		select
+		<include refid="selectId" />
+		from FAS_DUE
+		<where>
+			<if test="t.dueTime != null and t.dueTime != ''">
+				and DUE_TIME = #{t.dueTime}
+			</if>
+			<if test="t.dueNumber != null and t.dueNumber != ''">
+				and DUE_NUMBER = #{t.dueNumber}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.payPart != null and t.payPart != ''">
+				and FRE_PART_ID_PAY = #{t.payPart.id}
+			</if>
+			<if test="t.dueCount != null and t.dueCount != ''">
+				and DUE_COUNT = #{t.dueCount}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.exchangeRate != null and t.exchangeRate != ''">
+				and EXCHANGE_RATE = #{t.exchangeRate}
+			</if>
+			<if test="t.payAccount != null and t.payAccount != ''">
+				and FAS_ACCOUNT_ID_PAY = #{t.payAccount.id}
+			</if>
+			<if test="t.actualCount != null and t.actualCount != ''">
+				and ACTUAL_COUNT = #{t.actualCount}
+			</if>
+			<if test="t.currency != null and t.currency != ''">
+				and CURRENCY = #{t.currency}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.dueAccount != null and t.dueAccount != ''">
+				and FAS_ACCOUNT_ID_DUE = #{t.dueAccount.id}
+			</if>
+			<if test="t.duePart != null and t.duePart != ''">
+				and FRE_PART_ID_DUE = #{t.duePart.id}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FasDue" resultMap="fasDueMap">
+		select
+		<include refid="selectId" />
+		from FAS_DUE
+		<where>
+			<if test="dueTime != null and dueTime != ''">
+				and DUE_TIME = #{dueTime}
+			</if>
+			<if test="dueNumber != null and dueNumber != ''">
+				and DUE_NUMBER = #{dueNumber}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="payPart != null and payPart != ''">
+				and FRE_PART_ID_PAY = #{payPart.id}
+			</if>
+			<if test="dueCount != null and dueCount != ''">
+				and DUE_COUNT = #{dueCount}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				and EXCHANGE_RATE = #{exchangeRate}
+			</if>
+			<if test="payAccount != null and payAccount != ''">
+				and FAS_ACCOUNT_ID_PAY = #{payAccount.id}
+			</if>
+			<if test="actualCount != null and actualCount != ''">
+				and ACTUAL_COUNT = #{actualCount}
+			</if>
+			<if test="currency != null and currency != ''">
+				and CURRENCY = #{currency}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="dueAccount != null and dueAccount != ''">
+				and FAS_ACCOUNT_ID_DUE = #{dueAccount.id}
+			</if>
+			<if test="duePart != null and duePart != ''">
+				and FRE_PART_ID_DUE = #{duePart.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="fasDueMap">
+		select
+		<include refid="selectId" />
+		from FAS_DUE
+	</select>
+
+	<select id="count" parameterType="FasDue" resultType="int">
+		select count(0) from FAS_DUE
+		<where>
+			<if test="dueTime != null and dueTime != ''">
+				and DUE_TIME = #{dueTime}
+			</if>
+			<if test="dueNumber != null and dueNumber != ''">
+				and DUE_NUMBER = #{dueNumber}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="payPart != null and payPart != ''">
+				and FRE_PART_ID_PAY = #{payPart.id}
+			</if>
+			<if test="dueCount != null and dueCount != ''">
+				and DUE_COUNT = #{dueCount}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				and EXCHANGE_RATE = #{exchangeRate}
+			</if>
+			<if test="payAccount != null and payAccount != ''">
+				and FAS_ACCOUNT_ID_PAY = #{payAccount.id}
+			</if>
+			<if test="actualCount != null and actualCount != ''">
+				and ACTUAL_COUNT = #{actualCount}
+			</if>
+			<if test="currency != null and currency != ''">
+				and CURRENCY = #{currency}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="dueAccount != null and dueAccount != ''">
+				and FAS_ACCOUNT_ID_DUE = #{dueAccount.id}
+			</if>
+			<if test="duePart != null and duePart != ''">
+				and FRE_PART_ID_DUE = #{duePart.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FasDue">
+		insert into FAS_DUE( CREATE_TIME, FRE_PART_ID_PAY, DUE_COUNT, STATUS,
+		EXCHANGE_RATE, FAS_ACCOUNT_ID_PAY, ACTUAL_COUNT, CURRENCY, ID, DESCN,
+		FAS_ACCOUNT_ID_DUE, FRE_PART_ID_DUE, MODIFY_TIME, DISP_INX, DUE_TIME, DUE_NUMBER )values (
+		#{createTime}, #{payPart.id}, #{dueCount}, #{status}, #{exchangeRate},
+		#{payAccount.id}, #{actualCount}, #{currency},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{descn},
+		#{dueAccount.id},
+		#{duePart.id},
+		#{modifyTime},
+		#{displayIndex},
+		#{dueTime},
+		#{dueNumber}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FAS_DUE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="fasDueMap">
+		select
+		<include refid="selectId" />
+		from FAS_DUE where id=#{id}
+	</select>
+
+	<update id="update" parameterType="FasDue">
+		update FAS_DUE
+		<set>
+			<if test="dueTime != null and dueTime != ''">
+				DUE_TIME = #{dueTime},
+			</if>
+			<if test="dueNumber != null and dueNumber != ''">
+				DUE_NUMBER = #{dueNumber},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="payPart != null and payPart != ''">
+				FRE_PART_ID_PAY=#{payPart.id},
+			</if>
+			<if test="dueCount != null and dueCount != ''">
+				DUE_COUNT=#{dueCount},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				EXCHANGE_RATE=#{exchangeRate},
+			</if>
+			<if test="payAccount != null and payAccount != ''">
+				FAS_ACCOUNT_ID_PAY=#{payAccount.id},
+			</if>
+			<if test="actualCount != null and actualCount != ''">
+				ACTUAL_COUNT=#{actualCount},
+			</if>
+			<if test="currency != null and currency != ''">
+				CURRENCY=#{currency},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="dueAccount != null and dueAccount != ''">
+				FAS_ACCOUNT_ID_DUE=#{dueAccount.id},
+			</if>
+			<if test="duePart != null and duePart != ''">
+				FRE_PART_ID_DUE=#{duePart.id},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

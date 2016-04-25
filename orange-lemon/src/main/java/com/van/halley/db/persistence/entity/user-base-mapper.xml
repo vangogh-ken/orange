@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userbase">
+	<sql id="selectId">
+		ID AS id,
+		ICON AS icon,
+		MAIL_PASSWORD AS mailPassword,
+		MAIL_ASYNC AS mailAsync,
+		MAIL_ADDRESS AS mailAddress,
+		USER_ID AS userId,
+		BIRTH_DAY AS birthDay,
+		WORK_STATUS AS workStatus,
+		TEL AS telephone,
+		MOBILE AS mobile,
+		WX_NAME AS weixinName
+	</sql>
+	<select id="query" parameterType="java.util.HashMap" resultType="UserBase">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_USER_BASE
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.icon != null and t.icon != ''">
+				and ICON = #{t.icon}
+			</if>
+			<if test="t.mailPassword != null and t.mailPassword != ''">
+				and MAIL_PASSWORD = #{t.mailPassword}
+			</if>
+			<if test="t.mailAsync != null and t.mailAsync != ''">
+				and MAIL_ASYNC = #{t.mailAsync}
+			</if>
+			<if test="t.mailAddress != null and t.mailAddress != ''">
+				and MAIL_ADDRESS = #{t.mailAddress}
+			</if>
+			<if test="t.userId != null and t.userId != ''">
+				and USER_ID = #{t.userId}
+			</if>
+			<if test="t.birthDay != null and t.birthDay != ''">
+				and BIRTH_DAY = #{t.birthDay}
+			</if>
+			<if test="t.workStatus != null and t.workStatus != ''">
+				and WORK_STATUS = #{t.workStatus}
+			</if>
+			<if test="t.telephone != null and t.telephone != ''">
+				and TEL = #{t.telephone}
+			</if>
+			<if test="t.mobile != null and t.mobile != ''">
+				and MOBILE = #{t.mobile}
+			</if>
+			<if test="t.weixinName != null and t.weixinName != ''">
+				and WX_NAME = #{t.weixinName}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="UserBase" resultType="UserBase">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_USER_BASE
+		<where>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="icon != null and icon != ''">
+				and ICON = #{icon}
+			</if>
+			<if test="mailPassword != null and mailPassword != ''">
+				and MAIL_PASSWORD = #{mailPassword}
+			</if>
+			<if test="mailAsync != null and mailAsync != ''">
+				and MAIL_ASYNC = #{mailAsync}
+			</if>
+			<if test="mailAddress != null and mailAddress != ''">
+				and MAIL_ADDRESS = #{mailAddress}
+			</if>
+			<if test="userId != null and userId != ''">
+				and USER_ID = #{userId}
+			</if>
+			<if test="birthDay != null and birthDay != ''">
+				and BIRTH_DAY = #{birthDay}
+			</if>
+			<if test="workStatus != null and workStatus != ''">
+				and WORK_STATUS = #{workStatus}
+			</if>
+			<if test="telephone != null and telephone != ''">
+				and TEL = #{telephone}
+			</if>
+			<if test="mobile != null and mobile != ''">
+				and MOBILE = #{mobile}
+			</if>
+			<if test="weixinName != null and weixinName != ''">
+				and WX_NAME = #{weixinName}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="UserBase">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_USER_BASE
+	</select>
+	<select id="count" parameterType="UserBase" resultType="int">
+		select count(0) from SYS_AUTH_USER_BASE
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.icon != null and t.icon != ''">
+				and ICON = #{t.icon}
+			</if>
+			<if test="t.mailPassword != null and t.mailPassword != ''">
+				and MAIL_PASSWORD = #{t.mailPassword}
+			</if>
+			<if test="t.mailAsync != null and t.mailAsync != ''">
+				and MAIL_ASYNC = #{t.mailAsync}
+			</if>
+			<if test="t.mailAddress != null and t.mailAddress != ''">
+				and MAIL_ADDRESS = #{t.mailAddress}
+			</if>
+			<if test="t.userId != null and t.userId != ''">
+				and USER_ID = #{t.userId}
+			</if>
+			<if test="t.birthDay != null and t.birthDay != ''">
+				and BIRTH_DAY = #{t.birthDay}
+			</if>
+			<if test="t.workStatus != null and t.workStatus != ''">
+				and WORK_STATUS = #{t.workStatus}
+			</if>
+			<if test="t.telephone != null and t.telephone != ''">
+				and TEL = #{t.telephone}
+			</if>
+			<if test="t.mobile != null and t.mobile != ''">
+				and MOBILE = #{t.mobile}
+			</if>
+			<if test="weixinName != null and weixinName != ''">
+				and WX_NAME = #{weixinName}
+			</if>
+		</where>
+	</select>
+	<insert id="add" parameterType="UserBase"> insert into SYS_AUTH_USER_BASE(
+		ID, ICON, MAIL_PASSWORD, MAIL_ASYNC, MAIL_ADDRESS, USER_ID, BIRTH_DAY,
+		WORK_STATUS, TEL, MOBILE, WX_NAME )values (UUID(), #{icon}, #{mailPassword},
+		#{mailAsync}, #{mailAddress}, #{userId}, #{birthDay}, #{workStatus},
+		#{telephone}, #{mobile}, #{weixinName} )
+	</insert>
+	
+	<delete id="deleteById" parameterType="String">
+		delete from SYS_AUTH_USER_BASE where id=#{id}
+	</delete>
+	
+	<delete id="deleteByUserId" parameterType="String">
+		delete from SYS_AUTH_USER_BASE where USER_ID=#{userId}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="UserBase">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_USER_BASE where id=#{id}
+	</select>
+	
+	<select id="getByUserId" parameterType="String" resultType="UserBase">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_USER_BASE where USER_ID=#{userId}
+	</select>
+	
+	<select id="getByWeixinName" parameterType="String" resultType="UserBase">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_USER_BASE where WX_NAME=#{weixinName}
+	</select>
+
+	<update id="update" parameterType="UserBase">
+		update SYS_AUTH_USER_BASE
+		<set>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="icon != null and icon != ''">
+				ICON=#{icon},
+			</if>
+			<if test="mailPassword != null and mailPassword != ''">
+				MAIL_PASSWORD=#{mailPassword},
+			</if>
+			<if test="mailAsync != null and mailAsync != ''">
+				MAIL_ASYNC=#{mailAsync},
+			</if>
+			<if test="mailAddress != null and mailAddress != ''">
+				MAIL_ADDRESS=#{mailAddress},
+			</if>
+			<if test="userId != null and userId != ''">
+				USER_ID=#{userId},
+			</if>
+			<if test="birthDay != null and birthDay != ''">
+				BIRTH_DAY=#{birthDay},
+			</if>
+			<if test="workStatus != null and workStatus != ''">
+				WORK_STATUS=#{workStatus},
+			</if>
+			<if test="telephone != null and telephone != ''">
+				TEL=#{telephone},
+			</if>
+			<if test="mobile != null and mobile != ''">
+				MOBILE=#{mobile},
+			</if>
+			<if test="weixinName != null and weixinName != ''">
+				WX_NAME = #{weixinName},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

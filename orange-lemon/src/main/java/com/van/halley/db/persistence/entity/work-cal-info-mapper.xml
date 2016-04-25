@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="workcalinfo">
+	<sql id="selectId">
+		ID AS id,
+		TYPE AS type,
+		TITLE AS title,
+		CONTENT AS content,
+		DESCN AS description,
+		START_TIME AS startTime,
+		END_TIME AS endTime,
+		PRIORITY AS priority,
+		ALERT_TIME AS alertTime,
+		USER_ID AS owner,
+		PHASE AS phase
+	</sql>
+	
+	<resultMap id="workCalInfoResult" type="com.van.halley.db.persistence.entity.WorkCalInfo">
+        <id property="id" column="ID" />
+        <result property="type" column="TYPE" />
+        <result property="title" column="TITLE" />
+        <result property="content" column="CONTENT" />
+        <result property="description" column="DESCN" />
+        <result property="startTime" column="START_TIME" />
+        <result property="endTime" column="END_TIME" />
+        <result property="priority" column="PRIORITY" />
+        <result property="alertTime" column="ALERT_TIME" />
+        <result property="phase" column="PHASE" />
+        
+        <association property="owner" column="USER_ID" select="user.getById" ></association>
+    </resultMap>
+    
+	<select id="query" parameterType="java.util.HashMap" resultMap="workCalInfoResult" >
+		select
+		<include refid="selectId" />
+		from OUT_WORK_CAL_INFO
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.type != null and t.type != ''">
+				and TYPE = #{t.type}
+			</if>
+			<if test="t.title != null and t.title != ''">
+				and TITLE = #{t.title}
+			</if>
+			<if test="t.content != null and t.content != ''">
+				and CONTENT = #{t.content}
+			</if>
+			<if test="t.description != null and t.description != ''">
+				and DESCN = #{t.description}
+			</if>
+			<if test="t.startTime != null and t.startTime != ''">
+				and START_TIME = #{t.startTime}
+			</if>
+			<if test="t.endTime != null and t.endTime != ''">
+				and END_TIME = #{t.endTime}
+			</if>
+			<if test="t.priority != null and t.priority != ''">
+				and PRIORITY = #{t.priority}
+			</if>
+			<if test="t.alertTime != null and t.alertTime != ''">
+				and ALERT_TIME = #{t.alertTime}
+			</if>
+			<if test="t.phase != null and t.phase != ''">
+				and PHASE = #{t.phase}
+			</if>
+			<if test="t.owner != null and t.owner != ''">
+				AND USER_ID=#{t.owner.id}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="WorkCalInfo" resultMap="workCalInfoResult">
+		select
+		<include refid="selectId" />
+		from OUT_WORK_CAL_INFO
+		<where>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="type != null and type != ''">
+				and TYPE = #{type}
+			</if>
+			<if test="title != null and title != ''">
+				and TITLE = #{title}
+			</if>
+			<if test="content != null and content != ''">
+				and CONTENT = #{content}
+			</if>
+			<if test="description != null and description != ''">
+				and DESCN = #{description}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				and START_TIME = #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and END_TIME = #{endTime}
+			</if>
+			<if test="priority != null and priority != ''">
+				and PRIORITY = #{priority}
+			</if>
+			<if test="alertTime != null and alertTime != ''">
+				and ALERT_TIME = #{alertTime}
+			</if>
+			<if test="phase != null and phase != ''">
+				and PHASE = #{phase}
+			</if>
+			<if test="owner != null and owner != ''">
+				AND USER_ID=#{owner.id}
+			</if>
+			
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="workCalInfoResult">
+		select
+		<include refid="selectId" />
+		from OUT_WORK_CAL_INFO
+	</select>
+	
+	<select id="count" parameterType="WorkCalInfo" resultType="int">
+		select count(0) from OUT_WORK_CAL_INFO
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.type != null and t.type != ''">
+				and TYPE = #{t.type}
+			</if>
+			<if test="t.title != null and t.title != ''">
+				and TITLE = #{t.title}
+			</if>
+			<if test="t.content != null and t.content != ''">
+				and CONTENT = #{t.content}
+			</if>
+			<if test="t.description != null and t.description != ''">
+				and DESCN = #{t.description}
+			</if>
+			<if test="t.startTime != null and t.startTime != ''">
+				and START_TIME = #{t.startTime}
+			</if>
+			<if test="t.endTime != null and t.endTime != ''">
+				and END_TIME = #{t.endTime}
+			</if>
+			<if test="t.priority != null and t.priority != ''">
+				and PRIORITY = #{t.priority}
+			</if>
+			<if test="t.alertTime != null and t.alertTime != ''">
+				and ALERT_TIME = #{t.alertTime}
+			</if>
+			<if test="t.phase != null and t.phase != ''">
+				and PHASE = #{t.phase}
+			</if>
+			<if test="t.owner != null and t.owner != ''">
+				AND USER_ID=#{t.owner.id}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="add" parameterType="WorkCalInfo"> insert into OUT_WORK_CAL_INFO(
+		ID, TYPE, TITLE, CONTENT, DESCN, START_TIME, END_TIME, PRIORITY,
+		ALERT_TIME,PHASE, USER_ID )values (UUID(), #{type}, #{title}, #{content},
+		#{description}, #{startTime}, #{endTime}, #{priority}, #{alertTime},#{phase},
+		#{owner.id} )
+	</insert>
+	
+	<delete id="deleteById" parameterType="String">
+		delete from OUT_WORK_CAL_INFO where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="workCalInfoResult">
+		select
+		<include refid="selectId" />
+		from OUT_WORK_CAL_INFO where id=#{id}
+	</select>
+	
+	<select id="getByOrgId" parameterType="java.util.HashMap" resultMap="workCalInfoResult">
+		select
+		<include refid="selectId" />
+		FROM OUT_WORK_CAL_INFO 
+		<where>
+			<if test="orgId != null and orgId != ''">
+				AND USER_ID IN (SELECT ID FROM SYS_AUTH_USER WHERE POSITION_ID IN (SELECT ID FROM SYS_AUTH_POSITION WHERE UNDER_ORG_ID =#{orgId}))
+			</if>
+			<if test="year != null and year != ''">
+				AND YEAR(START_TIME)= #{year}
+			</if>
+			<if test="month != null and month != ''">
+				AND MONTH(START_TIME)= #{month}
+			</if>
+			<if test="type != null and type != ''">
+				AND TYPE= #{type}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getByUserId" parameterType="java.util.HashMap" resultMap="workCalInfoResult">
+		select
+		<include refid="selectId" />
+		FROM OUT_WORK_CAL_INFO 
+		<where>
+			<if test="userId != null and userId != ''">
+				AND USER_ID = #{userId}
+			</if>
+			<if test="year != null and year != ''">
+				AND YEAR(START_TIME)= #{year}
+			</if>
+			<if test="month != null and month != ''">
+				AND MONTH(START_TIME)= #{month}
+			</if>
+			<if test="type != null and type != ''">
+				AND TYPE= #{type}
+			</if>
+		</where>
+	</select>
+
+	<update id="update" parameterType="WorkCalInfo">
+		update OUT_WORK_CAL_INFO
+		<set>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="type != null and type != ''">
+				TYPE=#{type},
+			</if>
+			<if test="title != null and title != ''">
+				TITLE=#{title},
+			</if>
+			<if test="content != null and content != ''">
+				CONTENT=#{content},
+			</if>
+			<if test="description != null and description != ''">
+				DESCN=#{description},
+			</if>
+			<if test="startTime != null and startTime != ''">
+				START_TIME=#{startTime},
+			</if>
+			<if test="endTime != null and endTime != ''">
+				END_TIME=#{endTime},
+			</if>
+			<if test="priority != null and priority != ''">
+				PRIORITY=#{priority},
+			</if>
+			<if test="alertTime != null and alertTime != ''">
+				ALERT_TIME=#{alertTime},
+			</if>
+			<if test="phase != null and phase != ''">
+				PHASE = #{phase},
+			</if>
+			<if test="owner != null and owner != ''">
+				USER_ID=#{owner.id}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

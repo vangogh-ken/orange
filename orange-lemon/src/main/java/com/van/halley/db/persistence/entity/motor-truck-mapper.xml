@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="motorcadetruck">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		TRUCK_CATEGORY AS truckCategory,
+		TRAILER_DEPRECIATION AS trailerDepreciation,
+		HEADSTOCK_NUMBER AS headstockNumber,
+		STATUS AS status,
+		TRUCK_TYPE AS truckType,
+		HEADSTOCK_FUND AS headstockFund,
+		HEADSTOCK_DEPRECIATION AS headstockDepreciation,
+		PURCHASE_TIME AS purchaseTime,
+		ID AS id,
+		DESCN AS descn,
+		TRAILER_FUND AS trailerFund,
+		MANUFACTURER AS manufacturer,
+		ANNUAL_TIME AS annualTime,
+		TRAILER_NUMBER AS trailerNumber,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex
+	</sql>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultType="MotorcadeTruck">
+		select
+		<include refid="selectId" />
+		from MOTOR_TRUCK
+		<where>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.truckCategory != null and t.truckCategory != ''">
+				and TRUCK_CATEGORY = #{t.truckCategory}
+			</if>
+			<if test="t.trailerDepreciation != null and t.trailerDepreciation != ''">
+				and TRAILER_DEPRECIATION = #{t.trailerDepreciation}
+			</if>
+			<if test="t.headstockNumber != null and t.headstockNumber != ''">
+				and HEADSTOCK_NUMBER = #{t.headstockNumber}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.truckType != null and t.truckType != ''">
+				and TRUCK_TYPE = #{t.truckType}
+			</if>
+			<if test="t.headstockFund != null and t.headstockFund != ''">
+				and HEADSTOCK_FUND = #{t.headstockFund}
+			</if>
+			<if
+				test="t.headstockDepreciation != null and t.headstockDepreciation != ''">
+				and HEADSTOCK_DEPRECIATION = #{t.headstockDepreciation}
+			</if>
+			<if test="t.purchaseTime != null and t.purchaseTime != ''">
+				and PURCHASE_TIME = #{t.purchaseTime}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.trailerFund != null and t.trailerFund != ''">
+				and TRAILER_FUND = #{t.trailerFund}
+			</if>
+			<if test="t.manufacturer != null and t.manufacturer != ''">
+				and MANUFACTURER = #{t.manufacturer}
+			</if>
+			<if test="t.annualTime != null and t.annualTime != ''">
+				and ANNUAL_TIME = #{t.annualTime}
+			</if>
+			<if test="t.trailerNumber != null and t.trailerNumber != ''">
+				and TRAILER_NUMBER = #{t.trailerNumber}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="MotorcadeTruck"
+		resultType="MotorcadeTruck">
+		select
+		<include refid="selectId" />
+		from MOTOR_TRUCK
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="truckCategory != null and truckCategory != ''">
+				and TRUCK_CATEGORY = #{truckCategory}
+			</if>
+			<if test="trailerDepreciation != null and trailerDepreciation != ''">
+				and TRAILER_DEPRECIATION = #{trailerDepreciation}
+			</if>
+			<if test="headstockNumber != null and headstockNumber != ''">
+				and HEADSTOCK_NUMBER = #{headstockNumber}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="truckType != null and truckType != ''">
+				and TRUCK_TYPE = #{truckType}
+			</if>
+			<if test="headstockFund != null and headstockFund != ''">
+				and HEADSTOCK_FUND = #{headstockFund}
+			</if>
+			<if test="headstockDepreciation != null and headstockDepreciation != ''">
+				and HEADSTOCK_DEPRECIATION = #{headstockDepreciation}
+			</if>
+			<if test="purchaseTime != null and purchaseTime != ''">
+				and PURCHASE_TIME = #{purchaseTime}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="trailerFund != null and trailerFund != ''">
+				and TRAILER_FUND = #{trailerFund}
+			</if>
+			<if test="manufacturer != null and manufacturer != ''">
+				and MANUFACTURER = #{manufacturer}
+			</if>
+			<if test="annualTime != null and annualTime != ''">
+				and ANNUAL_TIME = #{annualTime}
+			</if>
+			<if test="trailerNumber != null and trailerNumber != ''">
+				and TRAILER_NUMBER = #{trailerNumber}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="MotorcadeTruck">
+		select
+		<include refid="selectId" />
+		from MOTOR_TRUCK
+	</select>
+
+	<select id="count" parameterType="MotorcadeTruck" resultType="int">
+		select count(0) from MOTOR_TRUCK
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="truckCategory != null and truckCategory != ''">
+				and TRUCK_CATEGORY = #{truckCategory}
+			</if>
+			<if test="trailerDepreciation != null and trailerDepreciation != ''">
+				and TRAILER_DEPRECIATION = #{trailerDepreciation}
+			</if>
+			<if test="headstockNumber != null and headstockNumber != ''">
+				and HEADSTOCK_NUMBER = #{headstockNumber}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="truckType != null and truckType != ''">
+				and TRUCK_TYPE = #{truckType}
+			</if>
+			<if test="headstockFund != null and headstockFund != ''">
+				and HEADSTOCK_FUND = #{headstockFund}
+			</if>
+			<if test="headstockDepreciation != null and headstockDepreciation != ''">
+				and HEADSTOCK_DEPRECIATION = #{headstockDepreciation}
+			</if>
+			<if test="purchaseTime != null and purchaseTime != ''">
+				and PURCHASE_TIME = #{purchaseTime}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="trailerFund != null and trailerFund != ''">
+				and TRAILER_FUND = #{trailerFund}
+			</if>
+			<if test="manufacturer != null and manufacturer != ''">
+				and MANUFACTURER = #{manufacturer}
+			</if>
+			<if test="annualTime != null and annualTime != ''">
+				and ANNUAL_TIME = #{annualTime}
+			</if>
+			<if test="trailerNumber != null and trailerNumber != ''">
+				and TRAILER_NUMBER = #{trailerNumber}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="MotorcadeTruck">
+		insert into MOTOR_TRUCK( CREATE_TIME, TRUCK_CATEGORY,
+		TRAILER_DEPRECIATION, HEADSTOCK_NUMBER, STATUS, TRUCK_TYPE,
+		HEADSTOCK_FUND, HEADSTOCK_DEPRECIATION, PURCHASE_TIME, ID, DESCN,
+		TRAILER_FUND, MANUFACTURER, ANNUAL_TIME, TRAILER_NUMBER, MODIFY_TIME,
+		DISP_INX )values ( #{createTime}, #{truckCategory},
+		#{trailerDepreciation}, #{headstockNumber}, #{status}, #{truckType},
+		#{headstockFund}, #{headstockDepreciation}, #{purchaseTime},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{descn},
+		#{trailerFund},
+		#{manufacturer},
+		#{annualTime},
+		#{trailerNumber},
+		#{modifyTime},
+		#{displayIndex}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from MOTOR_TRUCK where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="MotorcadeTruck">
+		select
+		<include refid="selectId" />
+		from MOTOR_TRUCK where id=#{id}
+	</select>
+
+	<update id="update" parameterType="MotorcadeTruck">
+		update MOTOR_TRUCK
+		<set>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="truckCategory != null and truckCategory != ''">
+				TRUCK_CATEGORY=#{truckCategory},
+			</if>
+			<if test="trailerDepreciation != null and trailerDepreciation != ''">
+				TRAILER_DEPRECIATION=#{trailerDepreciation},
+			</if>
+			<if test="headstockNumber != null and headstockNumber != ''">
+				HEADSTOCK_NUMBER=#{headstockNumber},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="truckType != null and truckType != ''">
+				TRUCK_TYPE=#{truckType},
+			</if>
+			<if test="headstockFund != null and headstockFund != ''">
+				HEADSTOCK_FUND=#{headstockFund},
+			</if>
+			<if test="headstockDepreciation != null and headstockDepreciation != ''">
+				HEADSTOCK_DEPRECIATION=#{headstockDepreciation},
+			</if>
+			<if test="purchaseTime != null and purchaseTime != ''">
+				PURCHASE_TIME=#{purchaseTime},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="trailerFund != null and trailerFund != ''">
+				TRAILER_FUND=#{trailerFund},
+			</if>
+			<if test="manufacturer != null and manufacturer != ''">
+				MANUFACTURER=#{manufacturer},
+			</if>
+			<if test="annualTime != null and annualTime != ''">
+				ANNUAL_TIME=#{annualTime},
+			</if>
+			<if test="trailerNumber != null and trailerNumber != ''">
+				TRAILER_NUMBER=#{trailerNumber},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

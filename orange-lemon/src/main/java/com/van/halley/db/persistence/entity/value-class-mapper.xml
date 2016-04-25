@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="valueclass">
+	<sql id="selectId">
+		DESCN AS descn,
+		ID AS id,
+		CREATE_TIME AS createTime,
+		STATUS AS status,
+		TABLE_NAME AS tableName,
+		CLS_NAME AS className,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex
+	</sql>
+
+	<select id="query" parameterType="java.util.HashMap" resultType="ValueClass">
+		select
+		<include refid="selectId" />
+		from SYS_DIC_VALUE_CLASS
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.tableName != null and t.tableName != ''">
+				and TABLE_NAME = #{t.tableName}
+			</if>
+			<if test="t.className != null and t.className != ''">
+				and CLS_NAME = #{t.className}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="ValueClass" resultType="ValueClass">
+		select
+		<include refid="selectId" />
+		from SYS_DIC_VALUE_CLASS
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="tableName != null and tableName != ''">
+				and TABLE_NAME = #{tableName}
+			</if>
+			<if test="className != null and className != ''">
+				and CLS_NAME = #{className}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="ValueClass">
+		select
+		<include refid="selectId" />
+		from SYS_DIC_VALUE_CLASS
+	</select>
+
+	<select id="count" parameterType="ValueClass" resultType="int">
+		select count(0) from SYS_DIC_VALUE_CLASS
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.tableName != null and t.tableName != ''">
+				and TABLE_NAME = #{t.tableName}
+			</if>
+			<if test="t.className != null and t.className != ''">
+				and CLS_NAME = #{t.className}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="ValueClass"> insert into SYS_DIC_VALUE_CLASS(
+		DESCN, ID, CREATE_TIME, STATUS, TABLE_NAME, CLS_NAME, MODIFY_TIME,
+		DISP_INX )values ( #{descn}, UUID(), #{createTime}, #{status},
+		#{tableName}, #{className}, #{modifyTime}, #{displayIndex} )
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from SYS_DIC_VALUE_CLASS where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="ValueClass">
+		select
+		<include refid="selectId" />
+		from SYS_DIC_VALUE_CLASS where id=#{id}
+	</select>
+
+	<update id="update" parameterType="ValueClass">
+		update SYS_DIC_VALUE_CLASS
+		<set>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="tableName != null and tableName != ''">
+				TABLE_NAME=#{tableName},
+			</if>
+			<if test="className != null and className != ''">
+				CLS_NAME=#{className},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="salarygrade">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		MODIFY_TIME AS modifyTime,
+		CREATE_TIME AS createTime,
+		BASIC_SALARY AS basicSalary,
+		POST_SALARY AS postSalary,
+		START_TIME AS startTime,
+		ID AS id,
+		END_TIME AS endTime,
+		GRADE_COUNT AS gradeCount,
+		DESCN AS descn,
+		DISP_INX AS displayIndex,
+		STATUS AS status,
+		
+		USER_ID
+	</sql>
+	
+	<resultMap id="salaryGradeMap" type="com.van.halley.db.persistence.entity.SalaryGrade">
+        <id property="id" column="ID" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="basicSalary" column="BASIC_SALARY" />
+        <result property="postSalary" column="POST_SALARY" />
+        <result property="startTime" column="START_TIME" />
+        <result property="endTime" column="END_TIME" />
+        <result property="gradeCount" column="GRADE_COUNT" />
+        <result property="descn" column="DESCN" />
+        <result property="displayIndex" column="DISP_INX" />
+        <result property="status" column="STATUS" />
+        
+        <association property="user" column="USER_ID" select="user.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="salaryGradeMap">
+		select
+		<include refid="selectId" />
+		from SALARY_GRADE
+		<where>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.basicSalary != null and t.basicSalary != ''">
+				and BASIC_SALARY = #{t.basicSalary}
+			</if>
+			<if test="t.postSalary != null and t.postSalary != ''">
+				and POST_SALARY = #{t.postSalary}
+			</if>
+			<if test="t.startTime != null and t.startTime != ''">
+				and START_TIME = #{t.startTime}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.endTime != null and t.endTime != ''">
+				and END_TIME = #{t.endTime}
+			</if>
+			<if test="t.gradeCount != null and t.gradeCount != ''">
+				and GRADE_COUNT = #{t.gradeCount}
+			</if>
+			<if test="t.user != null and t.user != ''">
+				and USER_ID = #{t.user.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="SalaryGrade"
+		resultMap="salaryGradeMap">
+		select
+		<include refid="selectId" />
+		from SALARY_GRADE
+		<where>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="basicSalary != null and basicSalary != ''">
+				and BASIC_SALARY = #{basicSalary}
+			</if>
+			<if test="postSalary != null and postSalary != ''">
+				and POST_SALARY = #{postSalary}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				and START_TIME = #{startTime}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and END_TIME = #{endTime}
+			</if>
+			<if test="gradeCount != null and gradeCount != ''">
+				and GRADE_COUNT = #{gradeCount}
+			</if>
+			<if test="user != null and user != ''">
+				and USER_ID = #{user.id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="salaryGradeMap">
+		select
+		<include refid="selectId" />
+		from SALARY_GRADE
+	</select>
+
+	<select id="count" parameterType="SalaryGrade" resultType="int">
+		select count(0) from SALARY_GRADE
+		<where>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="basicSalary != null and basicSalary != ''">
+				and BASIC_SALARY = #{basicSalary}
+			</if>
+			<if test="postSalary != null and postSalary != ''">
+				and POST_SALARY = #{postSalary}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				and START_TIME = #{startTime}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and END_TIME = #{endTime}
+			</if>
+			<if test="gradeCount != null and gradeCount != ''">
+				and GRADE_COUNT = #{gradeCount}
+			</if>
+			<if test="user != null and user != ''">
+				and USER_ID = #{user.id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="SalaryGrade">
+		insert into SALARY_GRADE( MODIFY_TIME, CREATE_TIME, BASIC_SALARY,
+		POST_SALARY, START_TIME, ID, END_TIME, GRADE_COUNT, USER_ID, DESCN,
+		DISP_INX, STATUS )values ( #{modifyTime}, #{createTime},
+		#{basicSalary}, #{postSalary}, #{startTime},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{endTime},
+		#{gradeCount},
+		#{user.id},
+		#{descn},
+		#{displayIndex},
+		#{status}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from SALARY_GRADE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="salaryGradeMap">
+		select
+		<include refid="selectId" />
+		from SALARY_GRADE where id=#{id}
+	</select>
+
+	<update id="update" parameterType="SalaryGrade">
+		update SALARY_GRADE
+		<set>
+			MODIFY_TIME=SYSDATE(),
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="basicSalary != null and basicSalary != ''">
+				BASIC_SALARY=#{basicSalary},
+			</if>
+			<if test="postSalary != null and postSalary != ''">
+				POST_SALARY=#{postSalary},
+			</if>
+			<if test="startTime != null and startTime != ''">
+				START_TIME=#{startTime},
+			</if>
+			<if test="endTime != null and endTime != ''">
+				END_TIME=#{endTime},
+			</if>
+			<if test="gradeCount != null and gradeCount != ''">
+				GRADE_COUNT=#{gradeCount},
+			</if>
+			<if test="user != null and user != ''">
+				USER_ID=#{user.id},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+		</set>
+		WHERE ID=#{id}
+	</update>
+</mapper>

@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bpmconfigdelegate">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		DESCN AS descn,
+		START_TIME AS startTime,
+		ID AS id,
+		CREATE_TIME AS createTime,
+		STATUS AS status,
+		DELEGATE_TYPE AS delegateType,
+		END_TIME AS endTime,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		
+		BPM_CONF_BASIS_ID,
+		TASK_ASSIGNEE_ID,
+		TASK_AGENT_ID
+	</sql>
+	
+	<resultMap id="bpmConfigDelegateMap" type="com.van.halley.db.persistence.entity.BpmConfigDelegate">
+        <id property="id" column="ID" />
+        <result property="delegateType" column="DELEGATE_TYPE" />
+        <result property="startTime" column="START_TIME" />
+        <result property="endTime" column="END_TIME" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="bpmConfigBasis" column="BPM_CONF_BASIS_ID" select="bpmconfigbasis.getById" ></association>
+        <association property="taskAssignee" column="TASK_ASSIGNEE_ID" select="user.getById" ></association>
+        <association property="taskAgent" column="TASK_AGENT_ID" select="user.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="bpmConfigDelegateMap">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_DELEGATE
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.startTime != null and t.startTime != ''">
+				and START_TIME = #{t.startTime}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.taskAgent != null and t.taskAgent != ''">
+				and TASK_AGENT_ID = #{t.taskAgent.id}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.bpmConfigBasis != null and t.bpmConfigBasis != ''">
+				and BPM_CONF_BASIS_ID = #{t.bpmConfigBasis.id}
+			</if>
+			<if test="t.delegateType != null and t.delegateType != ''">
+				and DELEGATE_TYPE = #{t.delegateType}
+			</if>
+			<if test="t.endTime != null and t.endTime != ''">
+				and END_TIME = #{t.endTime}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.taskAssignee != null and t.taskAssignee != ''">
+				and TASK_ASSIGNEE_ID = #{t.taskAssignee.id}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="BpmConfigDelegate"
+		resultMap="bpmConfigDelegateMap">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_DELEGATE
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				and START_TIME = #{startTime}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="taskAgent != null and taskAgent != ''">
+				and TASK_AGENT_ID = #{taskAgent.id}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="bpmConfigBasis != null and bpmConfigBasis != ''">
+				and BPM_CONF_BASIS_ID = #{bpmConfigBasis.id}
+			</if>
+			<if test="delegateType != null and delegateType != ''">
+				and DELEGATE_TYPE = #{delegateType}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and END_TIME = #{endTime}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="taskAssignee != null and taskAssignee != ''">
+				and TASK_ASSIGNEE_ID = #{taskAssignee.id}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="bpmConfigDelegateMap">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_DELEGATE
+	</select>
+
+	<select id="count" parameterType="BpmConfigDelegate" resultType="int">
+		select count(0) from BPM_CONF_DELEGATE
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				and START_TIME = #{startTime}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="taskAgent != null and taskAgent != ''">
+				and TASK_AGENT_ID = #{taskAgent.id}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="bpmConfigBasis != null and bpmConfigBasis != ''">
+				and BPM_CONF_BASIS_ID = #{bpmConfigBasis.id}
+			</if>
+			<if test="delegateType != null and delegateType != ''">
+				and DELEGATE_TYPE = #{delegateType}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and END_TIME = #{endTime}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="taskAssignee != null and taskAssignee != ''">
+				and TASK_ASSIGNEE_ID = #{taskAssignee.id}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="BpmConfigDelegate">
+		insert into BPM_CONF_DELEGATE( DESCN, START_TIME, ID, CREATE_TIME,
+		TASK_AGENT_ID, STATUS, BPM_CONF_BASIS_ID, DELEGATE_TYPE, END_TIME,
+		MODIFY_TIME, TASK_ASSIGNEE_ID, DISP_INX )values ( #{descn},
+		#{startTime},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{createTime},
+		#{taskAgent.id},
+		#{status},
+		#{bpmConfigBasis.id},
+		#{delegateType},
+		#{endTime},
+		#{modifyTime},
+		#{taskAssignee.id},
+		#{displayIndex}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from BPM_CONF_DELEGATE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="bpmConfigDelegateMap">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_DELEGATE where id=#{id}
+	</select>
+
+	<update id="update" parameterType="BpmConfigDelegate">
+		update BPM_CONF_DELEGATE
+		<set>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="startTime != null and startTime != ''">
+				START_TIME=#{startTime},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="taskAgent != null and taskAgent != ''">
+				TASK_AGENT_ID=#{taskAgent.id},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="bpmConfigBasis != null and bpmConfigBasis != ''">
+				BPM_CONF_BASIS_ID=#{bpmConfigBasis.id},
+			</if>
+			<if test="delegateType != null and delegateType != ''">
+				DELEGATE_TYPE=#{delegateType},
+			</if>
+			<if test="endTime != null and endTime != ''">
+				END_TIME=#{endTime},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="taskAssignee != null and taskAssignee != ''">
+				TASK_ASSIGNEE_ID=#{taskAssignee.id},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

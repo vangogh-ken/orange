@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reporttemplate">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		DESCN AS descn,
+		ID AS id,
+		CREATE_TIME AS createTime,
+		TEMPLATE_TYPE AS templateType,
+		STATUS AS status,
+		TEMPLATE_FILE AS templateFile,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		TEMPLATE_NAME AS templateName,
+		BEAN_CLASS AS beanClass,
+		METHOD_NAME AS methodName,
+		GRAPH_URL AS graphUrl,
+		REP_CATEGORY_ID
+	</sql>
+	
+	<resultMap id="reportTemplateMap" type="com.van.halley.db.persistence.entity.ReportTemplate">
+        <id property="id" column="ID" />
+        <result property="templateName" column="TEMPLATE_NAME" />
+        <result property="templateType" column="TEMPLATE_TYPE" />
+        <result property="templateFile" column="TEMPLATE_FILE" />
+        <result property="beanClass" column="BEAN_CLASS" />
+		<result property="methodName" column="METHOD_NAME" />
+		<result property="graphUrl" column="GRAPH_URL" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="reportCategory" column="REP_CATEGORY_ID" select="reportcategory.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="reportTemplateMap">
+		select
+		<include refid="selectId" />
+		from REP_TEMPLATE
+		<where>
+			<if test="t.graphUrl != null and t.graphUrl != ''">
+				and GRAPH_URL = #{t.graphUrl}
+			</if>
+			<if test="t.beanClass != null and t.beanClass != ''">
+				and BEAN_CLASS = #{t.beanClass}
+			</if>
+			<if test="t.methodName != null and t.methodName != ''">
+				and METHOD_NAME = #{t.methodName}
+			</if>
+			<if test="t.reportCategory != null and t.reportCategory != ''">
+				and REP_CATEGORY_ID = #{t.reportCategory.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.templateType != null and t.templateType != ''">
+				and TEMPLATE_TYPE = #{t.templateType}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.templateFile != null and t.templateFile != ''">
+				and TEMPLATE_FILE = #{t.templateFile}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.templateName != null and t.templateName != ''">
+				and TEMPLATE_NAME = #{t.templateName}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="ReportTemplate"
+		resultMap="reportTemplateMap">
+		select
+		<include refid="selectId" />
+		from REP_TEMPLATE
+		<where>
+			<if test="graphUrl != null and graphUrl != ''">
+				and GRAPH_URL = #{graphUrl}
+			</if>
+			<if test="beanClass != null and beanClass != ''">
+				and BEAN_CLASS = #{beanClass}
+			</if>
+			<if test="methodName != null and methodName != ''">
+				and METHOD_NAME = #{methodName}
+			</if>
+			<if test="reportCategory != null and reportCategory != ''">
+				and REP_CATEGORY_ID = #{reportCategory.id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="templateType != null and templateType != ''">
+				and TEMPLATE_TYPE = #{templateType}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="templateFile != null and templateFile != ''">
+				and TEMPLATE_FILE = #{templateFile}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="templateName != null and templateName != ''">
+				and TEMPLATE_NAME = #{templateName}
+			</if>
+		</where>
+		
+		ORDER BY REP_CATEGORY_ID, CONVERT( TEMPLATE_NAME USING gbk ) COLLATE gbk_chinese_ci  ASC 
+	</select>
+
+	<select id="getAll" resultMap="reportTemplateMap">
+		select
+		<include refid="selectId" />
+		from REP_TEMPLATE ORDER BY REP_CATEGORY_ID, CONVERT( TEMPLATE_NAME USING gbk ) COLLATE gbk_chinese_ci  ASC 
+		<!--  
+		ORDER BY CONVERT( TEMPLATE_NAME USING gbk ) COLLATE gbk_chinese_ci 
+		-->
+	</select>
+
+	<select id="count" parameterType="ReportTemplate" resultType="int">
+		select count(0) from REP_TEMPLATE
+		<where>
+			<if test="graphUrl != null and graphUrl != ''">
+				and GRAPH_URL = #{graphUrl}
+			</if>
+			<if test="beanClass != null and beanClass != ''">
+				and BEAN_CLASS = #{beanClass}
+			</if>
+			<if test="methodName != null and methodName != ''">
+				and METHOD_NAME = #{methodName}
+			</if>
+			<if test="reportCategory != null and reportCategory != ''">
+				and REP_CATEGORY_ID = #{reportCategory.id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="templateType != null and templateType != ''">
+				and TEMPLATE_TYPE = #{templateType}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="templateFile != null and templateFile != ''">
+				and TEMPLATE_FILE = #{templateFile}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="templateName != null and templateName != ''">
+				and TEMPLATE_NAME = #{templateName}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="ReportTemplate">
+		insert into REP_TEMPLATE(GRAPH_URL, BEAN_CLASS, METHOD_NAME, REP_CATEGORY_ID,  DESCN, ID, CREATE_TIME, TEMPLATE_TYPE,
+		STATUS, TEMPLATE_FILE, MODIFY_TIME, DISP_INX, TEMPLATE_NAME )values (#{graphUrl}, #{beanClass}, #{methodName},
+		#{reportCategory.id},
+		#{descn},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{createTime},
+		#{templateType},
+		#{status},
+		#{templateFile},
+		#{modifyTime},
+		#{displayIndex},
+		#{templateName}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from REP_TEMPLATE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="reportTemplateMap">
+		select
+		<include refid="selectId" />
+		from REP_TEMPLATE where id=#{id}
+	</select>
+	
+	<!-- 获取用户的报表权限 -->
+	<select id="getByPositionId" parameterType="String" resultMap="reportTemplateMap">
+		SELECT 
+		<include refid="selectId" />
+		FROM REP_TEMPLATE WHERE TEMPLATE_TYPE='报表' AND STATUS='T' AND ID in(SELECT DISTINCT REP_TEMPLATE_ID FROM SYS_AUTH_ROLE_REP 
+		WHERE ROLE_ID in(SELECT ROLE_ID FROM SYS_AUTH_POSITION_ROLE WHERE POSITION_ID=#{positionId}))
+		ORDER BY REP_CATEGORY_ID, DISP_INX ASC
+	</select>
+	
+	<!-- 角色与报表之间的关联-->
+	<select id="getByRoleId" parameterType="String" resultMap="reportTemplateMap">
+		select
+		<include refid="selectId" />
+		from REP_TEMPLATE where STATUS='T' AND id in (SELECT REP_TEMPLATE_ID FROM SYS_AUTH_ROLE_REP where ROLE_ID=#{roleId})
+		ORDER BY REP_CATEGORY_ID, DISP_INX ASC
+	</select>
+	<insert id="addRoleReport" parameterType="RoleReport">
+		insert into SYS_AUTH_ROLE_REP(ID, ROLE_ID, REP_TEMPLATE_ID) values (UUID(), #{roleId}, #{reportTemplateId})
+	</insert>
+	<delete id="deleteRoleReport" parameterType="String">
+		delete from SYS_AUTH_ROLE_REP where ROLE_ID=#{roleId}
+	</delete>
+
+	<update id="update" parameterType="ReportTemplate">
+		update REP_TEMPLATE
+		<set>
+			<if test="graphUrl != null and graphUrl != ''">
+				GRAPH_URL = #{graphUrl},
+			</if>
+			<if test="beanClass != null and beanClass != ''">
+				BEAN_CLASS = #{beanClass},
+			</if>
+			<if test="methodName != null and methodName != ''">
+				METHOD_NAME = #{methodName},
+			</if>
+			<if test="reportCategory != null and reportCategory != ''">
+				REP_CATEGORY_ID = #{reportCategory.id},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="templateType != null and templateType != ''">
+				TEMPLATE_TYPE=#{templateType},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="templateFile != null and templateFile != ''">
+				TEMPLATE_FILE=#{templateFile},
+			</if>
+			<!--  
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			-->
+				MODIFY_TIME=SYSDATE(),
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="templateName != null and templateName != ''">
+				TEMPLATE_NAME=#{templateName},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

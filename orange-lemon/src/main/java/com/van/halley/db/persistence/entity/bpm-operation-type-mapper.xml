@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bpmoperationtype">
+	<sql id="selectId">
+		ID AS id,
+		NAME AS name,
+		TYPE AS type,
+		URL AS url,
+		DESCRIPTION AS description,
+		BLANK AS blank
+	</sql>
+	<select id="query" parameterType="java.util.HashMap" resultType="BpmOperationType">
+		select
+		<include refid="selectId" />
+		from BPM_OPERATION_TYPE
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.name != null and t.name != ''">
+				and NAME = #{t.name}
+			</if>
+			<if test="t.type != null and t.type != ''">
+				and TYPE = #{t.type}
+			</if>
+			<if test="t.url != null and t.url != ''">
+				and URL = #{t.url}
+			</if>
+			<if test="t.description != null and t.description != ''">
+				and DESCRIPTION = #{t.description}
+			</if>
+			<if test="t.blank != null and t.blank != ''">
+				and BLANK = #{t.blank}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+	<select id="queryForList" parameterType="BpmOperationType"
+		resultType="BpmOperationType">
+		select
+		<include refid="selectId" />
+		from BPM_OPERATION_TYPE
+		<where>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="name != null and name != ''">
+				and NAME = #{name}
+			</if>
+			<if test="type != null and type != ''">
+				and TYPE = #{type}
+			</if>
+			<if test="url != null and url != ''">
+				and URL = #{url}
+			</if>
+			<if test="description != null and description != ''">
+				and DESCRIPTION = #{description}
+			</if>
+			<if test="blank != null and blank != ''">
+				and BLANK = #{blank}
+			</if>
+		</where>
+	</select>
+	<select id="getAll" resultType="BpmOperationType">
+		select
+		<include refid="selectId" />
+		from BPM_OPERATION_TYPE
+	</select>
+	<select id="count" parameterType="BpmOperationType" resultType="int">
+		select count(0) from BPM_OPERATION_TYPE
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.name != null and t.name != ''">
+				and NAME = #{t.name}
+			</if>
+			<if test="t.type != null and t.type != ''">
+				and TYPE = #{t.type}
+			</if>
+			<if test="t.url != null and t.url != ''">
+				and URL = #{t.url}
+			</if>
+			<if test="t.description != null and t.description != ''">
+				and DESCRIPTION = #{t.description}
+			</if>
+			<if test="t.blank != null and t.blank != ''">
+				and BLANK = #{t.blank}
+			</if>
+		</where>
+	</select>
+	<insert id="add" parameterType="BpmOperationType"> insert into BPM_OPERATION_TYPE(
+		ID, NAME, TYPE, URL, DESCRIPTION, BLANK )values (UUID(), #{name}, #{type},
+		#{url}, #{description},#{blank} )
+	</insert>
+	<delete id="deleteById" parameterType="String"> delete from
+		BPM_OPERATION_TYPE where id=#{id}
+	</delete>
+	<select id="getById" parameterType="String" resultType="BpmOperationType">
+		select
+		<include refid="selectId" />
+		from BPM_OPERATION_TYPE where id=#{id}
+	</select>
+	<update id="update" parameterType="BpmOperationType">
+		update BPM_OPERATION_TYPE
+		<set>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="name != null and name != ''">
+				NAME=#{name},
+			</if>
+			<if test="type != null and type != ''">
+				TYPE=#{type},
+			</if>
+			<if test="url != null and url != ''">
+				URL=#{url},
+			</if>
+			<if test="description != null and description != ''">
+				DESCRIPTION=#{description},
+			</if>
+			<if test="blank != null and blank != ''">
+				BLANK = #{blank}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

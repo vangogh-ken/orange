@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans.xsd   
+    http://www.springframework.org/schema/context   
+    http://www.springframework.org/schema/context/spring-context.xsd  
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/task 
+    http://www.springframework.org/schema/task/spring-task.xsd     
+    http://www.springframework.org/schema/aop 
+     http://www.springframework.org/schema/aop/spring-aop.xsd">
+	
+	<bean id="wxCpFacade" class="com.van.halley.wx.cp.core.WxCpFacade"/>
+	
+	<bean id="wxCpConfigStorage" class="me.chanjar.weixin.cp.api.WxCpInMemoryConfigStorage">
+		<property name="corpId" value="${wx.cp.corpId.corpId}"/>
+		<property name="corpSecret" value="${wx.cp.corpId.corpSecret}"/>
+		<property name="agentId" value="${wx.cp.corpId.agentId.default}"/>
+		<property name="token" value="${wx.cp.corpId.token}"/>
+		<property name="aesKey" value="${wx.cp.corpId.aesKey}"/>
+		<property name="expiresTime" value="${wx.cp.corpId.expiresTime}"/>
+		<property name="oauth2redirectUri" value="${wx.cp.corpId.oauth2redirectUri}"/>
+	</bean>
+	
+	<bean id="wxCpService" class="me.chanjar.weixin.cp.api.WxCpServiceImpl">
+		<property name="wxCpConfigStorage" ref="wxCpConfigStorage"></property>
+	</bean>
+	
+	<bean id="wxCpCryptUtil" class="me.chanjar.weixin.cp.util.crypto.WxCpCryptUtil">
+		<constructor-arg name="wxCpConfigStorage" ref="wxCpConfigStorage"></constructor-arg>
+	</bean>
+	
+</beans>

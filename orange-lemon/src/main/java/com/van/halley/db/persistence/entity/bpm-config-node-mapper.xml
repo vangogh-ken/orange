@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bpmconfignode">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		TD_NAME AS tdName,
+		STATUS AS status,
+		ON_CREATE AS onCreate,
+		TD_KEY AS tdKey,
+		SOURCE_STATUS AS sourceStatus,
+		PD_ID AS pdId,
+		PD_KEY AS pdKey,
+		DESCN AS descn,
+		ID AS id,
+		PD_NAME AS pdName,
+		ON_COMPLETE AS onComplete,
+		TD_LISTNERS AS tdListners,
+		TARGET_STATUS AS targetStatus,
+		MODIFY_TIME AS modifyTime,
+		DUE_DATE AS dueDate,
+		DISP_INX AS displayIndex,
+		
+		BASIS_STATUS_ID
+	</sql>
+	
+	<resultMap id="bpmConfigNodeMap" type="com.van.halley.db.persistence.entity.BpmConfigNode">
+        <id property="id" column="ID" />
+        <result property="pdId" column="PD_ID" />
+        <result property="pdKey" column="PD_KEY" />
+        <result property="pdName" column="PD_NAME" />
+        <result property="tdKey" column="TD_KEY" />
+        <result property="tdName" column="TD_NAME" />
+        <result property="tdListners" column="TD_LISTNERS" />
+        <result property="dueDate" column="DUE_DATE" />
+        <result property="sourceStatus" column="SOURCE_STATUS" />
+        <result property="targetStatus" column="TARGET_STATUS" />
+        <result property="onCreate" column="ON_CREATE" />
+        <result property="onComplete" column="ON_COMPLETE" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <!-- 
+        <association property="tdAssignee" column="TD_ASSIGNEE_ID" select="user.getById" ></association>
+        <association property="tdCandidateGroup" column="TD_CANDIDATE_GROUP_ID" select="role.getById" ></association>
+         -->
+        <association property="basisStatus" column="BASIS_STATUS_ID" select="basisstatus.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="bpmConfigNodeMap">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_NODE
+		<where>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.basisStatus != null and t.basisStatus != ''">
+				and BASIS_STATUS_ID = #{t.basisStatus.id}
+			</if>
+			<if test="t.tdName != null and t.tdName != ''">
+				and TD_NAME = #{t.tdName}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.onCreate != null and t.onCreate != ''">
+				and ON_CREATE = #{t.onCreate}
+			</if>
+			<if test="t.tdKey != null and t.tdKey != ''">
+				and TD_KEY = #{t.tdKey}
+			</if>
+			<if test="t.sourceStatus != null and t.sourceStatus != ''">
+				and SOURCE_STATUS = #{t.sourceStatus}
+			</if>
+			<if test="t.pdId != null and t.pdId != ''">
+				and PD_ID = #{t.pdId}
+			</if>
+			<if test="t.pdKey != null and t.pdKey != ''">
+				and PD_KEY = #{t.pdKey}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.pdName != null and t.pdName != ''">
+				and PD_NAME = #{t.pdName}
+			</if>
+			<if test="t.onComplete != null and t.onComplete != ''">
+				and ON_COMPLETE = #{t.onComplete}
+			</if>
+			<if test="t.tdListners != null and t.tdListners != ''">
+				and TD_LISTNERS = #{t.tdListners}
+			</if>
+			<if test="t.targetStatus != null and t.targetStatus != ''">
+				and TARGET_STATUS = #{t.targetStatus}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.dueDate != null and t.dueDate != ''">
+				and DUE_DATE = #{t.dueDate}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="BpmConfigNode"
+		resultMap="bpmConfigNodeMap">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_NODE
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="basisStatus != null and basisStatus != ''">
+				and BASIS_STATUS_ID = #{basisStatus.id}
+			</if>
+			<if test="tdName != null and tdName != ''">
+				and TD_NAME = #{tdName}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="onCreate != null and onCreate != ''">
+				and ON_CREATE = #{onCreate}
+			</if>
+			<if test="tdKey != null and tdKey != ''">
+				and TD_KEY = #{tdKey}
+			</if>
+			<if test="sourceStatus != null and sourceStatus != ''">
+				and SOURCE_STATUS = #{sourceStatus}
+			</if>
+			<if test="pdId != null and pdId != ''">
+				and PD_ID = #{pdId}
+			</if>
+			<if test="pdKey != null and pdKey != ''">
+				and PD_KEY = #{pdKey}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="pdName != null and pdName != ''">
+				and PD_NAME = #{pdName}
+			</if>
+			<if test="onComplete != null and onComplete != ''">
+				and ON_COMPLETE = #{onComplete}
+			</if>
+			<if test="tdListners != null and tdListners != ''">
+				and TD_LISTNERS = #{tdListners}
+			</if>
+			<if test="targetStatus != null and targetStatus != ''">
+				and TARGET_STATUS = #{targetStatus}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="dueDate != null and dueDate != ''">
+				and DUE_DATE = #{dueDate}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="bpmConfigNodeMap">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_NODE
+	</select>
+
+	<select id="count" parameterType="BpmConfigNode" resultType="int">
+		select count(0) from BPM_CONF_NODE
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="basisStatus != null and basisStatus != ''">
+				and BASIS_STATUS_ID = #{basisStatus.id}
+			</if>
+			<if test="tdName != null and tdName != ''">
+				and TD_NAME = #{tdName}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="onCreate != null and onCreate != ''">
+				and ON_CREATE = #{onCreate}
+			</if>
+			<if test="tdKey != null and tdKey != ''">
+				and TD_KEY = #{tdKey}
+			</if>
+			<if test="sourceStatus != null and sourceStatus != ''">
+				and SOURCE_STATUS = #{sourceStatus}
+			</if>
+			<if test="pdId != null and pdId != ''">
+				and PD_ID = #{pdId}
+			</if>
+			<if test="pdKey != null and pdKey != ''">
+				and PD_KEY = #{pdKey}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="pdName != null and pdName != ''">
+				and PD_NAME = #{pdName}
+			</if>
+			<if test="onComplete != null and onComplete != ''">
+				and ON_COMPLETE = #{onComplete}
+			</if>
+			<if test="tdListners != null and tdListners != ''">
+				and TD_LISTNERS = #{tdListners}
+			</if>
+			<if test="targetStatus != null and targetStatus != ''">
+				and TARGET_STATUS = #{targetStatus}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="dueDate != null and dueDate != ''">
+				and DUE_DATE = #{dueDate}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="BpmConfigNode">
+		insert into BPM_CONF_NODE( CREATE_TIME, BASIS_STATUS_ID, TD_NAME, 
+		STATUS, ON_CREATE, TD_KEY, SOURCE_STATUS, PD_ID, PD_KEY, DESCN, ID, 
+		PD_NAME, ON_COMPLETE, TD_LISTNERS, TARGET_STATUS, MODIFY_TIME, DUE_DATE, DISP_INX )
+		values (
+		#{createTime}, #{basisStatus.id}, #{tdName},
+		#{status}, #{onCreate}, #{tdKey}, #{sourceStatus},
+		#{pdId}, #{pdKey}, #{descn},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{pdName},
+		#{onComplete},
+		#{tdListners},
+		#{targetStatus},
+		#{modifyTime},
+		#{dueDate},
+		#{displayIndex}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from BPM_CONF_NODE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="bpmConfigNodeMap">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_NODE where id=#{id}
+	</select>
+
+	<update id="update" parameterType="BpmConfigNode">
+		update BPM_CONF_NODE
+		<set>
+			<!--  
+			<if test="tdAssignee != null and tdAssignee != ''">
+				TD_ASSIGNEE_ID=#{tdAssignee},
+			</if>
+			<if test="tdCandidateGroup != null and tdCandidateGroup != ''">
+				TD_CANDIDATE_GROUP_ID=#{tdCandidateGroup},
+			</if>
+			TD_ASSIGNEE_ID=#{tdAssignee},
+			TD_CANDIDATE_GROUP_ID=#{tdCandidateGroup},
+			-->
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="basisStatus != null and basisStatus != ''">
+				BASIS_STATUS_ID=#{basisStatus.id},
+			</if>
+			<if test="tdName != null and tdName != ''">
+				TD_NAME=#{tdName},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="onCreate != null and onCreate != ''">
+				ON_CREATE=#{onCreate},
+			</if>
+			<if test="tdKey != null and tdKey != ''">
+				TD_KEY=#{tdKey},
+			</if>
+			<if test="sourceStatus != null and sourceStatus != ''">
+				SOURCE_STATUS=#{sourceStatus},
+			</if>
+			<if test="pdId != null and pdId != ''">
+				PD_ID=#{pdId},
+			</if>
+			<if test="pdKey != null and pdKey != ''">
+				PD_KEY=#{pdKey},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="pdName != null and pdName != ''">
+				PD_NAME=#{pdName},
+			</if>
+			<if test="onComplete != null and onComplete != ''">
+				ON_COMPLETE=#{onComplete},
+			</if>
+			<if test="tdListners != null and tdListners != ''">
+				TD_LISTNERS=#{tdListners},
+			</if>
+			<if test="targetStatus != null and targetStatus != ''">
+				TARGET_STATUS=#{targetStatus},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="dueDate != null and dueDate != ''">
+				DUE_DATE=#{dueDate},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	
+	<delete id="deleteByPdId" parameterType="String"> 
+		delete from BPM_CONF_NODE where PD_ID =#{pdId}
+	</delete>
+	
+	<select id="getByPdIdAndTdKey" parameterType="BpmConfigNode" resultMap="bpmConfigNodeMap">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_NODE where PD_ID=#{pdId} and TD_KEY=#{tdKey}
+	</select>
+</mapper>

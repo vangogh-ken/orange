@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cmscatalog">
+	<sql id="selectId">
+		ID AS id,
+		LOGO AS logo,
+		TEMPLATE_DETAIL AS templateDetail,
+		DESCRIPTION AS description,
+		KEYWORD AS keyword,
+		NAME AS name,
+		TEMPLATE_INDEX AS templateIndex,
+		TEMPLATE_LIST AS templateList,
+		CODE AS code,
+		TYPE AS type,
+		PRIORITY AS priority,
+		PARENT_ID
+	</sql>
+	
+	<resultMap id="cmsCatalogResult" type="com.van.halley.db.persistence.entity.CmsCatalog">
+        <id property="id" column="ID" />
+        <result property="logo" column="LOGO" />
+        <result property="templateDetail" column="TEMPLATE_DETAIL" />
+        <result property="description" column="DESCRIPTION" />
+        <result property="keyword" column="KEYWORD" />
+        <result property="name" column="NAME" />
+        <result property="templateIndex" column="TEMPLATE_INDEX" />
+        <result property="templateList" column="TEMPLATE_LIST" />
+        <result property="code" column="CODE" />
+        <result property="type" column="TYPE" />
+        <result property="priority" column="PRIORITY" />
+        
+        <association property="cmsCatalog" column="PARENT_ID" select="cmscatalog.getById" ></association>
+    </resultMap>
+      
+	<select id="query" parameterType="java.util.HashMap" resultMap="cmsCatalogResult" >
+		select
+		<include refid="selectId" />
+		from OUT_CMS_CATALOG
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.logo != null and t.logo != ''">
+				and LOGO = #{t.logo}
+			</if>
+			<if test="t.templateDetail != null and t.templateDetail != ''">
+				and TEMPLATE_DETAIL = #{t.templateDetail}
+			</if>
+			<if test="t.description != null and t.description != ''">
+				and DESCRIPTION = #{t.description}
+			</if>
+			<if test="t.cmsCatalog != null and t.cmsCatalog != ''">
+				and PARENT_ID = #{t.cmsCatalog.id}
+			</if>
+			<if test="t.keyword != null and t.keyword != ''">
+				and KEYWORD = #{t.keyword}
+			</if>
+			<if test="t.name != null and t.name != ''">
+				and NAME = #{t.name}
+			</if>
+			<if test="t.templateIndex != null and t.templateIndex != ''">
+				and TEMPLATE_INDEX = #{t.templateIndex}
+			</if>
+			<if test="t.templateList != null and t.templateList != ''">
+				and TEMPLATE_LIST = #{t.templateList}
+			</if>
+			<if test="t.code != null and t.code != ''">
+				and CODE = #{t.code}
+			</if>
+			<if test="t.type != null and t.type != ''">
+				and TYPE = #{t.type}
+			</if>
+			<if test="t.priority != null and t.priority != ''">
+				and PRIORITY  = #{t.priority}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="CmsCatalog" resultMap="cmsCatalogResult">
+		select
+		<include refid="selectId" />
+		from OUT_CMS_CATALOG
+		<where>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="logo != null and logo != ''">
+				and LOGO = #{logo}
+			</if>
+			<if test="templateDetail != null and templateDetail != ''">
+				and TEMPLATE_DETAIL = #{templateDetail}
+			</if>
+			<if test="description != null and description != ''">
+				and DESCRIPTION = #{description}
+			</if>
+			<if test="cmsCatalog != null and cmsCatalog != ''">
+				and PARENT_ID = #{cmsCatalog.id}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				and KEYWORD = #{keyword}
+			</if>
+			<if test="name != null and name != ''">
+				and NAME = #{name}
+			</if>
+			<if test="templateIndex != null and templateIndex != ''">
+				and TEMPLATE_INDEX = #{templateIndex}
+			</if>
+			<if test="templateList != null and templateList != ''">
+				and TEMPLATE_LIST = #{templateList}
+			</if>
+			<if test="code != null and code != ''">
+				and CODE = #{code}
+			</if>
+			<if test="type != null and type != ''">
+				and TYPE = #{type}
+			</if>
+			<if test="priority != null and priority != ''">
+				and PRIORITY  = #{t.priority}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="cmsCatalogResult">
+		select
+		<include refid="selectId" />
+		from OUT_CMS_CATALOG ORDER BY PRIORITY ASC
+	</select>
+	<select id="count" parameterType="CmsCatalog" resultType="int">
+		select count(0) from OUT_CMS_CATALOG
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.logo != null and t.logo != ''">
+				and LOGO = #{t.logo}
+			</if>
+			<if test="t.templateDetail != null and t.templateDetail != ''">
+				and TEMPLATE_DETAIL = #{t.templateDetail}
+			</if>
+			<if test="t.description != null and t.description != ''">
+				and DESCRIPTION = #{t.description}
+			</if>
+			<if test="t.cmsCatalog != null and t.cmsCatalog != ''">
+				and PARENT_ID = #{t.cmsCatalog.id}
+			</if>
+			<if test="t.keyword != null and t.keyword != ''">
+				and KEYWORD = #{t.keyword}
+			</if>
+			<if test="t.name != null and t.name != ''">
+				and NAME = #{t.name}
+			</if>
+			<if test="t.templateIndex != null and t.templateIndex != ''">
+				and TEMPLATE_INDEX = #{t.templateIndex}
+			</if>
+			<if test="t.templateList != null and t.templateList != ''">
+				and TEMPLATE_LIST = #{t.templateList}
+			</if>
+			<if test="t.code != null and t.code != ''">
+				and CODE = #{t.code}
+			</if>
+			<if test="t.type != null and t.type != ''">
+				and TYPE = #{t.type}
+			</if>
+			<if test="t.priority != null and t.priority != ''">
+				and PRIORITY  = #{t.priority}
+			</if>
+		</where>
+	</select>
+	<insert id="add" parameterType="CmsCatalog"> insert into OUT_CMS_CATALOG( ID,
+		LOGO, TEMPLATE_DETAIL, DESCRIPTION, PARENT_ID, KEYWORD, NAME,
+		TEMPLATE_INDEX, TEMPLATE_LIST, CODE, TYPE, PRIORITY )values (UUID(), #{logo},
+		#{templateDetail}, #{description}, #{cmsCatalog.id}, #{keyword}, #{name},
+		#{templateIndex}, #{templateList}, #{code}, #{type}, #{priority})
+	</insert>
+	
+	<delete id="deleteById" parameterType="String">
+		delete from OUT_CMS_CATALOG where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="cmsCatalogResult">
+		select
+		<include refid="selectId" />
+		from OUT_CMS_CATALOG where id=#{id}
+	</select>
+
+	<update id="update" parameterType="CmsCatalog">
+		update OUT_CMS_CATALOG
+		<set>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="logo != null and logo != ''">
+				LOGO=#{logo},
+			</if>
+			<if test="templateDetail != null and templateDetail != ''">
+				TEMPLATE_DETAIL=#{templateDetail},
+			</if>
+			<if test="description != null and description != ''">
+				DESCRIPTION=#{description},
+			</if>
+			<if test="cmsCatalog != null and cmsCatalog != ''">
+				PARENT_ID=#{cmsCatalog.id},
+			</if>
+			<if test="keyword != null and keyword != ''">
+				KEYWORD=#{keyword},
+			</if>
+			<if test="name != null and name != ''">
+				NAME=#{name},
+			</if>
+			<if test="templateIndex != null and templateIndex != ''">
+				TEMPLATE_INDEX=#{templateIndex},
+			</if>
+			<if test="templateList != null and templateList != ''">
+				TEMPLATE_LIST=#{templateList},
+			</if>
+			<if test="code != null and code != ''">
+				CODE=#{code},
+			</if>
+			<if test="type != null and type != ''">
+				TYPE=#{type},
+			</if>
+			<if test="priority != null and priority != ''">
+				PRIORITY = #{priority}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freightinvoiceoffset">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		STATUS AS status,
+		ID AS id,
+		DESCN AS descn,
+		ELIMINATE_COUNT_RMB_A AS eliminateCountRmbA,
+		OFFSET_TYPE AS offsetType,
+		FRE_INVOICE_ID_A AS freightInvoiceIdA,
+		ELIMINATE_COUNT_DOLLAR_B AS eliminateCountDollarB,
+		FRE_INVOICE_ID_B AS freightInvoiceIdB,
+		ELIMINATE_COUNT_DOLLAR_A AS eliminateCountDollarA,
+		MODIFY_TIME AS modifyTime,
+		ELIMINATE_COUNT_RMB_B AS eliminateCountRmbB,
+		DISP_INX AS displayIndex
+	</sql>
+
+	<select id="query" parameterType="java.util.HashMap" resultType="FreightInvoiceOffset" useCache="false">
+		select
+		<include refid="selectId" />
+		from FRE_INVOICE_OFFSET
+		<where>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.eliminateCountRmbA != null and t.eliminateCountRmbA != ''">
+				and ELIMINATE_COUNT_RMB_A = #{t.eliminateCountRmbA}
+			</if>
+			<if test="t.offsetType != null and t.offsetType != ''">
+				and OFFSET_TYPE = #{t.offsetType}
+			</if>
+			<if test="t.freightInvoiceIdA != null and t.freightInvoiceIdA != ''">
+				and FRE_INVOICE_ID_A = #{t.freightInvoiceIdA}
+			</if>
+			<if
+				test="t.eliminateCountDollarB != null and t.eliminateCountDollarB != ''">
+				and ELIMINATE_COUNT_DOLLAR_B = #{t.eliminateCountDollarB}
+			</if>
+			<if test="t.freightInvoiceIdB != null and t.freightInvoiceIdB != ''">
+				and FRE_INVOICE_ID_B = #{t.freightInvoiceIdB}
+			</if>
+			<if
+				test="t.eliminateCountDollarA != null and t.eliminateCountDollarA != ''">
+				and ELIMINATE_COUNT_DOLLAR_A = #{t.eliminateCountDollarA}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.eliminateCountRmbB != null and t.eliminateCountRmbB != ''">
+				and ELIMINATE_COUNT_RMB_B = #{t.eliminateCountRmbB}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FreightInvoiceOffset"
+		resultType="FreightInvoiceOffset">
+		select
+		<include refid="selectId" />
+		from FRE_INVOICE_OFFSET
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="eliminateCountRmbA != null and eliminateCountRmbA != ''">
+				and ELIMINATE_COUNT_RMB_A = #{eliminateCountRmbA}
+			</if>
+			<if test="offsetType != null and offsetType != ''">
+				and OFFSET_TYPE = #{offsetType}
+			</if>
+			<if test="freightInvoiceIdA != null and freightInvoiceIdA != ''">
+				and FRE_INVOICE_ID_A = #{freightInvoiceIdA}
+			</if>
+			<if test="eliminateCountDollarB != null and eliminateCountDollarB != ''">
+				and ELIMINATE_COUNT_DOLLAR_B = #{eliminateCountDollarB}
+			</if>
+			<if test="freightInvoiceIdB != null and freightInvoiceIdB != ''">
+				and FRE_INVOICE_ID_B = #{freightInvoiceIdB}
+			</if>
+			<if test="eliminateCountDollarA != null and eliminateCountDollarA != ''">
+				and ELIMINATE_COUNT_DOLLAR_A = #{eliminateCountDollarA}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="eliminateCountRmbB != null and eliminateCountRmbB != ''">
+				and ELIMINATE_COUNT_RMB_B = #{eliminateCountRmbB}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="FreightInvoiceOffset">
+		select
+		<include refid="selectId" />
+		from FRE_INVOICE_OFFSET
+	</select>
+
+	<select id="count" parameterType="FreightInvoiceOffset"
+		resultType="int">
+		select count(0) from FRE_INVOICE_OFFSET
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="eliminateCountRmbA != null and eliminateCountRmbA != ''">
+				and ELIMINATE_COUNT_RMB_A = #{eliminateCountRmbA}
+			</if>
+			<if test="offsetType != null and offsetType != ''">
+				and OFFSET_TYPE = #{offsetType}
+			</if>
+			<if test="freightInvoiceIdA != null and freightInvoiceIdA != ''">
+				and FRE_INVOICE_ID_A = #{freightInvoiceIdA}
+			</if>
+			<if test="eliminateCountDollarB != null and eliminateCountDollarB != ''">
+				and ELIMINATE_COUNT_DOLLAR_B = #{eliminateCountDollarB}
+			</if>
+			<if test="freightInvoiceIdB != null and freightInvoiceIdB != ''">
+				and FRE_INVOICE_ID_B = #{freightInvoiceIdB}
+			</if>
+			<if test="eliminateCountDollarA != null and eliminateCountDollarA != ''">
+				and ELIMINATE_COUNT_DOLLAR_A = #{eliminateCountDollarA}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="eliminateCountRmbB != null and eliminateCountRmbB != ''">
+				and ELIMINATE_COUNT_RMB_B = #{eliminateCountRmbB}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FreightInvoiceOffset">
+		insert into FRE_INVOICE_OFFSET( CREATE_TIME, STATUS, ID, DESCN,
+		ELIMINATE_COUNT_RMB_A, OFFSET_TYPE, FRE_INVOICE_ID_A,
+		ELIMINATE_COUNT_DOLLAR_B, FRE_INVOICE_ID_B, ELIMINATE_COUNT_DOLLAR_A,
+		MODIFY_TIME, ELIMINATE_COUNT_RMB_B, DISP_INX )values ( #{createTime},
+		#{status},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{descn},
+		#{eliminateCountRmbA},
+		#{offsetType},
+		#{freightInvoiceIdA},
+		#{eliminateCountDollarB},
+		#{freightInvoiceIdB},
+		#{eliminateCountDollarA},
+		#{modifyTime},
+		#{eliminateCountRmbB},
+		#{displayIndex}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FRE_INVOICE_OFFSET where id=#{id}
+	</delete>
+	
+	<delete id="deleteInvoiceOffset" parameterType="FreightInvoiceOffset">
+		delete from FRE_INVOICE_OFFSET 
+		where FRE_INVOICE_ID_A=#{freightInvoiceIdA} AND FRE_INVOICE_ID_B =#{freightInvoiceIdB}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="FreightInvoiceOffset">
+		select
+		<include refid="selectId" />
+		from FRE_INVOICE_OFFSET where id=#{id}
+	</select>
+
+	<update id="update" parameterType="FreightInvoiceOffset">
+		update FRE_INVOICE_OFFSET
+		<set>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="eliminateCountRmbA != null and eliminateCountRmbA != ''">
+				ELIMINATE_COUNT_RMB_A=#{eliminateCountRmbA},
+			</if>
+			<if test="offsetType != null and offsetType != ''">
+				OFFSET_TYPE=#{offsetType},
+			</if>
+			<if test="freightInvoiceIdA != null and freightInvoiceIdA != ''">
+				FRE_INVOICE_ID_A=#{freightInvoiceIdA},
+			</if>
+			<if test="eliminateCountDollarB != null and eliminateCountDollarB != ''">
+				ELIMINATE_COUNT_DOLLAR_B=#{eliminateCountDollarB},
+			</if>
+			<if test="freightInvoiceIdB != null and freightInvoiceIdB != ''">
+				FRE_INVOICE_ID_B=#{freightInvoiceIdB},
+			</if>
+			<if test="eliminateCountDollarA != null and eliminateCountDollarA != ''">
+				ELIMINATE_COUNT_DOLLAR_A=#{eliminateCountDollarA},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="eliminateCountRmbB != null and eliminateCountRmbB != ''">
+				ELIMINATE_COUNT_RMB_B=#{eliminateCountRmbB},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

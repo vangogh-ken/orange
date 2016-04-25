@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="workcaltype">
+	<sql id="selectId">
+		ID AS id,
+		DESCRIPTION AS description,
+		NAME AS name
+	</sql>
+	<select id="query" parameterType="java.util.HashMap" resultType="WorkCalType">
+		select
+		<include refid="selectId" />
+		from OUT_WORK_CAL_TYPE
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.description != null and t.description != ''">
+				and DESCRIPTION = #{t.description}
+			</if>
+			<if test="t.name != null and t.name != ''">
+				and NAME = #{t.name}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="WorkCalType"
+		resultType="WorkCalType">
+		select
+		<include refid="selectId" />
+		from OUT_WORK_CAL_TYPE
+		<where>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="description != null and description != ''">
+				and DESCRIPTION = #{description}
+			</if>
+			<if test="name != null and name != ''">
+				and NAME = #{name}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="WorkCalType">
+		select
+		<include refid="selectId" />
+		from OUT_WORK_CAL_TYPE
+	</select>
+	<select id="count" parameterType="WorkCalType" resultType="int">
+		select count(0) from OUT_WORK_CAL_TYPE
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.description != null and t.description != ''">
+				and DESCRIPTION = #{t.description}
+			</if>
+			<if test="t.name != null and t.name != ''">
+				and NAME = #{t.name}
+			</if>
+		</where>
+	</select>
+	<insert id="add" parameterType="WorkCalType"> insert into OUT_WORK_CAL_TYPE(
+		ID, DESCRIPTION, NAME )values ( #{id}, #{description}, #{name} )
+	</insert>
+	<delete id="deleteById" parameterType="String">
+		delete from OUT_WORK_CAL_TYPE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="WorkCalType">
+		select
+		<include refid="selectId" />
+		from OUT_WORK_CAL_TYPE where id=#{id}
+	</select>
+
+	<update id="update" parameterType="WorkCalType">
+		update OUT_WORK_CAL_TYPE
+		<set>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="description != null and description != ''">
+				DESCRIPTION=#{description},
+			</if>
+			<if test="name != null and name != ''">
+				NAME=#{name},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

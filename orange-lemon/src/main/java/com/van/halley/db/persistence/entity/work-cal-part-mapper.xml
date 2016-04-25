@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="workcalpart">
+	<sql id="selectId">
+		START_TIME AS startTime,
+		ID AS id,
+		END_TIME AS endTime,
+		SHIFT AS shift,
+		RULE_ID
+	</sql>
+	
+	<resultMap id="workCalPartResult" type="com.van.halley.db.persistence.entity.WorkCalPart">
+        <id property="id" column="ID" />
+        <result property="startTime" column="START_TIME" />
+        <result property="endTime" column="END_TIME" />
+        <result property="shift" column="SHIFT" />
+        
+        <association property="workCalRule" column="RULE_ID" select="workcalrule.getById" ></association>
+    </resultMap>
+    
+	<select id="query" parameterType="java.util.HashMap" resultMap="workCalPartResult" >
+		select
+		<include refid="selectId" />
+		from OUT_WORK_CAL_PART
+		<where>
+			<if test="t.startTime != null and t.startTime != ''">
+				and START_TIME = #{t.startTime}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.workCalRule != null and t.workCalRule != ''">
+				and RULE_ID = #{t.workCalRule.id}
+			</if>
+			<if test="t.endTime != null and t.endTime != ''">
+				and END_TIME = #{t.endTime}
+			</if>
+			<if test="t.shift != null and t.shift != ''">
+				and SHIFT = #{t.shift}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="WorkCalPart"
+		resultMap="workCalPartResult">
+		select
+		<include refid="selectId" />
+		from OUT_WORK_CAL_PART
+		<where>
+			<if test="startTime != null and startTime != ''">
+				and START_TIME = #{startTime}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="workCalRule != null and workCalRule != ''">
+				and RULE_ID = #{workCalRule.id}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and END_TIME = #{endTime}
+			</if>
+			<if test="shift != null and shift != ''">
+				and SHIFT = #{shift}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="workCalPartResult">
+		select
+		<include refid="selectId" />
+		from OUT_WORK_CAL_PART
+	</select>
+	
+	<select id="count" parameterType="WorkCalPart" resultType="int">
+		select count(0) from OUT_WORK_CAL_PART
+		<where>
+			<if test="t.startTime != null and t.startTime != ''">
+				and START_TIME = #{t.startTime}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.workCalRule != null and t.workCalRule != ''">
+				and RULE_ID = #{t.workCalRule.id}
+			</if>
+			<if test="t.endTime != null and t.endTime != ''">
+				and END_TIME = #{t.endTime}
+			</if>
+			<if test="t.shift != null and t.shift != ''">
+				and SHIFT = #{t.shift}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="add" parameterType="WorkCalPart"> insert into OUT_WORK_CAL_PART(
+		START_TIME, ID, RULE_ID, END_TIME, SHIFT )values ( #{startTime},
+		UUID(), #{workCalRule.id}, #{endTime}, #{shift} )
+	</insert>
+	
+	<delete id="deleteById" parameterType="String">
+		delete from OUT_WORK_CAL_PART where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="workCalPartResult">
+		select
+		<include refid="selectId" />
+		from OUT_WORK_CAL_PART where id=#{id}
+	</select>
+
+	<update id="update" parameterType="WorkCalPart">
+		update OUT_WORK_CAL_PART
+		<set>
+			<if test="startTime != null and startTime != ''">
+				START_TIME=#{startTime},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="workCalRule != null and workCalRule != ''">
+				RULE_ID=#{workCalRule.id},
+			</if>
+			<if test="endTime != null and endTime != ''">
+				END_TIME=#{endTime},
+			</if>
+			<if test="shift != null and shift != ''">
+				SHIFT=#{shift},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

@@ -1,0 +1,120 @@
+<datamigrator>
+	<skipTables>
+		<skipTable>act_hi_actinst</skipTable>
+		<skipTable>act_hi_attachment</skipTable>
+		<skipTable>act_hi_comment</skipTable>
+		<skipTable>act_hi_detail</skipTable>
+		<skipTable>act_hi_identitylink</skipTable>
+		<skipTable>act_hi_procinst</skipTable>
+		<skipTable>act_hi_taskinst</skipTable>
+		<skipTable>act_hi_varinst</skipTable>
+		<skipTable>act_id_group</skipTable>
+		<skipTable>act_id_info</skipTable>
+		<skipTable>act_id_membership</skipTable>
+		<skipTable>act_id_user</skipTable>
+		<skipTable>act_ru_event_subscr</skipTable>
+		<skipTable>act_ru_execution</skipTable>
+		<skipTable>act_ru_identitylink</skipTable>
+		<skipTable>act_ru_job</skipTable>
+		<skipTable>act_ru_task</skipTable>
+		<skipTable>act_ru_variable</skipTable>
+		<skipTable>basis_substance</skipTable>
+		<skipTable>basis_value</skipTable>
+		<skipTable>bpm_conf_delegate</skipTable>
+		<skipTable>fas_account</skipTable>
+		<skipTable>fas_due</skipTable>
+		<skipTable>fas_exchange_rate</skipTable>
+		<skipTable>fas_invoice</skipTable>
+		<skipTable>fas_pay</skipTable>
+		<skipTable>fas_reconcile</skipTable>
+		<skipTable>fre_action</skipTable>
+		<skipTable>fre_action_box</skipTable>
+		<skipTable>fre_action_value</skipTable>
+		<skipTable>fre_audit_record</skipTable>
+		<skipTable>fre_box</skipTable>
+		<skipTable>fre_box_require</skipTable>
+		<skipTable>fre_data_template</skipTable>
+		<skipTable>fre_data_template_action_value</skipTable>
+		<skipTable>fre_delegate</skipTable>
+		<skipTable>fre_deduct</skipTable>
+		<skipTable>fre_expense</skipTable>
+		<skipTable>fre_expense_box</skipTable>
+		<skipTable>fre_expense_type</skipTable>
+		<skipTable>fre_invoice</skipTable>
+		<skipTable>fre_invoice_offset</skipTable>
+		<skipTable>fre_maintain</skipTable>
+		<skipTable>fre_net_day</skipTable>
+		<skipTable>fre_order</skipTable>
+		<skipTable>fre_order_box</skipTable>
+		<skipTable>fre_pact</skipTable>
+		<skipTable>fre_part</skipTable>
+		<skipTable>fre_price</skipTable>
+		<skipTable>fre_seal</skipTable>
+		<skipTable>fre_statement</skipTable>
+		<skipTable>fre_statement_offset</skipTable>
+		<skipTable>out_car_info</skipTable>
+		<skipTable>out_cms_article</skipTable>
+		<skipTable>out_cms_catalog</skipTable>
+		<skipTable>out_cms_comment</skipTable>
+		<skipTable>out_cms_favorite</skipTable>
+		
+		<skipTable>crm_customer</skipTable>
+		<skipTable>crm_partner</skipTable>
+		<skipTable>crm_customer_follow</skipTable>
+		<skipTable>crm_partner_follow</skipTable>
+		
+		<skipTable>out_doc_info</skipTable>
+		<skipTable>out_doc_type</skipTable>
+		<skipTable>out_forum_post</skipTable>
+		<skipTable>out_forum_topic</skipTable>
+		<skipTable>out_mail_receive</skipTable>
+		<skipTable>out_mail_send</skipTable>
+		<skipTable>out_msg_info</skipTable>
+		<skipTable>sys_auth_user_base</skipTable>
+		<skipTable>sys_info_log_login</skipTable>
+		<skipTable>sys_info_log_operation</skipTable>
+		<skipTable>sys_info_server</skipTable>
+		<skipTable>test</skipTable>
+		
+		<skipTable>MOTOR_DRIVER</skipTable>
+		<skipTable>MOTOR_TRUCK</skipTable>
+		<skipTable>MOTOR_TOLL</skipTable>
+		<skipTable>MOTOR_PETROL</skipTable>
+		<skipTable>MOTOR_MAINTAIN</skipTable>
+		<skipTable>MOTOR_DISPATCH</skipTable>
+		<skipTable>MOTOR_INSURANCE</skipTable>
+		<skipTable>MOTOR_WEAL</skipTable>
+		<skipTable>MOTOR_FEE</skipTable>
+		
+		<skipTable>OUT_DISK_INFO</skipTable>
+		<skipTable>OUT_DISK_SHARE</skipTable>
+		<skipTable>OUT_DISK_ACL</skipTable>
+		
+		<skipTable>quartz_job</skipTable>
+	</skipTables>
+	<strictTables>
+		<strictTable>fre_action_type_identity</strictTable>
+		
+		<strictTable>rep_category</strictTable>
+		<strictTable>rep_data_source</strictTable>
+		<strictTable>rep_is</strictTable>
+		<strictTable>rep_param</strictTable>
+		<strictTable>rep_set</strictTable>
+		<strictTable>rep_template</strictTable>
+		
+		<strictTable>sys_auth_org_entity_identity</strictTable>
+		<strictTable>sys_auth_position_role</strictTable>
+		<strictTable>sys_auth_role_bpm</strictTable>
+		<strictTable>sys_auth_role_quartz</strictTable>
+		<strictTable>sys_auth_role_rep</strictTable>
+		<strictTable>sys_auth_role_resource</strictTable>
+		
+		<strictTable>sys_auth_position</strictTable>
+		<strictTable>sys_auth_org_entity</strictTable>
+	</strictTables>
+	<skipColumns>
+		<tableName value="sys_auth_user">
+			<skipColumn>PASSWORD</skipColumn>
+		</tableName>
+	</skipColumns>
+</datamigrator>

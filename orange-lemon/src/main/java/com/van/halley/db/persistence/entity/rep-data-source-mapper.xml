@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reportdatasource">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		DESCN AS descn,
+		ID AS id,
+		CREATE_TIME AS createTime,
+		DATA_SOURCE_KEY AS dataSourceKey,
+		STATUS AS status,
+		SQL_TEXT AS sqlText,
+		REP_TEMPLATE_ID AS reportTemplateId,
+		DATA_SOURCE_NAME AS dataSourceName,
+		PARTICIPATE AS participate,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex
+	</sql>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultType="ReportDataSource">
+		select
+		<include refid="selectId" />
+		from REP_DATA_SOURCE
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.participate != null and t.participate != ''">
+				and PARTICIPATE = #{t.participate}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.dataSourceKey != null and t.dataSourceKey != ''">
+				and DATA_SOURCE_KEY = #{t.dataSourceKey}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.sqlText != null and t.sqlText != ''">
+				and SQL_TEXT = #{t.sqlText}
+			</if>
+			<if test="t.reportTemplateId != null and t.reportTemplateId != ''">
+				and REP_TEMPLATE_ID = #{t.reportTemplateId}
+			</if>
+			<if test="t.dataSourceName != null and t.dataSourceName != ''">
+				and DATA_SOURCE_NAME = #{t.dataSourceName}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="ReportDataSource"
+		resultType="ReportDataSource">
+		select
+		<include refid="selectId" />
+		from REP_DATA_SOURCE
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="participate != null and participate != ''">
+				and PARTICIPATE = #{participate}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="dataSourceKey != null and dataSourceKey != ''">
+				and DATA_SOURCE_KEY = #{dataSourceKey}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="sqlText != null and sqlText != ''">
+				and SQL_TEXT = #{sqlText}
+			</if>
+			<if test="reportTemplateId != null and reportTemplateId != ''">
+				and REP_TEMPLATE_ID = #{reportTemplateId}
+			</if>
+			<if test="dataSourceName != null and dataSourceName != ''">
+				and DATA_SOURCE_NAME = #{dataSourceName}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="ReportDataSource">
+		select
+		<include refid="selectId" />
+		from REP_DATA_SOURCE
+	</select>
+
+	<select id="count" parameterType="ReportDataSource" resultType="int">
+		select count(0) from REP_DATA_SOURCE
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="participate != null and participate != ''">
+				and PARTICIPATE = #{participate}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="dataSourceKey != null and dataSourceKey != ''">
+				and DATA_SOURCE_KEY = #{dataSourceKey}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="sqlText != null and sqlText != ''">
+				and SQL_TEXT = #{sqlText}
+			</if>
+			<if test="reportTemplateId != null and reportTemplateId != ''">
+				and REP_TEMPLATE_ID = #{reportTemplateId}
+			</if>
+			<if test="dataSourceName != null and dataSourceName != ''">
+				and DATA_SOURCE_NAME = #{dataSourceName}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="ReportDataSource">
+		insert into REP_DATA_SOURCE( DESCN, PARTICIPATE, ID, CREATE_TIME, DATA_SOURCE_KEY,
+		STATUS, SQL_TEXT, REP_TEMPLATE_ID, DATA_SOURCE_NAME, MODIFY_TIME,
+		DISP_INX )values ( #{descn}, #{participate},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{createTime},
+		#{dataSourceKey},
+		#{status},
+		#{sqlText},
+		#{reportTemplateId},
+		#{dataSourceName},
+		#{modifyTime},
+		#{displayIndex}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from REP_DATA_SOURCE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="ReportDataSource">
+		select
+		<include refid="selectId" />
+		from REP_DATA_SOURCE where id=#{id}
+	</select>
+	
+	<select id="getByReportTemplateId" parameterType="String" resultType="ReportDataSource">
+		select
+		<include refid="selectId" />
+		from REP_DATA_SOURCE where REP_TEMPLATE_ID=#{reportTemplateId} ORDER BY CREATE_TIME DESC
+	</select>
+
+	<update id="update" parameterType="ReportDataSource">
+		update REP_DATA_SOURCE
+		<set>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="participate != null and participate != ''">
+				PARTICIPATE = #{participate},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="dataSourceKey != null and dataSourceKey != ''">
+				DATA_SOURCE_KEY=#{dataSourceKey},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="sqlText != null and sqlText != ''">
+				SQL_TEXT=#{sqlText},
+			</if>
+			<if test="reportTemplateId != null and reportTemplateId != ''">
+				REP_TEMPLATE_ID=#{reportTemplateId},
+			</if>
+			<if test="dataSourceName != null and dataSourceName != ''">
+				DATA_SOURCE_NAME=#{dataSourceName},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="salarybasic">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		HOSING_INDIVIDUAL AS housingIndividual,
+		DESCN AS descn,
+		MATERNITY_COMPANY AS maternityCompany,
+		ACTUAL_PAYMENT AS actualPayment,
+		MODIFY_TIME AS modifyTime,
+		UNEMPLOYMENT_COMPANY AS unemploymentCompany,
+		ENDOWMENT_COMPANY AS endowmentCompany,
+		MEDICAL_INDIVIDUAL AS medicalIndividual,
+		PREDICT_DEBIT AS predictDebit,
+		INJURY_COMPANY AS injuryCompany,
+		ID AS id,
+		SALARY_MONTH AS salaryMonth,
+		SALARY_YEAR AS salaryYear,
+		INJURY_INDIVIDUAL AS injuryIndividual,
+		MEDICAL_COMPANY AS medicalCompany,
+		CONFIRM_TIME AS confirmTime,
+		PREDICT_PAYMENT AS predictPayment,
+		UNEMPLOYMENT_INDIVIDUAL AS unemploymentIndividual,
+		CREATE_TIME AS createTime,
+		COMPUTE_TIME AS computeTime,
+		HOSING_COMPANY AS housingCompany,
+		MATERNITY_INDIVIDUAL AS maternityIndividual,
+		ENDOWMENT_INDIVIDUAL AS endowmentIndividual,
+		PREDICT_SALARY AS predictSalary,
+		DISP_INX AS displayIndex,
+		STATUS AS status,
+		
+		SALARY_GRADE_ID
+	</sql>
+	
+	<resultMap id="salaryBasicMap" type="com.van.halley.db.persistence.entity.SalaryBasic">
+        <id property="id" column="ID" />
+        <result property="housingIndividual" column="HOSING_INDIVIDUAL" />
+        <result property="descn" column="DESCN" />
+        <result property="maternityCompany" column="MATERNITY_COMPANY" />
+        <result property="actualPayment" column="ACTUAL_PAYMENT" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="unemploymentCompany" column="UNEMPLOYMENT_COMPANY" />
+        <result property="endowmentCompany" column="ENDOWMENT_COMPANY" />
+        <result property="medicalIndividual" column="MEDICAL_INDIVIDUAL " />
+        <result property="predictDebit" column="PREDICT_DEBIT" />
+        <result property="injuryCompany" column="INJURY_COMPANY" />
+        <result property="salaryMonth" column="SALARY_MONTH" />
+        <result property="salaryYear" column="SALARY_YEAR" />
+        <result property="injuryIndividual" column="INJURY_INDIVIDUAL" />
+        <result property="medicalCompany" column="MEDICAL_COMPANY" />
+        <result property="confirmTime" column="CONFIRM_TIME" />
+        <result property="predictPayment" column="PREDICT_PAYMENT" />
+        <result property="unemploymentIndividual" column="UNEMPLOYMENT_INDIVIDUAL" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="computeTime" column="COMPUTE_TIME" />
+        <result property="housingCompany" column="HOSING_COMPANY" />
+        <result property="maternityIndividual" column="MATERNITY_INDIVIDUA" />
+        <result property="endowmentIndividual" column="ENDOWMENT_INDIVIDUAL" />
+        <result property="predictSalary" column="PREDICT_SALARY" />
+        <result property="displayIndex" column="DISP_INX" />
+        <result property="status" column="STATUS" />
+        
+        <association property="salaryGrade" column="SALARY_GRADE_ID" select="salarygrade.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="salaryBasicMap">
+		select
+		<include refid="selectId" />
+		from SALARY_BASIC
+		<where>
+			<if test="t.housingIndividual != null and t.housingIndividual != ''">
+				and HOSING_INDIVIDUAL = #{t.housingIndividual}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.maternityCompany != null and t.maternityCompany != ''">
+				and MATERNITY_COMPANY = #{t.maternityCompany}
+			</if>
+			<if test="t.actualPayment != null and t.actualPayment != ''">
+				and ACTUAL_PAYMENT = #{t.actualPayment}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.unemploymentCompany != null and t.unemploymentCompany != ''">
+				and UNEMPLOYMENT_COMPANY = #{t.unemploymentCompany}
+			</if>
+			<if test="t.endowmentCompany != null and t.endowmentCompany != ''">
+				and ENDOWMENT_COMPANY = #{t.endowmentCompany}
+			</if>
+			<if test="t.medicalIndividual != null and t.medicalIndividual != ''">
+				and MEDICAL_INDIVIDUAL = #{t.medicalIndividual}
+			</if>
+			<if test="t.predictDebit != null and t.predictDebit != ''">
+				and PREDICT_DEBIT = #{t.predictDebit}
+			</if>
+			<if test="t.injuryCompany != null and t.injuryCompany != ''">
+				and INJURY_COMPANY = #{t.injuryCompany}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.salaryMonth != null and t.salaryMonth != ''">
+				and SALARY_MONTH = #{t.salaryMonth}
+			</if>
+			<if test="t.salaryYear != null and t.salaryYear != ''">
+				and SALARY_YEAR = #{t.salaryYear}
+			</if>
+			<if test="t.injuryIndividual != null and t.injuryIndividual != ''">
+				and INJURY_INDIVIDUAL = #{t.injuryIndividual}
+			</if>
+			<if test="t.medicalCompany != null and t.medicalCompany != ''">
+				and MEDICAL_COMPANY = #{t.medicalCompany}
+			</if>
+			<if test="t.confirmTime != null and t.confirmTime != ''">
+				and CONFIRM_TIME = #{t.confirmTime}
+			</if>
+			<if test="t.predictPayment != null and t.predictPayment != ''">
+				and PREDICT_PAYMENT = #{t.predictPayment}
+			</if>
+			<if
+				test="t.unemploymentIndividual != null and t.unemploymentIndividual != ''">
+				and UNEMPLOYMENT_INDIVIDUAL = #{t.unemploymentIndividual}
+			</if>
+			<if test="t.salaryGrade != null and t.salaryGrade != ''">
+				and SALARY_GRADE_ID = #{t.salaryGrade.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.computeTime != null and t.computeTime != ''">
+				and COMPUTE_TIME = #{t.computeTime}
+			</if>
+			<if test="t.housingCompany != null and t.housingCompany != ''">
+				and HOSING_COMPANY = #{t.housingCompany}
+			</if>
+			<if test="t.maternityIndividual != null and t.maternityIndividual != ''">
+				and MATERNITY_INDIVIDUAL = #{t.maternityIndividual}
+			</if>
+			<if test="t.endowmentIndividual != null and t.endowmentIndividual != ''">
+				and ENDOWMENT_INDIVIDUAL = #{t.endowmentIndividual}
+			</if>
+			<if test="t.predictSalary != null and t.predictSalary != ''">
+				and PREDICT_SALARY = #{t.predictSalary}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="SalaryBasic"
+		resultMap="salaryBasicMap">
+		select
+		<include refid="selectId" />
+		from SALARY_BASIC
+		<where>
+			<if test="housingIndividual != null and housingIndividual != ''">
+				and HOSING_INDIVIDUAL = #{housingIndividual}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="maternityCompany != null and maternityCompany != ''">
+				and MATERNITY_COMPANY = #{maternityCompany}
+			</if>
+			<if test="actualPayment != null and actualPayment != ''">
+				and ACTUAL_PAYMENT = #{actualPayment}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="unemploymentCompany != null and unemploymentCompany != ''">
+				and UNEMPLOYMENT_COMPANY = #{unemploymentCompany}
+			</if>
+			<if test="endowmentCompany != null and endowmentCompany != ''">
+				and ENDOWMENT_COMPANY = #{endowmentCompany}
+			</if>
+			<if test="medicalIndividual != null and medicalIndividual != ''">
+				and MEDICAL_INDIVIDUAL = #{medicalIndividual}
+			</if>
+			<if test="predictDebit != null and predictDebit != ''">
+				and PREDICT_DEBIT = #{predictDebit}
+			</if>
+			<if test="injuryCompany != null and injuryCompany != ''">
+				and INJURY_COMPANY = #{injuryCompany}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="salaryMonth != null and salaryMonth != ''">
+				and SALARY_MONTH = #{salaryMonth}
+			</if>
+			<if test="salaryYear != null and salaryYear != ''">
+				and SALARY_YEAR = #{salaryYear}
+			</if>
+			<if test="injuryIndividual != null and injuryIndividual != ''">
+				and INJURY_INDIVIDUAL = #{injuryIndividual}
+			</if>
+			<if test="medicalCompany != null and medicalCompany != ''">
+				and MEDICAL_COMPANY = #{medicalCompany}
+			</if>
+			<if test="confirmTime != null and confirmTime != ''">
+				and CONFIRM_TIME = #{confirmTime}
+			</if>
+			<if test="predictPayment != null and predictPayment != ''">
+				and PREDICT_PAYMENT = #{predictPayment}
+			</if>
+			<if test="unemploymentIndividual != null and unemploymentIndividual != ''">
+				and UNEMPLOYMENT_INDIVIDUAL = #{unemploymentIndividual}
+			</if>
+			<if test="salaryGrade != null and salaryGrade != ''">
+				and SALARY_GRADE_ID = #{salaryGrade.id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="computeTime != null and computeTime != ''">
+				and COMPUTE_TIME = #{computeTime}
+			</if>
+			<if test="housingCompany != null and housingCompany != ''">
+				and HOSING_COMPANY = #{housingCompany}
+			</if>
+			<if test="maternityIndividual != null and maternityIndividual != ''">
+				and MATERNITY_INDIVIDUAL = #{maternityIndividual}
+			</if>
+			<if test="endowmentIndividual != null and endowmentIndividual != ''">
+				and ENDOWMENT_INDIVIDUAL = #{endowmentIndividual}
+			</if>
+			<if test="predictSalary != null and predictSalary != ''">
+				and PREDICT_SALARY = #{predictSalary}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="salaryBasicMap">
+		select
+		<include refid="selectId" />
+		from SALARY_BASIC
+	</select>
+
+	<select id="count" parameterType="SalaryBasic" resultType="int">
+		select count(0) from SALARY_BASIC
+		<where>
+			<if test="housingIndividual != null and housingIndividual != ''">
+				and HOSING_INDIVIDUAL = #{housingIndividual}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="maternityCompany != null and maternityCompany != ''">
+				and MATERNITY_COMPANY = #{maternityCompany}
+			</if>
+			<if test="actualPayment != null and actualPayment != ''">
+				and ACTUAL_PAYMENT = #{actualPayment}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="unemploymentCompany != null and unemploymentCompany != ''">
+				and UNEMPLOYMENT_COMPANY = #{unemploymentCompany}
+			</if>
+			<if test="endowmentCompany != null and endowmentCompany != ''">
+				and ENDOWMENT_COMPANY = #{endowmentCompany}
+			</if>
+			<if test="medicalIndividual != null and medicalIndividual != ''">
+				and MEDICAL_INDIVIDUAL = #{medicalIndividual}
+			</if>
+			<if test="predictDebit != null and predictDebit != ''">
+				and PREDICT_DEBIT = #{predictDebit}
+			</if>
+			<if test="injuryCompany != null and injuryCompany != ''">
+				and INJURY_COMPANY = #{injuryCompany}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="salaryMonth != null and salaryMonth != ''">
+				and SALARY_MONTH = #{salaryMonth}
+			</if>
+			<if test="salaryYear != null and salaryYear != ''">
+				and SALARY_YEAR = #{salaryYear}
+			</if>
+			<if test="injuryIndividual != null and injuryIndividual != ''">
+				and INJURY_INDIVIDUAL = #{injuryIndividual}
+			</if>
+			<if test="medicalCompany != null and medicalCompany != ''">
+				and MEDICAL_COMPANY = #{medicalCompany}
+			</if>
+			<if test="confirmTime != null and confirmTime != ''">
+				and CONFIRM_TIME = #{confirmTime}
+			</if>
+			<if test="predictPayment != null and predictPayment != ''">
+				and PREDICT_PAYMENT = #{predictPayment}
+			</if>
+			<if test="unemploymentIndividual != null and unemploymentIndividual != ''">
+				and UNEMPLOYMENT_INDIVIDUAL = #{unemploymentIndividual}
+			</if>
+			<if test="salaryGrade != null and salaryGrade != ''">
+				and SALARY_GRADE_ID = #{salaryGrade.id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="computeTime != null and computeTime != ''">
+				and COMPUTE_TIME = #{computeTime}
+			</if>
+			<if test="housingCompany != null and housingCompany != ''">
+				and HOSING_COMPANY = #{housingCompany}
+			</if>
+			<if test="maternityIndividual != null and maternityIndividual != ''">
+				and MATERNITY_INDIVIDUAL = #{maternityIndividual}
+			</if>
+			<if test="endowmentIndividual != null and endowmentIndividual != ''">
+				and ENDOWMENT_INDIVIDUAL = #{endowmentIndividual}
+			</if>
+			<if test="predictSalary != null and predictSalary != ''">
+				and PREDICT_SALARY = #{predictSalary}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="SalaryBasic">
+		insert into SALARY_BASIC( HOSING_INDIVIDUAL, DESCN, MATERNITY_COMPANY,
+		ACTUAL_PAYMENT, MODIFY_TIME, UNEMPLOYMENT_COMPANY, ENDOWMENT_COMPANY,
+		MEDICAL_INDIVIDUAL, PREDICT_DEBIT, INJURY_COMPANY, ID, SALARY_MONTH,
+		SALARY_YEAR, INJURY_INDIVIDUAL, MEDICAL_COMPANY, CONFIRM_TIME,
+		PREDICT_PAYMENT, UNEMPLOYMENT_INDIVIDUAL, SALARY_GRADE_ID,
+		CREATE_TIME, COMPUTE_TIME, HOSING_COMPANY, MATERNITY_INDIVIDUAL,
+		ENDOWMENT_INDIVIDUAL, PREDICT_SALARY, DISP_INX, STATUS )values (
+		#{housingIndividual}, #{descn}, #{maternityCompany}, #{actualPayment},
+		#{modifyTime}, #{unemploymentCompany}, #{endowmentCompany},
+		#{medicalIndividual}, #{predictDebit}, #{injuryCompany},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{salaryMonth},
+		#{salaryYear},
+		#{injuryIndividual},
+		#{medicalCompany},
+		#{confirmTime},
+		#{predictPayment},
+		#{unemploymentIndividual},
+		#{salaryGrade.id},
+		#{createTime},
+		#{computeTime},
+		#{housingCompany},
+		#{maternityIndividual},
+		#{endowmentIndividual},
+		#{predictSalary},
+		#{displayIndex},
+		#{status}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from SALARY_BASIC where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="salaryBasicMap">
+		select
+		<include refid="selectId" />
+		from SALARY_BASIC where id=#{id}
+	</select>
+
+	<update id="update" parameterType="SalaryBasic">
+		update SALARY_BASIC
+		<set>
+			<if test="housingIndividual != null and housingIndividual != ''">
+				HOSING_INDIVIDUAL=#{housingIndividual},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="maternityCompany != null and maternityCompany != ''">
+				MATERNITY_COMPANY=#{maternityCompany},
+			</if>
+			<if test="actualPayment != null and actualPayment != ''">
+				ACTUAL_PAYMENT=#{actualPayment},
+			</if>
+			MODIFY_TIME=SYSDATE(),
+			<if test="unemploymentCompany != null and unemploymentCompany != ''">
+				UNEMPLOYMENT_COMPANY=#{unemploymentCompany},
+			</if>
+			<if test="endowmentCompany != null and endowmentCompany != ''">
+				ENDOWMENT_COMPANY=#{endowmentCompany},
+			</if>
+			<if test="medicalIndividual != null and medicalIndividual != ''">
+				MEDICAL_INDIVIDUAL=#{medicalIndividual},
+			</if>
+			<if test="predictDebit != null and predictDebit != ''">
+				PREDICT_DEBIT=#{predictDebit},
+			</if>
+			<if test="injuryCompany != null and injuryCompany != ''">
+				INJURY_COMPANY=#{injuryCompany},
+			</if>
+			<if test="salaryMonth != null and salaryMonth != ''">
+				SALARY_MONTH=#{salaryMonth},
+			</if>
+			<if test="salaryYear != null and salaryYear != ''">
+				SALARY_YEAR=#{salaryYear},
+			</if>
+			<if test="injuryIndividual != null and injuryIndividual != ''">
+				INJURY_INDIVIDUAL=#{injuryIndividual},
+			</if>
+			<if test="medicalCompany != null and medicalCompany != ''">
+				MEDICAL_COMPANY=#{medicalCompany},
+			</if>
+			<if test="confirmTime != null and confirmTime != ''">
+				CONFIRM_TIME=#{confirmTime},
+			</if>
+			<if test="predictPayment != null and predictPayment != ''">
+				PREDICT_PAYMENT=#{predictPayment},
+			</if>
+			<if test="unemploymentIndividual != null and unemploymentIndividual != ''">
+				UNEMPLOYMENT_INDIVIDUAL=#{unemploymentIndividual},
+			</if>
+			<if test="salaryGrade != null and salaryGrade != ''">
+				SALARY_GRADE_ID=#{salaryGrade.id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="computeTime != null and computeTime != ''">
+				COMPUTE_TIME=#{computeTime},
+			</if>
+			<if test="housingCompany != null and housingCompany != ''">
+				HOSING_COMPANY=#{housingCompany},
+			</if>
+			<if test="maternityIndividual != null and maternityIndividual != ''">
+				MATERNITY_INDIVIDUAL=#{maternityIndividual},
+			</if>
+			<if test="endowmentIndividual != null and endowmentIndividual != ''">
+				ENDOWMENT_INDIVIDUAL=#{endowmentIndividual},
+			</if>
+			<if test="predictSalary != null and predictSalary != ''">
+				PREDICT_SALARY=#{predictSalary},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+		</set>
+		WHERE ID=#{id} AND MODIFY_TIME=#{modifyTime}
+	</update>
+</mapper>

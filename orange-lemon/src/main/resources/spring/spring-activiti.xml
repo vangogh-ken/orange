@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"  
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans.xsd   
+    http://www.springframework.org/schema/context   
+    http://www.springframework.org/schema/context/spring-context.xsd  
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/task 
+    http://www.springframework.org/schema/task/spring-task.xsd     
+    http://www.springframework.org/schema/aop 
+     http://www.springframework.org/schema/aop/spring-aop.xsd">
+ 
+	<!-- Activiti使用UUID主键策略 -->
+	<bean id="uuidGenerator" class="org.activiti.engine.impl.persistence.StrongUuidGenerator"></bean>
+	
+	<!--以下为Activiti的配置信息  -->
+  	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration" >
+  		<!-- 数据源 -->
+	    <property name="dataSource" ref="dataSource" />
+	    <!-- 事物管理对象 -->
+	    <property name="transactionManager" ref="transactionManager" />
+	    <!-- 自动生成数据库-->
+	    <property name="databaseSchemaUpdate" value="true" />
+	     
+	    <property name="jobExecutorActivate" value="false" />
+	    <!-- 解决流程图中文变乱码的问题 -->
+	    <property name="activityFontName" value="宋体"/>
+	    <property name="labelFontName" value="宋体"/>
+	    <!-- 自动扫描流程配置文件并部署 , 有时候需要通过过滤，放置重复部署。
+	    <property name="deploymentResources" value="classpath*:bpmn20/*.bpmn20.xml" />
+	    -->
+	    <!-- 历史记录 -->
+	    <property name="history" value="full"/>
+	    <!-- UUID作为主键 -->
+	    <property name="idGenerator" ref="uuidGenerator" />
+	    
+	    <!-- 自定义的Activiti的流程分配权限 -->
+	    <property name="customSessionFactories">
+			<list>
+				<bean class="com.van.halley.bpm.custom.CustomGroupEntityManagerFactory" >
+					<property name="groupEntityManager">
+						<bean class="com.van.halley.bpm.custom.CustomGroupEntityManager">
+							<property name="jdbcTemplate" ref="jdbcTemplate"/>
+						</bean>
+                    </property>
+               </bean>
+           </list>
+		</property>
+		
+		<!-- 自定义全局监听器, 在解析过程中添加监听器 -->
+		<property name="customDefaultBpmnParseHandlers">
+    	 	<list>
+				<bean class="com.van.halley.bpm.custom.ProxyUserTaskBpmnParseHandler">
+					<property name="taskListenerId" value="customTaskListener"/>
+					<property name="useDefaultUserTaskParser" value="true"/>
+				</bean>
+				<bean class="com.van.halley.bpm.custom.ProxySequenceFlowBpmnParseHandler">
+					<property name="executionListenerId" value="customExecutionListener"/>
+					<property name="useDefaultSequenceFlowParser" value="true"/>
+				</bean>
+    	 	</list>
+		</property>
+		
+		<property name="postBpmnParseHandlers">
+    	 	<list>
+				<bean class="com.van.halley.bpm.custom.ProxyUserTaskBpmnParseHandler">
+					<property name="taskListenerId" value="postTaskListener"/>
+				</bean>
+    	 	</list>
+		</property>
+  	</bean>
+  	
+  	<!-- 全局任务监听器 -->
+	<bean id="customTaskListener" class="com.van.halley.bpm.listener.ProxyTaskListener">
+		<property name="taskListeners">
+			<list>
+				<bean class="com.van.halley.bpm.listener.BpmTaskCompleteListner"/>
+				<bean class="com.van.halley.bpm.listener.BpmTaskAssigneeListner"/>
+				<bean class="com.van.halley.bpm.listener.BpmTaskCreateListner"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 全局通知监听器  -->
+	<bean id="postTaskListener" class="com.van.halley.bpm.listener.ProxyTaskListener">
+		<property name="taskListeners">
+			<list>
+				<bean class="com.van.halley.bpm.listener.NoticeTaskListener"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 全局迁移线执行监听器  -->
+	<bean id="customExecutionListener" class="com.van.halley.bpm.listener.ProxyExecutionListener">
+		<property name="executionListeners">
+			<list>
+				<bean class="com.van.halley.bpm.listener.BpmTransitionTakeListner"/>
+			</list>
+		</property>
+	</bean>
+  
+  	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean" depends-on="dataMigrator">
+    	<property name="processEngineConfiguration" ref="processEngineConfiguration" />
+  	</bean>
+  
+  	<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />
+  	<bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
+  	<bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />
+  	<bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />
+  	<bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
+  	<bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService" />
+  	<bean id="formService" factory-bean="processEngine" factory-method="getFormService" />
+</beans>

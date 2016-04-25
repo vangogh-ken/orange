@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="motorcadetoll">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		BEGIN_STATION AS beginStation,
+		STATUS AS status,
+		EXCHANGE_RATE AS exchangeRate,
+		BEGIN_TIME AS beginTime,
+		ARRIVE_STATION AS arriveStation,
+		CURRENCY AS currency,
+		ID AS id,
+		DESCN AS descn,
+		ARRIVE_TIME AS arriveTime,
+		MONEY_COUNT AS moneyCount,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		TOTAL_WEIGHT AS totalWeight,
+		TRUCK_TYPE AS truckType,
+		
+		MOTOR_DRIVER_ID,
+		FAS_INVOICE_TYPE_ID,
+		MOTOR_TRUCK_ID
+	</sql>
+	
+	<resultMap id="motorcadeTollMap" type="com.van.halley.db.persistence.entity.MotorcadeToll" >
+        <id property="id" column="ID" />
+        <result property="totalWeight" column="TOTAL_WEIGHT" />
+        <result property="truckType" column="TRUCK_TYPE" />
+        
+        <result property="beginStation" column="BEGIN_STATION" />
+        <result property="beginTime" column="BEGIN_TIME" />
+        <result property="arriveStation" column="ARRIVE_STATION" />
+        <result property="arriveTime" column="ARRIVE_TIME" />
+        
+        <result property="currency" column="CURRENCY" />
+        <result property="exchangeRate" column="EXCHANGE_RATE" />
+        <result property="moneyCount" column="MONEY_COUNT" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="fasInvoiceType" column="FAS_INVOICE_TYPE_ID" select="fasinvoicetype.getById" ></association>
+        <association property="motorcadeTruck" column="MOTOR_TRUCK_ID" select="motorcadetruck.getById" ></association>
+        <association property="motorcadeDriver" column="MOTOR_DRIVER_ID" select="motorcadedriver.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="motorcadeTollMap">
+		select
+		<include refid="selectId" />
+		from MOTOR_TOLL
+		<where>
+			<if test="t.totalWeight != null and t.totalWeight != ''">
+				and TOTAL_WEIGHT = #{t.totalWeight}
+			</if>
+			<if test="t.truckType != null and t.truckType != ''">
+				and TRUCK_TYPE = #{t.truckType}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.motorcadeDriver != null and t.motorcadeDriver != ''">
+				and MOTOR_DRIVER_ID = #{t.motorcadeDriver.id}
+			</if>
+			<if test="t.beginStation != null and t.beginStation != ''">
+				and BEGIN_STATION = #{t.beginStation}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.exchangeRate != null and t.exchangeRate != ''">
+				and EXCHANGE_RATE = #{t.exchangeRate}
+			</if>
+			<if test="t.beginTime != null and t.beginTime != ''">
+				and BEGIN_TIME = #{t.beginTime}
+			</if>
+			<if test="t.arriveStation != null and t.arriveStation != ''">
+				and ARRIVE_STATION = #{t.arriveStation}
+			</if>
+			<if test="t.currency != null and t.currency != ''">
+				and CURRENCY = #{t.currency}
+			</if>
+			<if test="t.fasInvoiceType != null and t.fasInvoiceType != ''">
+				and FAS_INVOICE_TYPE_ID = #{t.fasInvoiceType.id}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.arriveTime != null and t.arriveTime != ''">
+				and ARRIVE_TIME = #{t.arriveTime}
+			</if>
+			<if test="t.moneyCount != null and t.moneyCount != ''">
+				and MONEY_COUNT = #{t.moneyCount}
+			</if>
+			<if test="t.motorcadeTruck != null and t.motorcadeTruck != ''">
+				and MOTOR_TRUCK_ID = #{t.motorcadeTruck.id}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="MotorcadeToll"
+		resultMap="motorcadeTollMap">
+		select
+		<include refid="selectId" />
+		from MOTOR_TOLL
+		<where>
+			<if test="totalWeight != null and totalWeight != ''">
+				and TOTAL_WEIGHT = #{totalWeight}
+			</if>
+			<if test="truckType != null and truckType != ''">
+				and TRUCK_TYPE = #{truckType}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="motorcadeDriver != null and motorcadeDriver != ''">
+				and MOTOR_DRIVER_ID = #{motorcadeDriver.id}
+			</if>
+			<if test="beginStation != null and beginStation != ''">
+				and BEGIN_STATION = #{beginStation}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				and EXCHANGE_RATE = #{exchangeRate}
+			</if>
+			<if test="beginTime != null and beginTime != ''">
+				and BEGIN_TIME = #{beginTime}
+			</if>
+			<if test="arriveStation != null and arriveStation != ''">
+				and ARRIVE_STATION = #{arriveStation}
+			</if>
+			<if test="currency != null and currency != ''">
+				and CURRENCY = #{currency}
+			</if>
+			<if test="fasInvoiceType != null and fasInvoiceType != ''">
+				and FAS_INVOICE_TYPE_ID = #{fasInvoiceType.id}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="arriveTime != null and arriveTime != ''">
+				and ARRIVE_TIME = #{arriveTime}
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				and MONEY_COUNT = #{moneyCount}
+			</if>
+			<if test="motorcadeTruck != null and motorcadeTruck != ''">
+				and MOTOR_TRUCK_ID = #{motorcadeTruck.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="motorcadeTollMap">
+		select
+		<include refid="selectId" />
+		from MOTOR_TOLL
+	</select>
+
+	<select id="count" parameterType="MotorcadeToll" resultType="int">
+		select count(0) from MOTOR_TOLL
+		<where>
+			<if test="totalWeight != null and totalWeight != ''">
+				and TOTAL_WEIGHT = #{totalWeight}
+			</if>
+			<if test="truckType != null and truckType != ''">
+				and TRUCK_TYPE = #{truckType}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="motorcadeDriver != null and motorcadeDriver != ''">
+				and MOTOR_DRIVER_ID = #{motorcadeDriver.id}
+			</if>
+			<if test="beginStation != null and beginStation != ''">
+				and BEGIN_STATION = #{beginStation}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				and EXCHANGE_RATE = #{exchangeRate}
+			</if>
+			<if test="beginTime != null and beginTime != ''">
+				and BEGIN_TIME = #{beginTime}
+			</if>
+			<if test="arriveStation != null and arriveStation != ''">
+				and ARRIVE_STATION = #{arriveStation}
+			</if>
+			<if test="currency != null and currency != ''">
+				and CURRENCY = #{currency}
+			</if>
+			<if test="fasInvoiceType != null and fasInvoiceType != ''">
+				and FAS_INVOICE_TYPE_ID = #{fasInvoiceType.id}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="arriveTime != null and arriveTime != ''">
+				and ARRIVE_TIME = #{arriveTime}
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				and MONEY_COUNT = #{moneyCount}
+			</if>
+			<if test="motorcadeTruck != null and motorcadeTruck != ''">
+				and MOTOR_TRUCK_ID = #{motorcadeTruck.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="MotorcadeToll">
+		insert into MOTOR_TOLL(TOTAL_WEIGHT, TRUCK_TYPE, CREATE_TIME, MOTOR_DRIVER_ID, BEGIN_STATION,
+		STATUS, EXCHANGE_RATE, BEGIN_TIME, ARRIVE_STATION, CURRENCY,
+		FAS_INVOICE_TYPE_ID, ID, DESCN, ARRIVE_TIME, MONEY_COUNT,
+		MOTOR_TRUCK_ID, MODIFY_TIME, DISP_INX )values (#{totalWeight}, #{truckType}, #{createTime},
+		#{motorcadeDriver.id}, #{beginStation}, #{status}, #{exchangeRate},
+		#{beginTime}, #{arriveStation}, #{currency}, #{fasInvoiceType.id},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{descn},
+		#{arriveTime},
+		#{moneyCount},
+		#{motorcadeTruck.id},
+		#{modifyTime},
+		#{displayIndex}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from MOTOR_TOLL where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="motorcadeTollMap">
+		select
+		<include refid="selectId" />
+		from MOTOR_TOLL where id=#{id}
+	</select>
+
+	<update id="update" parameterType="MotorcadeToll">
+		update MOTOR_TOLL
+		<set>
+			<if test="totalWeight != null and totalWeight != ''">
+				TOTAL_WEIGHT = #{totalWeight},
+			</if>
+			<if test="truckType != null and truckType != ''">
+				TRUCK_TYPE = #{truckType},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="motorcadeDriver != null and motorcadeDriver != ''">
+				MOTOR_DRIVER_ID=#{motorcadeDriver.id},
+			</if>
+			<if test="beginStation != null and beginStation != ''">
+				BEGIN_STATION=#{beginStation},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				EXCHANGE_RATE=#{exchangeRate},
+			</if>
+			<if test="beginTime != null and beginTime != ''">
+				BEGIN_TIME=#{beginTime},
+			</if>
+			<if test="arriveStation != null and arriveStation != ''">
+				ARRIVE_STATION=#{arriveStation},
+			</if>
+			<if test="currency != null and currency != ''">
+				CURRENCY=#{currency},
+			</if>
+			<if test="fasInvoiceType != null and fasInvoiceType != ''">
+				FAS_INVOICE_TYPE_ID=#{fasInvoiceType.id},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="arriveTime != null and arriveTime != ''">
+				ARRIVE_TIME=#{arriveTime},
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				MONEY_COUNT=#{moneyCount},
+			</if>
+			<if test="motorcadeTruck != null and motorcadeTruck != ''">
+				MOTOR_TRUCK_ID=#{motorcadeTruck.id},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

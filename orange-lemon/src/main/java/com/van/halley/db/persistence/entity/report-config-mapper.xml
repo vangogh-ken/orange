@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reportconfig">
+	<sql id="selectId">
+		ID AS id,
+		NAME AS name,
+		RKEY AS reportKey,
+		DATA_SQL AS dataSql,
+		TYPE AS type,
+		TITLE AS title,
+		WIDTH AS width,
+		HEIGHT AS height,
+		START AS start,
+		END AS end,
+		STEP AS step,
+		UNIT AS unit
+	</sql>
+	<select id="query" parameterType="java.util.HashMap" resultType="ReportConfig">
+		select
+		<include refid="selectId" />
+		from OUT_REPORT_CONF
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.name != null and t.name != ''">
+				and NAME = #{t.name}
+			</if>
+			<if test="t.reportKey != null and t.reportKey != ''">
+				and RKEY = #{t.reportKey}
+			</if>
+			<if test="t.dataSql != null and t.dataSql != ''">
+				and DATA_SQL = #{t.dataSql}
+			</if>
+			<if test="t.type != null and t.type != ''">
+				and TYPE = #{t.type}
+			</if>
+			<if test="t.title != null and t.title != ''">
+				and TITLE = #{t.title}
+			</if>
+			<if test="t.width != null and t.width != ''">
+				and WIDTH = #{t.width}
+			</if>
+			<if test="t.height != null and t.height != ''">
+				and HEIGHT = #{t.height}
+			</if>
+			<if test="t.start != null and t.start != ''">
+				and START = #{t.start}
+			</if>
+			<if test="t.end != null and t.end != ''">
+				and END = #{t.end}
+			</if>
+			<if test="t.step != null and t.step != ''">
+				and STEP = #{t.step}
+			</if>
+			<if test="t.unit != null and t.unit != ''">
+				and UNIT = #{t.unit}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+	
+	<select id="queryForList" parameterType="ReportConfig"
+		resultType="ReportConfig">
+		select
+		<include refid="selectId" />
+		from OUT_REPORT_CONF
+		<where>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="name != null and name != ''">
+				and NAME = #{name}
+			</if>
+			<if test="reportKey != null and reportKey != ''">
+				and RKEY = #{reportKey}
+			</if>
+			<if test="dataSql != null and dataSql != ''">
+				and DATA_SQL = #{dataSql}
+			</if>
+			<if test="type != null and type != ''">
+				and TYPE = #{type}
+			</if>
+			<if test="title != null and title != ''">
+				and TITLE = #{title}
+			</if>
+			<if test="width != null and width != ''">
+				and WIDTH = #{width}
+			</if>
+			<if test="height != null and height != ''">
+				and HEIGHT = #{height}
+			</if>
+			<if test="start != null and start != ''">
+				and START = #{start}
+			</if>
+			<if test="end != null and end != ''">
+				and END = #{end}
+			</if>
+			<if test="step != null and step != ''">
+				and STEP = #{step}
+			</if>
+			<if test="unit != null and unit != ''">
+				and UNIT = #{unit}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getAll" resultType="ReportConfig">
+		select
+		<include refid="selectId" />
+		from OUT_REPORT_CONF
+	</select>
+	
+	<select id="count" parameterType="ReportConfig" resultType="int">
+		select count(0) from OUT_REPORT_CONF
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.name != null and t.name != ''">
+				and NAME = #{t.name}
+			</if>
+			<if test="t.reportKey != null and t.reportKey != ''">
+				and RKEY = #{t.reportKey}
+			</if>
+			<if test="t.dataSql != null and t.dataSql != ''">
+				and DATA_SQL = #{t.dataSql}
+			</if>
+			<if test="t.type != null and t.type != ''">
+				and TYPE = #{t.type}
+			</if>
+			<if test="t.title != null and t.title != ''">
+				and TITLE = #{t.title}
+			</if>
+			<if test="t.width != null and t.width != ''">
+				and WIDTH = #{t.width}
+			</if>
+			<if test="t.height != null and t.height != ''">
+				and HEIGHT = #{t.height}
+			</if>
+			<if test="t.start != null and t.start != ''">
+				and START = #{t.start}
+			</if>
+			<if test="t.end != null and t.end != ''">
+				and END = #{t.end}
+			</if>
+			<if test="t.step != null and t.step != ''">
+				and STEP = #{t.step}
+			</if>
+			<if test="t.unit != null and t.unit != ''">
+				and UNIT = #{t.unit}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="add" parameterType="ReportConfig"> 
+	insert into OUT_REPORT_CONF( 
+		ID, NAME, RKEY, DATA_SQL, TYPE, TITLE, WIDTH, HEIGHT, START, END, STEP, UNIT
+		)values ( 
+		UUID(), #{name}, #{reportKey}, #{dataSql}, #{type}, #{title},#{width}, #{height}, #{start}, #{end}, #{step}, #{unit} )
+	</insert>
+	
+	<delete id="deleteById" parameterType="String"> 
+		delete from OUT_REPORT_CONF where id=#{id}
+	</delete>
+	
+	<select id="getById" parameterType="String" resultType="ReportConfig">
+		select
+		<include refid="selectId" />
+		from OUT_REPORT_CONF where id=#{id}
+	</select>
+	
+	<update id="update" parameterType="ReportConfig">
+		update OUT_REPORT_CONF
+		<set>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="name != null and name != ''">
+				NAME=#{name},
+			</if>
+			<if test="reportKey != null and reportKey != ''">
+				RKEY=#{reportKey},
+			</if>
+			<if test="dataSql != null and dataSql != ''">
+				DATA_SQL=#{dataSql},
+			</if>
+			<if test="type != null and type != ''">
+				TYPE=#{type},
+			</if>
+			<if test="title != null and title != ''">
+				TITLE=#{title},
+			</if>
+			<if test="width != null and width != ''">
+				WIDTH=#{width},
+			</if>
+			<if test="height != null and height != ''">
+				HEIGHT=#{height},
+			</if>
+			<if test="start != null and start != ''">
+				START=#{start},
+			</if>
+			<if test="end != null and end != ''">
+				END=#{end},
+			</if>
+			<if test="step != null and step != ''">
+				STEP=#{step},
+			</if>
+			<if test="unit != null and unit != ''">
+				UNIT=#{unit},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

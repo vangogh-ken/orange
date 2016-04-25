@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!--  -->
+	<settings>
+		  <setting name="cacheEnabled" value="true" />  
+		  <!-- 查询时，关闭关联对象即时加载以提高性能 -->  
+		  <setting name="lazyLoadingEnabled" value="true" />  
+		  <!-- 设置关联对象加载的形态，此处为按需加载字段(加载字段由SQL指定)，不会加载关联表的所有字段，以提高性能 -->  
+		  <setting name="aggressiveLazyLoading" value="false" />  
+		  <!-- 对于未知的SQL查询，允许返回不同的结果集以达到通用的效果 
+		  <setting name="multipleResultSetsEnabled" value="true" />  
+		   --> 
+		  <!-- 允许使用列标签代替列名
+		  <setting name="useColumnLabel" value="true" />  
+		   -->  
+		  <!-- 允许使用自定义的主键值(比如由程序生成的UUID 32位编码作为键值)，  数据表的PK生成策略将被覆盖  
+		  <setting name="useGeneratedKeys" value="true" />  
+		  --> 
+		  <!-- 给予被嵌套的resultMap以字段-属性的映射支持 
+		  <setting name="autoMappingBehavior" value="FULL" />
+		   -->   
+		  <!-- 对于批量更新操作缓存SQL以提高性能  
+		  <setting name="defaultExecutorType" value="BATCH" />  
+		  -->  
+		  <!-- 数据库超过25000秒仍未响应则超时 -->  
+		  <setting name="defaultStatementTimeout" value="25000" /> 
+	</settings>
+	
+	<typeAliases>
+		<!-- 给实体Bean一个别名-->
+		<!-- AUTH -->
+		<typeAlias type="com.van.halley.db.persistence.entity.User" alias="User" />
+		<typeAlias type="com.van.halley.db.persistence.entity.UserRole" alias="UserRole"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.UserBase" alias="UserBase" />
+		
+		<typeAlias type="com.van.halley.db.persistence.entity.Resource" alias="Resource"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.Role" alias="Role"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.RoleResource" alias="RoleResource"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.RoleBpm" alias="RoleBpm"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.RoleReport" alias="RoleReport"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.RoleQuartz" alias="RoleQuartz"/>
+		
+		<typeAlias type="com.van.halley.db.persistence.entity.Position" alias="Position"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.PositionRole" alias="PositionRole"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.OrgEntity" alias="OrgEntity"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.OrgType" alias="OrgType"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.OrgEntityIdentity" alias="OrgEntityIdentity"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.ConstantAuth" alias="ConstantAuth"/>
+		
+		<!-- BPM-CONFIG -->
+		<typeAlias type="com.van.halley.db.persistence.entity.BpmConfigAuth" alias="BpmConfigAuth"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.BpmConfigNode" alias="BpmConfigNode"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.BpmConfigNotice" alias="BpmConfigNotice"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.BpmMailTemplate" alias="BpmMailTemplate"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.BpmConfigOperation" alias="BpmConfigOperation"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.BpmOperationType" alias="BpmOperationType"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.BpmConfigCategory" alias="BpmConfigCategory"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.BpmConfigDelegate" alias="BpmConfigDelegate"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.BpmConfigBasis" alias="BpmConfigBasis"/>
+		
+		<!-- SYSLOG -->
+		<typeAlias type="com.van.halley.db.persistence.entity.LoginLog" alias="LoginLog" />
+		<typeAlias type="com.van.halley.db.persistence.entity.ServerInfo" alias="ServerInfo"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.OperationLog" alias="OperationLog"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.DocInfo" alias="DocInfo"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.DocType" alias="DocType"/>
+		<!--  
+		<typeAlias type="com.van.halley.db.persistence.entity.CarInfo" alias="CarInfo"/>
+		-->
+		<typeAlias type="com.van.halley.db.persistence.entity.ForumTopic" alias="ForumTopic"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.ForumPost" alias="ForumPost"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.ReportConfig" alias="ReportConfig"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.MailSend" alias="MailSend"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.MailReceive" alias="MailReceive"/>
+		
+		<typeAlias type="com.van.halley.db.persistence.entity.OutMsgInfo" alias="OutMsgInfo"/>
+		
+		<!-- Calendar -->
+		<typeAlias type="com.van.halley.db.persistence.entity.WorkCalInfo" alias="WorkCalInfo"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.WorkCalPart" alias="WorkCalPart"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.WorkCalRule" alias="WorkCalRule"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.WorkCalType" alias="WorkCalType"/>
+		
+		<!-- CMS -->
+		<typeAlias type="com.van.halley.db.persistence.entity.CmsCatalog" alias="CmsCatalog"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.CmsArticle" alias="CmsArticle"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.CmsFavorite" alias="CmsFavorite"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.CmsComment" alias="CmsComment"/>
+		
+		<!-- CRM -->
+		<typeAlias type="com.van.halley.db.persistence.entity.CrmCustomer" alias="CrmCustomer"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.CrmPartner" alias="CrmPartner"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.CrmCustomerFollow" alias="CrmCustomerFollow"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.CrmPartnerFollow" alias="CrmPartnerFollow"/>
+		
+		<!-- DISK -->
+		<typeAlias type="com.van.halley.db.persistence.entity.DiskInfo" alias="DiskInfo"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.DiskShare" alias="DiskShare"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.DiskAcl" alias="DiskAcl"/>
+		
+		<!-- FAS -->
+		<typeAlias type="com.van.halley.db.persistence.entity.FasInvoice" alias="FasInvoice"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FasInvoiceType" alias="FasInvoiceType"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FasAccount" alias="FasAccount"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FasReconcile" alias="FasReconcile"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FasExchangeRate" alias="FasExchangeRate"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FasDue" alias="FasDue"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FasPay" alias="FasPay"/>
+		
+		<!-- FRE -->
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightMaintain" alias="FreightMaintain"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightMaintainType" alias="FreightMaintainType"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightAction" alias="FreightAction"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightActionType" alias="FreightActionType"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightActionField" alias="FreightActionField"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightActionValue" alias="FreightActionValue"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightBox" alias="FreightBox"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightOrder" alias="FreightOrder"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightDelegate" alias="FreightDelegate"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightDelegateTemplate" alias="FreightDelegateTemplate"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightPart" alias="FreightPart"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightSeal" alias="FreightSeal"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightBoxRequire" alias="FreightBoxRequire"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightOrderBox" alias="FreightOrderBox"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightPact" alias="FreightPact"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightInvoice" alias="FreightInvoice"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightExpense" alias="FreightExpense"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightExpenseType" alias="FreightExpenseType"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightStatement" alias="FreightStatement"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightPrice" alias="FreightPrice"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightDataTemplate" alias="FreightDataTemplate"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightDataTemplateActionValue" alias="FreightDataTemplateActionValue"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightMaintainAction" alias="FreightMaintainAction"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightActionTypeIdentity" alias="FreightActionTypeIdentity"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightStatementOffset" alias="FreightStatementOffset"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightInvoiceOffset" alias="FreightInvoiceOffset"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightNetDay" alias="FreightNetDay"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightAuditRecord" alias="FreightAuditRecord"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightExpenseBox" alias="FreightExpenseBox"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightActionBox" alias="FreightActionBox"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.FreightDeduct" alias="FreightDeduct"/>
+		
+		<!-- motor -->
+		<typeAlias type="com.van.halley.db.persistence.entity.MotorcadeDispatch" alias="MotorcadeDispatch"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.MotorcadeDriver" alias="MotorcadeDriver"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.MotorcadeFee" alias="MotorcadeFee"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.MotorcadeMaintain" alias="MotorcadeMaintain"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.MotorcadePetrol" alias="MotorcadePetrol"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.MotorcadeToll" alias="MotorcadeToll"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.MotorcadeTruck" alias="MotorcadeTruck"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.MotorcadeInsurance" alias="MotorcadeInsurance"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.MotorcadeWeal" alias="MotorcadeWeal"/>
+		<!--  
+		<typeAlias type="com.van.halley.db.persistence.entity.MotorcadeJourney" alias="MotorcadeJourney"/>
+		-->
+		
+		<!-- dictionary -->
+		<typeAlias type="com.van.halley.db.persistence.entity.ValueDictionary" alias="ValueDictionary"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.ValueAttribute" alias="ValueAttribute"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.ValueClass" alias="ValueClass"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.ValueFilter" alias="ValueFilter"/>
+		
+		<!-- report -->
+		<typeAlias type="com.van.halley.db.persistence.entity.ReportTemplate" alias="ReportTemplate"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.ReportIs" alias="ReportIs"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.ReportDataSource" alias="ReportDataSource"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.ReportParam" alias="ReportParam"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.ReportSet" alias="ReportSet"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.ReportCategory" alias="ReportCategory"/>
+		
+		<!-- basis -->
+		<typeAlias type="com.van.halley.db.persistence.entity.BasisAttribute" alias="BasisAttribute"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.BasisStatus" alias="BasisStatus"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.BasisSubstance" alias="BasisSubstance"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.BasisSubstanceType" alias="BasisSubstanceType"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.BasisValue" alias="BasisValue"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.BasisApplication" alias="BasisApplication"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.BasisSchema" alias="BasisSchema"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.BasisStatusAttribute" alias="BasisStatusAttribute"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.BasisMenu" alias="BasisMenu"/>
+		
+		<!-- quartz -->
+		<typeAlias type="com.van.halley.db.persistence.entity.QuartzCron" alias="QuartzCron"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.QuartzGroup" alias="QuartzGroup"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.QuartzJob" alias="QuartzJob"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.QuartzTask" alias="QuartzTask"/>
+		
+		<!-- salary -->
+		<typeAlias type="com.van.halley.db.persistence.entity.SalaryGrade" alias="SalaryGrade"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.SalaryBasic" alias="SalaryBasic"/>
+		<typeAlias type="com.van.halley.db.persistence.entity.SalaryBonus" alias="SalaryBonus"/>
+	</typeAliases>
+</configuration>

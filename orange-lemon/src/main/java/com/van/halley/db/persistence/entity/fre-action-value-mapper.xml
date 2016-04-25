@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freightactionvalue">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		STATUS AS status,
+		STRING_VALUE AS stringValue,
+		DOUBLE_VALUE AS doubleValue,
+		ID AS id,
+		DESCN AS descn,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		TEXT_VALUE AS textValue,
+		INT_VALUE AS intValue,
+		DATE_VALUE AS dateValue,
+		
+		FRE_ACTION_ID,
+		FRE_ORDER_BOX_ID,
+		FRE_ACTION_FIELD_ID
+	</sql>
+	
+	<resultMap id="freightActionValueMap" type="com.van.halley.db.persistence.entity.FreightActionValue">
+        <id property="id" column="ID" />
+        <result property="stringValue" column="STRING_VALUE" />
+        <result property="textValue" column="TEXT_VALUE" />
+        <result property="intValue" column="INT_VALUE" />
+        <result property="doubleValue" column="DOUBLE_VALUE" />
+        <result property="dateValue" column="DATE_VALUE" />
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="freightActionField" column="FRE_ACTION_FIELD_ID" select="freightactionfield.getById" ></association>
+        <association property="freightAction" column="FRE_ACTION_ID" select="freightaction.getById" ></association>
+        <association property="freightOrderBox" column="FRE_ORDER_BOX_ID" select="freightorderbox.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="freightActionValueMap">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_VALUE
+		<where>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.stringValue != null and t.stringValue != ''">
+				and STRING_VALUE = #{t.stringValue}
+			</if>
+			<if test="t.doubleValue != null and t.doubleValue != ''">
+				and DOUBLE_VALUE = #{t.doubleValue}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.freightAction != null and t.freightAction != ''">
+				and FRE_ACTION_ID = #{t.freightAction.id}
+			</if>
+			<if test="t.freightOrderBox != null and t.freightOrderBox != ''">
+				and FRE_ORDER_BOX_ID = #{t.freightOrderBox.id}
+			</if>
+			<if test="t.freightActionField != null and t.freightActionField != ''">
+				and FRE_ACTION_FIELD_ID = #{t.freightActionField.id}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.textValue != null and t.textValue != ''">
+				and TEXT_VALUE = #{t.textValue}
+			</if>
+			<if test="t.intValue != null and t.intValue != ''">
+				and INT_VALUE = #{t.intValue}
+			</if>
+			<if test="t.dateValue != null and t.dateValue != ''">
+				and DATE_VALUE = #{t.dateValue}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FreightActionValue"
+		resultMap="freightActionValueMap">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_VALUE
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="stringValue != null and stringValue != ''">
+				and STRING_VALUE = #{stringValue}
+			</if>
+			<if test="doubleValue != null and doubleValue != ''">
+				and DOUBLE_VALUE = #{doubleValue}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="freightAction != null and freightAction != ''">
+				and FRE_ACTION_ID = #{freightAction.id}
+			</if>
+			<if test="freightOrderBox != null and freightOrderBox != ''">
+				and FRE_ORDER_BOX_ID = #{freightOrderBox.id}
+			</if>
+			<if test="freightActionField != null and freightActionField != ''">
+				and FRE_ACTION_FIELD_ID = #{freightActionField.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="textValue != null and textValue != ''">
+				and TEXT_VALUE = #{textValue}
+			</if>
+			<if test="intValue != null and intValue != ''">
+				and INT_VALUE = #{intValue}
+			</if>
+			<if test="dateValue != null and dateValue != ''">
+				and DATE_VALUE = #{dateValue}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="freightActionValueMap">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_VALUE
+	</select>
+
+	<select id="count" parameterType="FreightActionValue"
+		resultType="int">
+		select count(0) from FRE_ACTION_VALUE
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="stringValue != null and stringValue != ''">
+				and STRING_VALUE = #{stringValue}
+			</if>
+			<if test="doubleValue != null and doubleValue != ''">
+				and DOUBLE_VALUE = #{doubleValue}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="freightAction != null and freightAction != ''">
+				and FRE_ACTION_ID = #{freightAction.id}
+			</if>
+			<if test="freightOrderBox != null and freightOrderBox != ''">
+				and FRE_ORDER_BOX_ID = #{freightOrderBox.id}
+			</if>
+			<if test="freightActionField != null and freightActionField != ''">
+				and FRE_ACTION_FIELD_ID = #{freightActionField.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="textValue != null and textValue != ''">
+				and TEXT_VALUE = #{textValue}
+			</if>
+			<if test="intValue != null and intValue != ''">
+				and INT_VALUE = #{intValue}
+			</if>
+			<if test="dateValue != null and dateValue != ''">
+				and DATE_VALUE = #{dateValue}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FreightActionValue">
+		insert into FRE_ACTION_VALUE( CREATE_TIME, STATUS, STRING_VALUE,
+		DOUBLE_VALUE, ID, DESCN, FRE_ACTION_ID, FRE_ORDER_BOX_ID,
+		FRE_ACTION_FIELD_ID, MODIFY_TIME, DISP_INX, TEXT_VALUE, INT_VALUE,
+		DATE_VALUE )values ( #{createTime}, #{status}, #{stringValue},
+		#{doubleValue},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{descn},
+		#{freightAction.id},
+		#{freightOrderBox.id},
+		#{freightActionField.id},
+		#{modifyTime},
+		#{displayIndex},
+		#{textValue},
+		#{intValue},
+		#{dateValue}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FRE_ACTION_VALUE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="freightActionValueMap">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_VALUE where id=#{id}
+	</select>
+	
+	<select id="getParticipateValue" parameterType="java.util.HashMap" resultMap="freightActionValueMap">
+		SELECT 
+		<include refid="selectId" />
+		FROM FRE_ACTION_VALUE WHERE ID=
+		(SELECT V.ID FROM FRE_ACTION_VALUE AS V
+		LEFT JOIN FRE_ACTION AS A
+		ON A.ID=V.FRE_ACTION_ID
+		LEFT JOIN FRE_MAINTAIN AS M
+		ON A.FRE_MAINTAIN_ID=M.ID
+		LEFT JOIN FRE_aCTION_FIELD AS F
+		ON F.ID=V.FRE_ACTION_FIELD_ID 
+		WHERE 
+		V.STATUS='T'
+		 AND F.PARTICIPATE='T' AND F.FIELD_COLUMN=#{fieldColumn}
+		 AND M.FRE_ORDER_ID=(SELECT FRE_ORDER_ID FROM FRE_MAINTAIN WHERE ID=
+		(SELECT FRE_MAINTAIN_ID FROM FRE_ACTION WHERE ID=#{freightActionId})) 
+		
+		<if test="freightOrderBoxId != null and freightOrderBoxId != ''">
+		AND V.FRE_ORDER_BOX_ID=#{freightOrderBoxId}
+		</if>
+		LIMIT 1)
+		
+		<!--  
+		低效率
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_VALUE where FRE_ACTION_ID IN (SELECT ID FROM FRE_ACTION WHERE FRE_MAINTAIN_ID IN
+		(SELECT ID FROM FRE_MAINTAIN WHERE FRE_ORDER_ID=(SELECT FRE_ORDER_ID FROM FRE_MAINTAIN WHERE ID=
+		(SELECT FRE_MAINTAIN_ID FROM FRE_ACTION WHERE ID=#{freightActionId}))))
+		
+		AND FRE_ACTION_FIELD_ID IN (SELECT ID FROM FRE_ACTION_FIELD WHERE PARTICIPATE='T' AND FIELD_COLUMN=#{fieldColumn})
+		
+		<if test="freightOrderBoxId != null and freightOrderBoxId != ''">
+		AND FRE_ORDER_BOX_ID=#{freightOrderBoxId}
+		</if>
+		
+		LIMIT 1	
+		-->
+		<!-- LIMIT 1  应当取得全部共享字段，且有值的字段再复制 -->
+	</select>
+	
+	<!--  
+	<select id="getAllParticipateValue" parameterType="java.util.HashMap" resultMap="freightActionValueMap">
+		SELECT
+		
+		V.CREATE_TIME AS createTime,
+		V.STATUS AS status,
+		V.STRING_VALUE AS stringValue,
+		V.DOUBLE_VALUE AS doubleValue,
+		V.ID AS id,
+		V.DESCN AS descn,
+		V.MODIFY_TIME AS modifyTime,
+		V.DISP_INX AS displayIndex,
+		V.TEXT_VALUE AS textValue,
+		V.INT_VALUE AS intValue,
+		V.DATE_VALUE AS dateValue,
+		
+		V.FRE_ACTION_ID,
+		V.FRE_ORDER_BOX_ID,
+		V.FRE_ACTION_FIELD_ID
+		
+		FROM FRE_ACTION_VALUE AS V
+		LEFT JOIN FRE_ACTION AS A
+		ON A.ID=V.FRE_ACTION_ID
+		LEFT JOIN FRE_MAINTAIN AS M
+		ON A.FRE_MAINTAIN_ID=M.ID
+		LEFT JOIN FRE_aCTION_FIELD AS F
+		ON F.ID=V.FRE_ACTION_FIELD_ID 
+		WHERE 
+		V.STATUS='T'
+		 AND F.PARTICIPATE='T' 
+		 AND M.FRE_ORDER_ID=(SELECT FRE_ORDER_ID FROM FRE_MAINTAIN WHERE ID=
+		(SELECT FRE_MAINTAIN_ID FROM FRE_ACTION WHERE ID=#{freightActionId})) 
+	</select>
+	-->
+	<select id="getAllParticipateValue" parameterType="java.util.HashMap" resultMap="freightActionValueMap">
+		SELECT
+		
+		V.CREATE_TIME AS createTime,
+		V.STATUS AS status,
+		V.STRING_VALUE AS stringValue,
+		V.DOUBLE_VALUE AS doubleValue,
+		V.ID AS id,
+		V.DESCN AS descn,
+		V.MODIFY_TIME AS modifyTime,
+		V.DISP_INX AS displayIndex,
+		V.TEXT_VALUE AS textValue,
+		V.INT_VALUE AS intValue,
+		V.DATE_VALUE AS dateValue,
+		
+		V.FRE_ACTION_ID,
+		V.FRE_ORDER_BOX_ID,
+		V.FRE_ACTION_FIELD_ID
+		
+		FROM FRE_ACTION_VALUE AS V
+		LEFT JOIN FRE_ACTION AS A
+		ON A.ID=V.FRE_ACTION_ID
+		LEFT JOIN FRE_MAINTAIN AS M
+		ON A.FRE_MAINTAIN_ID=M.ID
+		LEFT JOIN FRE_aCTION_FIELD AS F
+		ON F.ID=V.FRE_ACTION_FIELD_ID 
+		WHERE 
+		V.STATUS='T'
+		 AND F.PARTICIPATE='T' 
+		 AND M.FRE_ORDER_ID=#{freightOrderId}
+	</select>
+	
+	<!-- 获取动作一般值 -->
+	<select id="getNormalByFreightActionId" parameterType="String" resultMap="freightActionValueMap">
+		<!-- 
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_VALUE where FRE_ACTION_ID=#{freightActionId}
+		AND FRE_ACTION_FIELD_ID IN 
+		(SELECT ID FROM FRE_ACTION_FIELD 
+		WHERE FRE_ACTION_TYPE_ID=(SELECT FRE_ACTION_TYPE_ID FROM FRE_ACTION WHERE ID=#{freightActionId}) AND FOR_BOX ='F')
+		-->
+		
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_VALUE where FRE_ACTION_ID=#{freightActionId}
+		AND EXISTS 
+		(SELECT 1 FROM 
+			(SELECT ID FROM FRE_ACTION_FIELD WHERE 
+			FRE_ACTION_TYPE_ID=(SELECT FRE_ACTION_TYPE_ID FROM FRE_ACTION WHERE ID=#{freightActionId}) AND FOR_BOX ='F') AS T
+			WHERE T.ID=FRE_ACTION_FIELD_ID
+		)
+	</select>
+	
+	<!-- 获取动作含箱值 -->
+	<select id="getForBoxByFreightActionId" parameterType="String" resultMap="freightActionValueMap">
+		<!--
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_VALUE where FRE_ACTION_ID=#{freightActionId}
+		AND FRE_ACTION_FIELD_ID IN 
+		(SELECT ID FROM FRE_ACTION_FIELD 
+		WHERE FRE_ACTION_TYPE_ID=(SELECT FRE_ACTION_TYPE_ID FROM FRE_ACTION WHERE ID=#{freightActionId}) AND FOR_BOX ='T')
+		-->
+		
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_VALUE where FRE_ACTION_ID=#{freightActionId}
+		AND EXISTS 
+		(SELECT 1 FROM 
+			(SELECT ID FROM FRE_ACTION_FIELD WHERE 
+			FRE_ACTION_TYPE_ID=(SELECT FRE_ACTION_TYPE_ID FROM FRE_ACTION WHERE ID=#{freightActionId}) AND FOR_BOX ='T') AS T
+			WHERE T.ID=FRE_ACTION_FIELD_ID
+		)
+	</select>
+	
+	<!-- 删除动作相关的所有值 -->
+	<delete id="deleteByFreightActionId" parameterType="String">
+		delete from FRE_ACTION_VALUE where FRE_ACTION_ID=#{freightActionId}
+	</delete>
+	
+	<!-- 删除与箱封相关的某动作的值 -->
+	<delete id="deleteForOrderBox" parameterType="FreightActionBox">
+		delete from FRE_ACTION_VALUE where FRE_ACTION_ID=#{freightActionId} AND FRE_ORDER_BOX_ID=#{freightOrderBoxId}
+	</delete>
+	
+	<!-- 删除与箱封信息相关的所有动作值 -->
+	<delete id="deleteByFreightOrderBoxId" parameterType="String">
+		delete from FRE_ACTION_VALUE where FRE_ORDER_BOX_ID=#{freightOrderBoxId}
+	</delete>
+	
+	<!-- 动作值与数据模板之间的关联-->
+	<select id="getByFreightDataTemplateId" parameterType="String" resultMap="freightActionValueMap" flushCache="true">
+		<!--  
+		效率低
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_VALUE WHERE ID IN
+		(SELECT FRE_ACTION_VALUE_ID FROM FRE_DATA_TEMPLATE_ACTION_VALUE WHERE FRE_DATA_TEMPLATE_ID=#{freightDataTemplateId})
+		-->
+		<!--  
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_VALUE WHERE EXISTS 
+		(SELECT * FROM 
+		(SELECT FRE_ACTION_VALUE_ID FROM FRE_DATA_TEMPLATE_ACTION_VALUE WHERE FRE_DATA_TEMPLATE_ID=#{freightDataTemplateId}) AS T 
+		WHERE T.FRE_ACTION_VALUE_ID = ID)
+		-->
+		SELECT 
+		
+		V.CREATE_TIME AS createTime,
+		V.STATUS AS status,
+		V.STRING_VALUE AS stringValue,
+		V.DOUBLE_VALUE AS doubleValue,
+		V.ID AS id,
+		V.DESCN AS descn,
+		V.MODIFY_TIME AS modifyTime,
+		V.DISP_INX AS displayIndex,
+		V.TEXT_VALUE AS textValue,
+		V.INT_VALUE AS intValue,
+		V.DATE_VALUE AS dateValue,
+		
+		V.FRE_ACTION_ID,
+		V.FRE_ORDER_BOX_ID,
+		V.FRE_ACTION_FIELD_ID
+		
+		FROM 
+		(SELECT FRE_ACTION_VALUE_ID FROM FRE_DATA_TEMPLATE_ACTION_VALUE WHERE FRE_DATA_TEMPLATE_ID=#{freightDataTemplateId}) AS T 
+		LEFT JOIN FRE_ACTION_VALUE AS V
+		ON T.FRE_ACTION_VALUE_ID = V.ID
+		WHERE V.ID IS NOT NULL
+	</select>
+	<insert id="addDataTemplateValue" parameterType="FreightDataTemplateActionValue" >
+		insert into  FRE_DATA_TEMPLATE_ACTION_VALUE(ID, FRE_DATA_TEMPLATE_ID, FRE_ACTION_VALUE_ID) 
+		values (UUID(), #{freightDataTemplateId}, #{freightActionValueId})
+	</insert>
+	<delete id="deleteDataTemplateValue" parameterType="String" >
+		delete from  FRE_DATA_TEMPLATE_ACTION_VALUE where FRE_DATA_TEMPLATE_ID=#{freightDataTemplateId}
+	</delete>
+
+	<!-- 获取某个字段的值 -->
+	<select id="getSingleValue" parameterType="java.util.HashMap" resultType="String">
+		SELECT V.STRING_VALUE FROM FRE_ACTION_VALUE AS V
+		LEFT JOIN 
+		FRE_ACTION_FIELD AS F
+		ON V.FRE_ACTION_FIELD_ID=F.ID
+		LEFT JOIN 
+		FRE_ACTION AS A 
+		ON V.FRE_ACTION_ID=A.ID 
+		LEFT JOIN 
+		FRE_MAINTAIN AS M 
+		ON A.FRE_MAINTAIN_ID=M.ID 
+		WHERE  
+		STRING_VALUE IS NOT NULL 
+		AND F.FIELD_COLUMN=#{fieldColumn}
+		AND M.FRE_ORDER_ID =#{freightOrderId}
+		LIMIT 1
+	</select>
+	
+	<update id="update" parameterType="FreightActionValue">
+		update FRE_ACTION_VALUE
+		<set>
+			<!--  
+			<if test="textValue != null and textValue != ''">
+				TEXT_VALUE=#{textValue},
+			</if>
+			<if test="intValue != null and intValue != ''">
+				INT_VALUE=#{intValue},
+			</if>
+			<if test="dateValue != null and dateValue != ''">
+				DATE_VALUE=#{dateValue},
+			</if>
+			<if test="stringValue != null and stringValue != ''">
+				STRING_VALUE=#{stringValue},
+			</if>
+			<if test="doubleValue != null and doubleValue != ''">
+				DOUBLE_VALUE=#{doubleValue},
+			</if>
+			-->
+			<!-- 可以将字段值设置为空 -->
+				TEXT_VALUE=#{textValue},
+				INT_VALUE=#{intValue},
+				DATE_VALUE=#{dateValue},
+				STRING_VALUE=#{stringValue},
+				DOUBLE_VALUE=#{doubleValue},
+			
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="freightAction != null and freightAction != ''">
+				FRE_ACTION_ID=#{freightAction.id},
+			</if>
+			<if test="freightOrderBox != null and freightOrderBox != ''">
+				FRE_ORDER_BOX_ID=#{freightOrderBox.id},
+			</if>
+			<if test="freightActionField != null and freightActionField != ''">
+				FRE_ACTION_FIELD_ID=#{freightActionField.id},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

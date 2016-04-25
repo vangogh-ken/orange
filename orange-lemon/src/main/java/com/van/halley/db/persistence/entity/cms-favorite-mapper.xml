@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cmsfavorite">
+	<sql id="selectId">
+		ID AS id,
+		CREATE_TIME AS createTime,
+		SUBJECT AS subject,
+		COMMENT_ID,
+		ARTICLE_ID,
+		USER_ID
+	</sql>
+	
+	<resultMap id="cmsFavoriteResult" type="com.van.halley.db.persistence.entity.CmsFavorite">
+        <id property="id" column="ID" />
+        <result property="subject" column="SUBJECT" />
+        <result property="createTime" column="CREATE_TIME" />
+        
+        <association property="cmsComment" column="COMMENT_ID" select="cmscomment.getById" ></association>
+        <association property="cmsArticle" column="ARTICLE_ID" select="cmsarticle.getById" ></association>
+        <association property="owner" column="USER_ID" select="user.getById" ></association>
+    </resultMap>
+    
+	<select id="query" parameterType="java.util.HashMap" resultMap="cmsFavoriteResult" >
+		select
+		<include refid="selectId" />
+		from OUT_CMS_FAVORITE
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.cmsComment != null and t.cmsComment != ''">
+				and COMMENT_ID = #{t.cmsComment.id}
+			</if>
+			<if test="t.subject != null and t.subject != ''">
+				and SUBJECT = #{t.subject}
+			</if>
+			<if test="t.cmsArticle != null and t.cmsArticle != ''">
+				and ARTICLE_ID = #{t.cmsArticle.id}
+			</if>
+			<if test="t.owner != null and t.owner != ''">
+				and USER_ID = #{t.owner.id}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="CmsFavorite" resultMap="cmsFavoriteResult">
+		select
+		<include refid="selectId" />
+		from OUT_CMS_FAVORITE
+		<where>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="cmsComment != null and cmsComment != ''">
+				and COMMENT_ID = #{cmsComment.id}
+			</if>
+			<if test="subject != null and subject != ''">
+				and SUBJECT = #{subject}
+			</if>
+			<if test="cmsArticle != null and cmsArticle != ''">
+				and ARTICLE_ID = #{cmsArticle.id}
+			</if>
+			<if test="owner != null and owner != ''">
+				and USER_ID = #{owner.id}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="cmsFavoriteResult">
+		select
+		<include refid="selectId" />
+		from OUT_CMS_FAVORITE
+	</select>
+	
+	<select id="getByCommentId" parameterType="String" resultMap="cmsFavoriteResult">
+		select
+		<include refid="selectId" />
+		from OUT_CMS_FAVORITE WHERE COMMENT_ID=#{commentId} ORDER BY CREATE_TIME DESC
+	</select>
+	
+	<select id="getByActicleId" parameterType="String" resultMap="cmsFavoriteResult">
+		select
+		<include refid="selectId" />
+		from OUT_CMS_FAVORITE WHERE ARTICLE_ID=#{articleId} ORDER BY CREATE_TIME DESC
+	</select>
+	
+	<select id="count" parameterType="CmsFavorite" resultType="int">
+		select count(0) from OUT_CMS_FAVORITE
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.cmsComment != null and t.cmsComment != ''">
+				and COMMENT_ID = #{t.cmsComment.id}
+			</if>
+			<if test="t.subject != null and t.subject != ''">
+				and SUBJECT = #{t.subject}
+			</if>
+			<if test="t.cmsArticle != null and t.cmsArticle != ''">
+				and ARTICLE_ID = #{t.cmsArticle.id}
+			</if>
+			<if test="t.owner != null and t.owner != ''">
+				and USER_ID = #{t.owner.id}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="add" parameterType="CmsFavorite"> insert into OUT_CMS_FAVORITE(
+		ID, CREATE_TIME, COMMENT_ID, SUBJECT, ARTICLE_ID, USER_ID )values (
+		UUID(), #{createTime}, #{cmsComment.id}, #{subject}, #{cmsArticle.id},
+		#{owner.id} )
+	</insert>
+	
+	<delete id="deleteById" parameterType="String">
+		delete from OUT_CMS_FAVORITE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="cmsFavoriteResult">
+		select
+		<include refid="selectId" />
+		from OUT_CMS_FAVORITE where id=#{id}
+	</select>
+
+	<update id="update" parameterType="CmsFavorite">
+		update OUT_CMS_FAVORITE
+		<set>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="cmsComment != null and cmsComment != ''">
+				COMMENT_ID=#{cmsComment.id},
+			</if>
+			<if test="subject != null and subject != ''">
+				SUBJECT=#{subject},
+			</if>
+			<if test="cmsArticle != null and cmsArticle != ''">
+				ARTICLE_ID=#{cmsArticle.id},
+			</if>
+			<if test="owner != null and owner != ''">
+				USER_ID=#{owner.id},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

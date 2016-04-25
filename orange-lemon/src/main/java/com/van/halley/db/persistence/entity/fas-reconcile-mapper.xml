@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fasreconcile">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		DESCN AS descn,
+		ID AS id,
+		CREATE_TIME AS createTime,
+		STATUS AS status,
+		MONEY_COUNT AS moneyCount,
+		EXCHANGE_RATE AS exchangeRate,
+		TARGET_ID AS targetId,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		SOURCE_ID AS sourceId,
+		CURRENCY AS currency,
+		INCOME_OR_EXPENSE AS incomeOrExpense
+	</sql>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultType="FasReconcile">
+		select
+		<include refid="selectId" />
+		from FAS_RECONCILE
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.moneyCount != null and t.moneyCount != ''">
+				and MONEY_COUNT = #{t.moneyCount}
+			</if>
+			<if test="t.exchangeRate != null and t.exchangeRate != ''">
+				and EXCHANGE_RATE = #{t.exchangeRate}
+			</if>
+			<if test="t.targetId != null and t.targetId != ''">
+				and TARGET_ID = #{t.targetId}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.sourceId != null and t.sourceId != ''">
+				and SOURCE_ID = #{t.sourceId}
+			</if>
+			<if test="t.currency != null and t.currency != ''">
+				and CURRENCY = #{t.currency}
+			</if>
+			<if test="t.incomeOrExpense != null and t.incomeOrExpense != ''">
+				and INCOME_OR_EXPENSE = #{t.incomeOrExpense}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FasReconcile"
+		resultType="FasReconcile">
+		select
+		<include refid="selectId" />
+		from FAS_RECONCILE
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				and MONEY_COUNT = #{moneyCount}
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				and EXCHANGE_RATE = #{exchangeRate}
+			</if>
+			<if test="targetId != null and targetId != ''">
+				and TARGET_ID = #{targetId}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="sourceId != null and sourceId != ''">
+				and SOURCE_ID = #{sourceId}
+			</if>
+			<if test="currency != null and currency != ''">
+				and CURRENCY = #{currency}
+			</if>
+			<if test="incomeOrExpense != null and incomeOrExpense != ''">
+				and INCOME_OR_EXPENSE = #{incomeOrExpense}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="FasReconcile">
+		select
+		<include refid="selectId" />
+		from FAS_RECONCILE
+	</select>
+
+	<select id="count" parameterType="FasReconcile" resultType="int">
+		select count(0) from FAS_RECONCILE
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				and MONEY_COUNT = #{moneyCount}
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				and EXCHANGE_RATE = #{exchangeRate}
+			</if>
+			<if test="targetId != null and targetId != ''">
+				and TARGET_ID = #{targetId}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="sourceId != null and sourceId != ''">
+				and SOURCE_ID = #{sourceId}
+			</if>
+			<if test="currency != null and currency != ''">
+				and CURRENCY = #{currency}
+			</if>
+			<if test="incomeOrExpense != null and incomeOrExpense != ''">
+				and INCOME_OR_EXPENSE = #{incomeOrExpense}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FasReconcile">
+		insert into FAS_RECONCILE( DESCN, ID, CREATE_TIME, STATUS,
+		MONEY_COUNT, EXCHANGE_RATE, TARGET_ID, MODIFY_TIME, DISP_INX,
+		SOURCE_ID, CURRENCY, INCOME_OR_EXPENSE )values ( #{descn},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{createTime},
+		#{status},
+		#{moneyCount},
+		#{exchangeRate},
+		#{targetId},
+		#{modifyTime},
+		#{displayIndex},
+		#{sourceId},
+		#{currency},
+		#{incomeOrExpense}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FAS_RECONCILE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="FasReconcile">
+		select
+		<include refid="selectId" />
+		from FAS_RECONCILE where id=#{id}
+	</select>
+	
+	<select id="getByFasDueId" parameterType="String" resultType="FasReconcile">
+		select
+		<include refid="selectId" />
+		from FAS_RECONCILE where TARGET_ID=#{fasDueId}
+	</select>
+	
+	<select id="getByFasPayId" parameterType="String" resultType="FasReconcile">
+		select
+		<include refid="selectId" />
+		from FAS_RECONCILE where TARGET_ID=#{fasPayId}
+	</select>
+
+	<update id="update" parameterType="FasReconcile">
+		update FAS_RECONCILE
+		<set>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				MONEY_COUNT=#{moneyCount},
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				EXCHANGE_RATE=#{exchangeRate},
+			</if>
+			<if test="targetId != null and targetId != ''">
+				TARGET_ID=#{targetId},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="sourceId != null and sourceId != ''">
+				SOURCE_ID=#{sourceId},
+			</if>
+			<if test="currency != null and currency != ''">
+				CURRENCY=#{currency},
+			</if>
+			<if test="incomeOrExpense != null and incomeOrExpense != ''">
+				INCOME_OR_EXPENSE=#{incomeOrExpense},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

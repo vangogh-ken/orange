@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cmsarticle">
+	<sql id="selectId">
+		TEMPLATE AS template,
+		SUMMARY AS summary,
+		TAGS AS tags,
+		CREATE_TIME AS createTime,
+		LOGO AS logo,
+		WEIGHT AS weight,
+		PUBLISH_TIME AS publishTime,
+		STATUS AS status,
+		RECOMMEND_ID AS recommendId,
+		KEYWORD AS keyword,
+		TYPE AS type,
+		ID AS id,
+		CONTENT AS content,
+		SUB_TITLE AS subTitle,
+		CLOSE_TIME AS closeTime,
+		TITLE AS title,
+		RECOMMEND_STATUS AS recommendStatus,
+		SOURCE AS source,
+		SHORT_TITLE AS shortTitle,
+		ALLOW_COMMENT AS allowComment,
+		VIEW_COUNT AS viewCount,
+		TOP AS top,
+		USER_ID,
+		CATALOG_ID
+	</sql>
+	
+	<resultMap id="cmsArticleResult" type="com.van.halley.db.persistence.entity.CmsArticle">
+        <id property="id" column="ID" />
+        <result property="template" column="TEMPLATE" />
+        <result property="summary" column="SUMMARY" />
+        <result property="tags" column="TAGS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="logo" column="LOGO" />
+        <result property="weight" column="WEIGHT" />
+        <result property="publishTime" column="PUBLISH_TIME" />
+        <result property="status" column="STATUS" />
+        <result property="recommendId" column="RECOMMEND_ID" />
+        <result property="keyword" column="KEYWORD" />
+        <result property="type" column="TYPE" />
+        <result property="content" column="CONTENT" />
+        <result property="subTitle" column="SUB_TITLE" />
+        <result property="closeTime" column="CLOSE_TIME" />
+        <result property="title" column="TITLE" />
+        <result property="recommendStatus" column="RECOMMEND_STATUS" />
+        <result property="source" column="SOURCE" />
+        <result property="shortTitle" column="SHORT_TITLE" />
+        <result property="allowComment" column="ALLOW_COMMENT" />
+        <result property="viewCount" column="VIEW_COUNT" />
+        <result property="top" column="TOP" />
+        
+        <association property="cmsCatalog" column="CATALOG_ID" select="cmscatalog.getById" ></association>
+        <association property="publisher" column="USER_ID" select="user.getById" ></association>
+        <collection property="cmsComments" column="ID" select="cmscomment.getByActicleId"></collection>
+        <collection property="cmsFavorites" column="ID" select="cmsfavorite.getByActicleId"></collection>
+    </resultMap>
+    
+	<select id="query" parameterType="java.util.HashMap" resultMap="cmsArticleResult">
+		select
+		<include refid="selectId" />
+		from OUT_CMS_ARTICLE
+		<where>
+			<if test="t.template != null and t.template != ''">
+				and TEMPLATE = #{t.template}
+			</if>
+			<if test="t.summary != null and t.summary != ''">
+				and SUMMARY = #{t.summary}
+			</if>
+			<if test="t.tags != null and t.tags != ''">
+				and TAGS = #{t.tags}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.logo != null and t.logo != ''">
+				and LOGO = #{t.logo}
+			</if>
+			<if test="t.weight != null and t.weight != ''">
+				and WEIGHT = #{t.weight}
+			</if>
+			<if test="t.publishTime != null and t.publishTime != ''">
+				and PUBLISH_TIME = #{t.publishTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.recommendId != null and t.recommendId != ''">
+				and RECOMMEND_ID = #{t.recommendId}
+			</if>
+			<if test="t.keyword != null and t.keyword != ''">
+				and KEYWORD = #{t.keyword}
+			</if>
+			<if test="t.type != null and t.type != ''">
+				and TYPE = #{t.type}
+			</if>
+			<if test="t.publisher != null and t.publisher != ''">
+				and USER_ID = #{t.publisher.id}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.content != null and t.content != ''">
+				and CONTENT = #{t.content}
+			</if>
+			<if test="t.subTitle != null and t.subTitle != ''">
+				and SUB_TITLE = #{t.subTitle}
+			</if>
+			<if test="t.closeTime != null and t.closeTime != ''">
+				and CLOSE_TIME = #{t.closeTime}
+			</if>
+			<if test="t.title != null and t.title != ''">
+				and TITLE = #{t.title}
+			</if>
+			<if test="t.recommendStatus != null and t.recommendStatus != ''">
+				and RECOMMEND_STATUS = #{t.recommendStatus}
+			</if>
+			<if test="t.source != null and t.source != ''">
+				and SOURCE = #{t.source}
+			</if>
+			<if test="t.shortTitle != null and t.shortTitle != ''">
+				and SHORT_TITLE = #{t.shortTitle}
+			</if>
+			<if test="t.cmsCatalog != null and t.cmsCatalog != ''">
+				and CATALOG_ID = #{t.cmsCatalog.id}
+			</if>
+			<if test="t.allowComment != null and t.allowComment != ''">
+				and ALLOW_COMMENT = #{t.allowComment}
+			</if>
+			<if test="t.viewCount != null and t.viewCount != ''">
+				and VIEW_COUNT = #{t.viewCount}
+			</if>
+			<if test="t.top != null and t.top != ''">
+				and TOP = #{t.top}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="CmsArticle" resultMap="cmsArticleResult">
+		select
+		<include refid="selectId" />
+		from OUT_CMS_ARTICLE
+		<where>
+			<if test="template != null and template != ''">
+				and TEMPLATE = #{template}
+			</if>
+			<if test="summary != null and summary != ''">
+				and SUMMARY = #{summary}
+			</if>
+			<if test="tags != null and tags != ''">
+				and TAGS = #{tags}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="logo != null and logo != ''">
+				and LOGO = #{logo}
+			</if>
+			<if test="weight != null and weight != ''">
+				and WEIGHT = #{weight}
+			</if>
+			<if test="publishTime != null and publishTime != ''">
+				and PUBLISH_TIME = #{publishTime}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="recommendId != null and recommendId != ''">
+				and RECOMMEND_ID = #{recommendId}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				and KEYWORD = #{keyword}
+			</if>
+			<if test="type != null and type != ''">
+				and TYPE = #{type}
+			</if>
+			<if test="publisher != null and publisher != ''">
+				and USER_ID = #{publisher.id}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="content != null and content != ''">
+				and CONTENT = #{content}
+			</if>
+			<if test="subTitle != null and subTitle != ''">
+				and SUB_TITLE = #{subTitle}
+			</if>
+			<if test="closeTime != null and closeTime != ''">
+				and CLOSE_TIME = #{closeTime}
+			</if>
+			<if test="title != null and title != ''">
+				and TITLE = #{title}
+			</if>
+			<if test="recommendStatus != null and recommendStatus != ''">
+				and RECOMMEND_STATUS = #{recommendStatus}
+			</if>
+			<if test="source != null and source != ''">
+				and SOURCE = #{source}
+			</if>
+			<if test="shortTitle != null and shortTitle != ''">
+				and SHORT_TITLE = #{shortTitle}
+			</if>
+			<if test="cmsCatalog != null and cmsCatalog != ''">
+				and CATALOG_ID = #{cmsCatalog.id}
+			</if>
+			<if test="allowComment != null and allowComment != ''">
+				and ALLOW_COMMENT = #{allowComment}
+			</if>
+			<if test="viewCount != null and viewCount != ''">
+				and VIEW_COUNT = #{viewCount}
+			</if>
+			<if test="top != null and top != ''">
+				and TOP = #{top}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="cmsArticleResult">
+		select
+		<include refid="selectId" />
+		from OUT_CMS_ARTICLE ORDER BY PUBLISH_TIME DESC
+	</select>
+	
+	<select id="count" parameterType="CmsArticle" resultType="int">
+		select count(0) from OUT_CMS_ARTICLE
+		<where>
+			<if test="t.template != null and t.template != ''">
+				and TEMPLATE = #{t.template}
+			</if>
+			<if test="t.summary != null and t.summary != ''">
+				and SUMMARY = #{t.summary}
+			</if>
+			<if test="t.tags != null and t.tags != ''">
+				and TAGS = #{t.tags}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.logo != null and t.logo != ''">
+				and LOGO = #{t.logo}
+			</if>
+			<if test="t.weight != null and t.weight != ''">
+				and WEIGHT = #{t.weight}
+			</if>
+			<if test="t.publishTime != null and t.publishTime != ''">
+				and PUBLISH_TIME = #{t.publishTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.recommendId != null and t.recommendId != ''">
+				and RECOMMEND_ID = #{t.recommendId}
+			</if>
+			<if test="t.keyword != null and t.keyword != ''">
+				and KEYWORD = #{t.keyword}
+			</if>
+			<if test="t.type != null and t.type != ''">
+				and TYPE = #{t.type}
+			</if>
+			<if test="t.publisher != null and t.publisher != ''">
+				and USER_ID = #{t.publisher.id}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.content != null and t.content != ''">
+				and CONTENT = #{t.content}
+			</if>
+			<if test="t.subTitle != null and t.subTitle != ''">
+				and SUB_TITLE = #{t.subTitle}
+			</if>
+			<if test="t.closeTime != null and t.closeTime != ''">
+				and CLOSE_TIME = #{t.closeTime}
+			</if>
+			<if test="t.title != null and t.title != ''">
+				and TITLE = #{t.title}
+			</if>
+			<if test="t.recommendStatus != null and t.recommendStatus != ''">
+				and RECOMMEND_STATUS = #{t.recommendStatus}
+			</if>
+			<if test="t.source != null and t.source != ''">
+				and SOURCE = #{t.source}
+			</if>
+			<if test="t.shortTitle != null and t.shortTitle != ''">
+				and SHORT_TITLE = #{t.shortTitle}
+			</if>
+			<if test="t.cmsCatalog != null and t.cmsCatalog != ''">
+				and CATALOG_ID = #{t.cmsCatalog.id}
+			</if>
+			<if test="t.allowComment != null and t.allowComment != ''">
+				and ALLOW_COMMENT = #{t.allowComment}
+			</if>
+			<if test="t.viewCount != null and t.viewCount != ''">
+				and VIEW_COUNT = #{t.viewCount}
+			</if>
+			<if test="t.top != null and t.top != ''">
+				and TOP = #{t.top}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="add" parameterType="CmsArticle"> insert into OUT_CMS_ARTICLE(
+		TEMPLATE, SUMMARY, TAGS, CREATE_TIME, LOGO, WEIGHT, PUBLISH_TIME,
+		STATUS, RECOMMEND_ID, KEYWORD, TYPE, USER_ID, ID, CONTENT, SUB_TITLE,
+		CLOSE_TIME, TITLE, RECOMMEND_STATUS, SOURCE, SHORT_TITLE, CATALOG_ID,
+		ALLOW_COMMENT, VIEW_COUNT, TOP )values ( #{template}, #{summary},
+		#{tags}, #{createTime}, #{logo}, #{weight}, #{publishTime}, #{status},
+		#{recommendId}, #{keyword}, #{type}, #{publisher.id},UUID(), #{content},
+		#{subTitle}, #{closeTime}, #{title}, #{recommendStatus}, #{source},
+		#{shortTitle}, #{cmsCatalog.id}, #{allowComment}, #{viewCount}, #{top} )
+	</insert>
+	
+	<delete id="deleteById" parameterType="String">
+		delete from OUT_CMS_ARTICLE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="cmsArticleResult">
+		select
+		<include refid="selectId" />
+		from OUT_CMS_ARTICLE where id=#{id}
+	</select>
+
+	<update id="update" parameterType="CmsArticle">
+		update OUT_CMS_ARTICLE
+		<set>
+			<if test="template != null and template != ''">
+				TEMPLATE=#{template},
+			</if>
+			<if test="summary != null and summary != ''">
+				SUMMARY=#{summary},
+			</if>
+			<if test="tags != null and tags != ''">
+				TAGS=#{tags},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="logo != null and logo != ''">
+				LOGO=#{logo},
+			</if>
+			<if test="weight != null and weight != ''">
+				WEIGHT=#{weight},
+			</if>
+			<if test="publishTime != null and publishTime != ''">
+				PUBLISH_TIME=#{publishTime},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="recommendId != null and recommendId != ''">
+				RECOMMEND_ID=#{recommendId},
+			</if>
+			<if test="keyword != null and keyword != ''">
+				KEYWORD=#{keyword},
+			</if>
+			<if test="type != null and type != ''">
+				TYPE=#{type},
+			</if>
+			<if test="publisher != null and publisher != ''">
+				USER_ID=#{publisher.id},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="content != null and content != ''">
+				CONTENT=#{content},
+			</if>
+			<if test="subTitle != null and subTitle != ''">
+				SUB_TITLE=#{subTitle},
+			</if>
+			<if test="closeTime != null and closeTime != ''">
+				CLOSE_TIME=#{closeTime},
+			</if>
+			<if test="title != null and title != ''">
+				TITLE=#{title},
+			</if>
+			<if test="recommendStatus != null and recommendStatus != ''">
+				RECOMMEND_STATUS=#{recommendStatus},
+			</if>
+			<if test="source != null and source != ''">
+				SOURCE=#{source},
+			</if>
+			<if test="shortTitle != null and shortTitle != ''">
+				SHORT_TITLE=#{shortTitle},
+			</if>
+			<if test="cmsCatalog != null and cmsCatalog != ''">
+				CATALOG_ID=#{cmsCatalog.id},
+			</if>
+			<if test="allowComment != null and allowComment != ''">
+				ALLOW_COMMENT=#{allowComment},
+			</if>
+			<if test="viewCount != null and viewCount != ''">
+				VIEW_COUNT=#{viewCount},
+			</if>
+			<if test="top != null and top != ''">
+				TOP=#{top},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

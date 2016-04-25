@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!--  
+	<bean id="mailServiceFacade" class="com.van.core.mail.MailServiceFacade">
+		<property name="mailService" ref="mailService"/>
+	</bean>
+	
+	<bean id="mailService" class="com.van.core.mail.MailService">
+		<property name="mailInfo" ref="mailInfo"/>
+		<property name="mailReceiveService">
+			<bean class="com.van.service.impl.MailReceiveServiceImpl" />
+		</property>
+		<property name="mailSendService">
+			<bean class="com.van.service.impl.MailSendServiceImpl"/>
+		</property>
+	</bean>
+	-->
+	
+	<bean id="MailInfoBuilder" class="com.van.halley.core.mail.MailInfoBuilder">
+		<property name="suffixText" value="${mail.info.match.suffix}"/>
+		<property name="sendHostText" value="${mail.info.send.host}"/>
+		<property name="sendPortText" value="${mail.info.send.port}"/>
+		<property name="sendAddressText" value="${mail.info.send.address}"/>
+		<property name="receiveHostText" value="${mail.info.receive.host}"/>
+		<property name="receivePortText" value="${mail.info.receive.port}"/>
+		<property name="receiveAddressText" value="${mail.info.receive.address}"/>
+	</bean>
+</beans>

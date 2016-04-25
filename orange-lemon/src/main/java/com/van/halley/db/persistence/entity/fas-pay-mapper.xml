@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="faspay">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		INVOLVE_ORDER_NUMBER AS involveOrderNumber,
+		STATUS AS status,
+		PAY_FOR AS payFor,
+		APPLY_TIME AS applyTime,
+		ID AS id,
+		DESCN AS descn,
+		PAY_TYPE AS payType,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		PAY_NUMBER AS payNumber,
+		PAY_TIME AS payTime,
+		
+		ORG_ENTITY_ID,
+		USER_ID,
+		FRE_PART_ID
+	</sql>
+	
+	<resultMap id="fasPayMap" type="com.van.halley.db.persistence.entity.FasPay">
+        <id property="id" column="ID" />
+        <result property="payType" column="PAY_TYPE" />
+        <result property="applyTime" column="APPLY_TIME" />
+        <result property="payFor" column="PAY_FOR" />
+        <result property="involveOrderNumber" column="INVOLVE_ORDER_NUMBER" />
+        <result property="payNumber" column="PAY_NUMBER" />
+        <result property="payTime" column="PAY_TIME" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="beneficiary" column="FRE_PART_ID" select="freightpart.getById" ></association>
+        <association property="proposer" column="USER_ID" select="user.getById" ></association>
+        <association property="orgEntity" column="ORG_ENTITY_ID" select="orgentity.getById" ></association>
+        <collection property="fasReconciles" column="ID" select="fasreconcile.getByFasPayId"></collection>
+        <collection property="fasAccounts" column="FRE_PART_ID" select="fasaccount.getByFreightPartId"></collection>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="fasPayMap">
+		select
+		<include refid="selectId" />
+		from FAS_PAY
+		<where>
+			<if test="t.payNumber != null and t.payNumber != ''">
+				and PAY_NUMBER = #{t.payNumber}
+			</if>
+			<if test="t.payTime != null and t.payTime != ''">
+				and PAY_TIME = #{t.payTime}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.involveOrderNumber != null and t.involveOrderNumber != ''">
+				and INVOLVE_ORDER_NUMBER = #{t.involveOrderNumber}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.orgEntity != null and t.orgEntity != ''">
+				and ORG_ENTITY_ID = #{t.orgEntity.id}
+			</if>
+			<if test="t.payFor != null and t.payFor != ''">
+				and PAY_FOR = #{t.payFor}
+			</if>
+			<if test="t.applyTime != null and t.applyTime != ''">
+				and APPLY_TIME = #{t.applyTime}
+			</if>
+			<if test="t.proposer != null and t.proposer != ''">
+				and USER_ID = #{t.proposer.id}
+			</if>
+			<if test="t.beneficiary != null and t.beneficiary != ''">
+				and FRE_PART_ID = #{t.beneficiary.id}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.payType != null and t.payType != ''">
+				and PAY_TYPE = #{t.payType}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FasPay" resultMap="fasPayMap">
+		select
+		<include refid="selectId" />
+		from FAS_PAY
+		<where>
+			<if test="payNumber != null and payNumber != ''">
+				and PAY_NUMBER = #{payNumber}
+			</if>
+			<if test="payTime != null and payTime != ''">
+				and PAY_TIME = #{payTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="involveOrderNumber != null and involveOrderNumber != ''">
+				and INVOLVE_ORDER_NUMBER = #{involveOrderNumber}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				and ORG_ENTITY_ID = #{orgEntity.id}
+			</if>
+			<if test="payFor != null and payFor != ''">
+				and PAY_FOR = #{payFor}
+			</if>
+			<if test="applyTime != null and applyTime != ''">
+				and APPLY_TIME = #{applyTime}
+			</if>
+			<if test="proposer != null and proposer != ''">
+				and USER_ID = #{proposer.id}
+			</if>
+			<if test="beneficiary != null and beneficiary != ''">
+				and FRE_PART_ID = #{beneficiary.id}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="payType != null and payType != ''">
+				and PAY_TYPE = #{payType}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="fasPayMap">
+		select
+		<include refid="selectId" />
+		from FAS_PAY
+	</select>
+
+	<select id="count" parameterType="FasPay" resultType="int">
+		select count(0) from FAS_PAY
+		<where>
+			<if test="payNumber != null and payNumber != ''">
+				and PAY_NUMBER = #{payNumber}
+			</if>
+			<if test="payTime != null and payTime != ''">
+				and PAY_TIME = #{payTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="involveOrderNumber != null and involveOrderNumber != ''">
+				and INVOLVE_ORDER_NUMBER = #{involveOrderNumber}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				and ORG_ENTITY_ID = #{orgEntity.id}
+			</if>
+			<if test="payFor != null and payFor != ''">
+				and PAY_FOR = #{payFor}
+			</if>
+			<if test="applyTime != null and applyTime != ''">
+				and APPLY_TIME = #{applyTime}
+			</if>
+			<if test="proposer != null and proposer != ''">
+				and USER_ID = #{proposer.id}
+			</if>
+			<if test="beneficiary != null and beneficiary != ''">
+				and FRE_PART_ID = #{beneficiary.id}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="payType != null and payType != ''">
+				and PAY_TYPE = #{payType}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FasPay">
+		insert into FAS_PAY( CREATE_TIME, INVOLVE_ORDER_NUMBER, STATUS, ORG_ENTITY_ID, 
+		PAY_FOR, APPLY_TIME, USER_ID, FRE_PART_ID, ID, DESCN, PAY_TYPE, MODIFY_TIME, DISP_INX, PAY_NUMBER, PAY_TIME
+		)values ( #{createTime}, #{involveOrderNumber}, #{status}, #{orgEntity.id}, #{payFor}, 
+		#{applyTime}, #{proposer.id}, #{beneficiary.id},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{descn},
+		#{payType},
+		#{modifyTime},
+		#{displayIndex},
+		#{payNumber},
+		#{payTime}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FAS_PAY where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="fasPayMap">
+		select
+		<include refid="selectId" />
+		from FAS_PAY where id=#{id}
+	</select>
+
+	<update id="update" parameterType="FasPay">
+		update FAS_PAY
+		<set>
+			<if test="payNumber != null and payNumber != ''">
+				PAY_NUMBER = #{payNumber},
+			</if>
+			<if test="payTime != null and payTime != ''">
+				PAY_TIME = #{payTime},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="involveOrderNumber != null and involveOrderNumber != ''">
+				INVOLVE_ORDER_NUMBER=#{involveOrderNumber},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				ORG_ENTITY_ID=#{orgEntity.id},
+			</if>
+			<if test="payFor != null and payFor != ''">
+				PAY_FOR=#{payFor},
+			</if>
+			<if test="applyTime != null and applyTime != ''">
+				APPLY_TIME=#{applyTime},
+			</if>
+			<if test="proposer != null and proposer != ''">
+				USER_ID=#{proposer.id},
+			</if>
+			<if test="beneficiary != null and beneficiary != ''">
+				FRE_PART_ID=#{beneficiary.id},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="payType != null and payType != ''">
+				PAY_TYPE=#{payType},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="diskshare">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		COUNT_VIEW AS countView,
+		COUNT_DOWNLOAD AS countDownload,
+		SHARE_TYPE AS shareType,
+		DESCN AS descn,
+		EXPIRE_TIME AS expireTime,
+		MODIFY_TIME AS modifyTime,
+		CREATE_TIME AS createTime,
+		SHARE_TIME AS shareTime,
+		ID AS id,
+		COUNT_SAVE AS countSave,
+		DISP_INX AS displayIndex,
+		STATUS AS status,
+		
+		OUT_DISK_INFO_ID,
+		SHARER_ID
+	</sql>
+	
+	<resultMap id="diskShareMap" type="com.van.halley.db.persistence.entity.DiskShare">
+        <id property="id" column="ID" />
+        <result property="shareType" column="SHARE_TYPE" />
+        <result property="shareTime" column="SHARE_TIME" />
+        <result property="expireTime" column="EXPIRE_TIME" />
+        <result property="countView" column="COUNT_VIEW" />
+        <result property="countSave" column="COUNT_SAVE" />
+        <result property="countDownload" column="COUNT_DOWNLOAD" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="sharer" column="SHARER_ID" select="user.getById" ></association>
+        <association property="diskInfo" column="OUT_DISK_INFO_ID" select="diskinfo.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="diskShareMap">
+		select
+		<include refid="selectId" />
+		from OUT_DISK_SHARE
+		<where>
+			<if test="t.countView != null and t.countView != ''">
+				and COUNT_VIEW = #{t.countView}
+			</if>
+			<if test="t.countDownload != null and t.countDownload != ''">
+				and COUNT_DOWNLOAD = #{t.countDownload}
+			</if>
+			<if test="t.diskInfo != null and t.diskInfo != ''">
+				and OUT_DISK_INFO_ID = #{t.diskInfo.id}
+			</if>
+			<if test="t.shareType != null and t.shareType != ''">
+				and SHARE_TYPE = #{t.shareType}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.expireTime != null and t.expireTime != ''">
+				and EXPIRE_TIME = #{t.expireTime}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.sharer != null and t.sharer != ''">
+				and SHARER_ID = #{t.sharer.id}
+			</if>
+			<if test="t.shareTime != null and t.shareTime != ''">
+				and SHARE_TIME = #{t.shareTime}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.countSave != null and t.countSave != ''">
+				and COUNT_SAVE = #{t.countSave}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="DiskShare" resultMap="diskShareMap">
+		select
+		<include refid="selectId" />
+		from OUT_DISK_SHARE
+		<where>
+			<if test="countView != null and countView != ''">
+				and COUNT_VIEW = #{countView}
+			</if>
+			<if test="countDownload != null and countDownload != ''">
+				and COUNT_DOWNLOAD = #{countDownload}
+			</if>
+			<if test="diskInfo != null and diskInfo != ''">
+				and OUT_DISK_INFO_ID = #{diskInfo.id}
+			</if>
+			<if test="shareType != null and shareType != ''">
+				and SHARE_TYPE = #{shareType}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="expireTime != null and expireTime != ''">
+				and EXPIRE_TIME = #{expireTime}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="sharer != null and sharer != ''">
+				and SHARER_ID = #{sharer.id}
+			</if>
+			<if test="shareTime != null and shareTime != ''">
+				and SHARE_TIME = #{shareTime}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="countSave != null and countSave != ''">
+				and COUNT_SAVE = #{countSave}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="diskShareMap">
+		select
+		<include refid="selectId" />
+		from OUT_DISK_SHARE
+	</select>
+
+	<select id="count" parameterType="DiskShare" resultType="int">
+		select count(0) from OUT_DISK_SHARE
+		<where>
+			<if test="countView != null and countView != ''">
+				and COUNT_VIEW = #{countView}
+			</if>
+			<if test="countDownload != null and countDownload != ''">
+				and COUNT_DOWNLOAD = #{countDownload}
+			</if>
+			<if test="diskInfo != null and diskInfo != ''">
+				and OUT_DISK_INFO_ID = #{diskInfo.id}
+			</if>
+			<if test="shareType != null and shareType != ''">
+				and SHARE_TYPE = #{shareType}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="expireTime != null and expireTime != ''">
+				and EXPIRE_TIME = #{expireTime}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="sharer != null and sharer != ''">
+				and SHARER_ID = #{sharer.id}
+			</if>
+			<if test="shareTime != null and shareTime != ''">
+				and SHARE_TIME = #{shareTime}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="countSave != null and countSave != ''">
+				and COUNT_SAVE = #{countSave}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="DiskShare">
+		insert into OUT_DISK_SHARE( COUNT_VIEW, COUNT_DOWNLOAD,
+		OUT_DISK_INFO_ID, SHARE_TYPE, DESCN, EXPIRE_TIME, MODIFY_TIME,
+		CREATE_TIME, SHARER_ID, SHARE_TIME, ID, COUNT_SAVE, DISP_INX, STATUS
+		)values ( #{countView}, #{countDownload}, #{diskInfo.id}, #{shareType},
+		#{descn}, #{expireTime}, #{modifyTime}, #{createTime}, #{sharer.id},
+		#{shareTime},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{countSave},
+		#{displayIndex},
+		#{status}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from OUT_DISK_SHARE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="diskShareMap">
+		select
+		<include refid="selectId" />
+		from OUT_DISK_SHARE where id=#{id}
+	</select>
+
+	<update id="update" parameterType="DiskShare">
+		update OUT_DISK_SHARE
+		<set>
+			<if test="countView != null and countView != ''">
+				COUNT_VIEW=#{countView},
+			</if>
+			<if test="countDownload != null and countDownload != ''">
+				COUNT_DOWNLOAD=#{countDownload},
+			</if>
+			<if test="diskInfo != null and diskInfo != ''">
+				OUT_DISK_INFO_ID=#{diskInfo.id},
+			</if>
+			<if test="shareType != null and shareType != ''">
+				SHARE_TYPE=#{shareType},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="expireTime != null and expireTime != ''">
+				EXPIRE_TIME=#{expireTime},
+			</if>
+			MODIFY_TIME=SYSDATE(),
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="sharer != null and sharer != ''">
+				SHARER_ID=#{sharer.id},
+			</if>
+			<if test="shareTime != null and shareTime != ''">
+				SHARE_TIME=#{shareTime},
+			</if>
+			<if test="countSave != null and countSave != ''">
+				COUNT_SAVE=#{countSave},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+		</set>
+		WHERE ID=#{id} AND MODIFY_TIME=#{modifyTime}
+	</update>
+
+	<delete id="deleteBatch" parameterType="java.util.List">
+		delete from OUT_DISK_SHARE where ID IN
+		<foreach collection="list" item="t" index="index" open="("
+			separator="," close=")">
+			#{t.id}
+		</foreach>
+	</delete>
+
+	<update id="updateBatch" parameterType="java.util.List">
+		<foreach collection="list" item="t" index="index" open=""
+			close="" separator=";">
+			update OUT_DISK_SHARE
+			<set>
+				<if test="countView != null and countView != ''">
+					COUNT_VIEW=#{countView},
+				</if>
+				<if test="countDownload != null and countDownload != ''">
+					COUNT_DOWNLOAD=#{countDownload},
+				</if>
+				<if test="diskInfo != null and diskInfo != ''">
+					OUT_DISK_INFO_ID=#{diskInfo.id},
+				</if>
+				<if test="shareType != null and shareType != ''">
+					SHARE_TYPE=#{shareType},
+				</if>
+				<if test="descn != null and descn != ''">
+					DESCN=#{descn},
+				</if>
+				<if test="expireTime != null and expireTime != ''">
+					EXPIRE_TIME=#{expireTime},
+				</if>
+				MODIFY_TIME=SYSDATE(),
+				<if test="createTime != null and createTime != ''">
+					CREATE_TIME=#{createTime},
+				</if>
+				<if test="sharer != null and sharer != ''">
+					SHARER_ID=#{sharer.id},
+				</if>
+				<if test="shareTime != null and shareTime != ''">
+					SHARE_TIME=#{shareTime},
+				</if>
+				<if test="countSave != null and countSave != ''">
+					COUNT_SAVE=#{countSave},
+				</if>
+				<if test="displayIndex != null and displayIndex != ''">
+					DISP_INX=#{displayIndex},
+				</if>
+				<if test="status != null and status != ''">
+					STATUS=#{status},
+				</if>
+			</set>
+			WHERE ID=#{id} AND MODIFY_TIME=#{modifyTime}
+		</foreach>
+	</update>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into OUT_DISK_SHARE( COUNT_VIEW, COUNT_DOWNLOAD,
+		OUT_DISK_INFO_ID, SHARE_TYPE, DESCN, EXPIRE_TIME, MODIFY_TIME,
+		CREATE_TIME, SHARER_ID, SHARE_TIME, ID, COUNT_SAVE, DISP_INX, STATUS
+		)values 
+		<foreach collection="list" item="t" index="index" separator=",">
+			(
+			#{t.countView},
+			#{t.countDownload},
+			#{t.diskInfo.id},
+			#{t.shareType},
+			#{t.descn},
+			#{t.expireTime},
+			#{t.modifyTime},
+			#{t.createTime},
+			#{t.sharer.id},
+			#{t.shareTime},
+			<if test="t.id != null and t.id != '' ">
+				#{t.id},
+			</if>
+			<if test="t.id == null or t.id == '' ">
+				UUID(),
+			</if>
+			#{t.countSave},
+			#{t.displayIndex},
+			#{t.status}
+			)
+		</foreach>
+	</insert>
+</mapper>

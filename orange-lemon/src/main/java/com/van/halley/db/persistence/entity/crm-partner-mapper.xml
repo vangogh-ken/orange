@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="crmpartner">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		COUNTRY AS country,
+		ADDRESS AS address,
+		PARTNER_NAME AS partnerName,
+		CITY AS city,
+		FOLLOW_TYPE AS followType,
+		CONTACT_POSITION AS contactPosition,
+		CONTACT_PERSON AS contactPerson,
+		ENGAGE_SCOPE AS engageScope,
+		DESCN AS descn,
+		CORE_ADVANTAGE AS coreAdvantage,
+		MODIFY_TIME AS modifyTime,
+		PROVINCE AS province,
+		CREATE_TIME AS createTime,
+		ID AS id,
+		PARTNER_Type AS partnerType,
+		CONTACT_MAIL AS contactMail,
+		PARTNER_GRADE AS partnerGrade,
+		CONTACT_PHONE AS contactPhone,
+		DISP_INX AS displayIndex,
+		STATUS AS status,
+		
+		USER_ID,
+		ORG_ENTITY_ID
+	</sql>
+	
+	<resultMap id="crmPartnerMap" type="com.van.halley.db.persistence.entity.CrmPartner">
+        <id property="id" column="ID" />
+        <result property="partnerType" column="PARTNER_Type" />
+        <result property="partnerName" column="PARTNER_NAME" />
+        <result property="partnerGrade" column="PARTNER_GRADE" />
+        <result property="engageScope" column="ENGAGE_SCOPE" />
+        <result property="coreAdvantage" column="CORE_ADVANTAGE" />
+        
+        <result property="address" column="ADDRESS" />
+        <result property="country" column="COUNTRY" />
+        <result property="province" column="PROVINCE" />
+        <result property="city" column="CITY" />
+        
+        <result property="contactPerson" column="CONTACT_PERSON" />
+        <result property="contactPosition" column="CONTACT_POSITION" />
+        <result property="contactPhone" column="CONTACT_PHONE" />
+        <result property="contactMail" column="CONTACT_MAIL" />
+        <result property="followType" column="FOLLOW_TYPE" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="orgEntity" column="ORG_ENTITY_ID" select="orgentity.getById" ></association>
+        <association property="follower" column="USER_ID" select="user.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="crmPartnerMap">
+		select
+		<include refid="selectId" />
+		from CRM_PARTNER
+		<where>
+			<if test="t.country != null and t.country != ''">
+				and COUNTRY = #{t.country}
+			</if>
+			<if test="t.address != null and t.address != ''">
+				and ADDRESS = #{t.address}
+			</if>
+			<if test="t.follower != null and t.follower != ''">
+				and USER_ID = #{t.follower.id}
+			</if>
+			<if test="t.partnerName != null and t.partnerName != ''">
+				and PARTNER_NAME = #{t.partnerName}
+			</if>
+			<if test="t.city != null and t.city != ''">
+				and CITY = #{t.city}
+			</if>
+			<if test="t.followType != null and t.followType != ''">
+				and FOLLOW_TYPE = #{t.followType}
+			</if>
+			<if test="t.contactPosition != null and t.contactPosition != ''">
+				and CONTACT_POSITION = #{t.contactPosition}
+			</if>
+			<if test="t.contactPerson != null and t.contactPerson != ''">
+				and CONTACT_PERSON = #{t.contactPerson}
+			</if>
+			<if test="t.engageScope != null and t.engageScope != ''">
+				and ENGAGE_SCOPE = #{t.engageScope}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.coreAdvantage != null and t.coreAdvantage != ''">
+				and CORE_ADVANTAGE = #{t.coreAdvantage}
+			</if>
+			<if test="t.orgEntity != null and t.orgEntity != ''">
+				and ORG_ENTITY_ID = #{t.orgEntity.id}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.province != null and t.province != ''">
+				and PROVINCE = #{t.province}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.partnerType != null and t.partnerType != ''">
+				and PARTNER_Type = #{t.partnerType}
+			</if>
+			<if test="t.contactMail != null and t.contactMail != ''">
+				and CONTACT_MAIL = #{t.contactMail}
+			</if>
+			<if test="t.partnerGrade != null and t.partnerGrade != ''">
+				and PARTNER_GRADE = #{t.partnerGrade}
+			</if>
+			<if test="t.contactPhone != null and t.contactPhone != ''">
+				and CONTACT_PHONE = #{t.contactPhone}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="CrmPartner" resultMap="crmPartnerMap">
+		select
+		<include refid="selectId" />
+		from CRM_PARTNER
+		<where>
+			<if test="country != null and country != ''">
+				and COUNTRY = #{country}
+			</if>
+			<if test="address != null and address != ''">
+				and ADDRESS = #{address}
+			</if>
+			<if test="follower != null and follower != ''">
+				and USER_ID = #{follower.id}
+			</if>
+			<if test="partnerName != null and partnerName != ''">
+				and PARTNER_NAME = #{partnerName}
+			</if>
+			<if test="city != null and city != ''">
+				and CITY = #{city}
+			</if>
+			<if test="followType != null and followType != ''">
+				and FOLLOW_TYPE = #{followType}
+			</if>
+			<if test="contactPosition != null and contactPosition != ''">
+				and CONTACT_POSITION = #{contactPosition}
+			</if>
+			<if test="contactPerson != null and contactPerson != ''">
+				and CONTACT_PERSON = #{contactPerson}
+			</if>
+			<if test="engageScope != null and engageScope != ''">
+				and ENGAGE_SCOPE = #{engageScope}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="coreAdvantage != null and coreAdvantage != ''">
+				and CORE_ADVANTAGE = #{coreAdvantage}
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				and ORG_ENTITY_ID = #{orgEntity.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="province != null and province != ''">
+				and PROVINCE = #{province}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="partnerType != null and partnerType != ''">
+				and PARTNER_Type = #{partnerType}
+			</if>
+			<if test="contactMail != null and contactMail != ''">
+				and CONTACT_MAIL = #{contactMail}
+			</if>
+			<if test="partnerGrade != null and partnerGrade != ''">
+				and PARTNER_GRADE = #{partnerGrade}
+			</if>
+			<if test="contactPhone != null and contactPhone != ''">
+				and CONTACT_PHONE = #{contactPhone}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="crmPartnerMap">
+		select
+		<include refid="selectId" />
+		from CRM_PARTNER
+	</select>
+
+	<select id="count" parameterType="CrmPartner" resultType="int">
+		select count(0) from CRM_PARTNER
+		<where>
+			<if test="country != null and country != ''">
+				and COUNTRY = #{country}
+			</if>
+			<if test="address != null and address != ''">
+				and ADDRESS = #{address}
+			</if>
+			<if test="follower != null and follower != ''">
+				and USER_ID = #{follower.id}
+			</if>
+			<if test="partnerName != null and partnerName != ''">
+				and PARTNER_NAME = #{partnerName}
+			</if>
+			<if test="city != null and city != ''">
+				and CITY = #{city}
+			</if>
+			<if test="followType != null and followType != ''">
+				and FOLLOW_TYPE = #{followType}
+			</if>
+			<if test="contactPosition != null and contactPosition != ''">
+				and CONTACT_POSITION = #{contactPosition}
+			</if>
+			<if test="contactPerson != null and contactPerson != ''">
+				and CONTACT_PERSON = #{contactPerson}
+			</if>
+			<if test="engageScope != null and engageScope != ''">
+				and ENGAGE_SCOPE = #{engageScope}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="coreAdvantage != null and coreAdvantage != ''">
+				and CORE_ADVANTAGE = #{coreAdvantage}
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				and ORG_ENTITY_ID = #{orgEntity.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="province != null and province != ''">
+				and PROVINCE = #{province}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="partnerType != null and partnerType != ''">
+				and PARTNER_Type = #{partnerType}
+			</if>
+			<if test="contactMail != null and contactMail != ''">
+				and CONTACT_MAIL = #{contactMail}
+			</if>
+			<if test="partnerGrade != null and partnerGrade != ''">
+				and PARTNER_GRADE = #{partnerGrade}
+			</if>
+			<if test="contactPhone != null and contactPhone != ''">
+				and CONTACT_PHONE = #{contactPhone}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="CrmPartner">
+		insert into CRM_PARTNER( COUNTRY, ADDRESS, USER_ID, PARTNER_NAME,
+		CITY, FOLLOW_TYPE, CONTACT_POSITION, CONTACT_PERSON, ENGAGE_SCOPE,
+		DESCN, CORE_ADVANTAGE, ORG_ENTITY_ID, MODIFY_TIME, PROVINCE,
+		CREATE_TIME, ID, PARTNER_Type, CONTACT_MAIL, PARTNER_GRADE,
+		CONTACT_PHONE, DISP_INX, STATUS )values ( #{country}, #{address},
+		#{follower.id}, #{partnerName}, #{city}, #{followType},
+		#{contactPosition}, #{contactPerson}, #{engageScope}, #{descn},
+		#{coreAdvantage}, #{orgEntity.id}, #{modifyTime}, #{province},
+		#{createTime},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{partnerType},
+		#{contactMail},
+		#{partnerGrade},
+		#{contactPhone},
+		#{displayIndex},
+		#{status}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from CRM_PARTNER where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="crmPartnerMap">
+		select
+		<include refid="selectId" />
+		from CRM_PARTNER where id=#{id}
+	</select>
+
+	<update id="update" parameterType="CrmPartner">
+		update CRM_PARTNER
+		<set>
+			<if test="country != null and country != ''">
+				COUNTRY=#{country},
+			</if>
+			<if test="address != null and address != ''">
+				ADDRESS=#{address},
+			</if>
+			<if test="follower != null and follower != ''">
+				USER_ID=#{follower.id},
+			</if>
+			<if test="partnerName != null and partnerName != ''">
+				PARTNER_NAME=#{partnerName},
+			</if>
+			<if test="city != null and city != ''">
+				CITY=#{city},
+			</if>
+			<if test="followType != null and followType != ''">
+				FOLLOW_TYPE=#{followType},
+			</if>
+			<if test="contactPosition != null and contactPosition != ''">
+				CONTACT_POSITION=#{contactPosition},
+			</if>
+			<if test="contactPerson != null and contactPerson != ''">
+				CONTACT_PERSON=#{contactPerson},
+			</if>
+			<if test="engageScope != null and engageScope != ''">
+				ENGAGE_SCOPE=#{engageScope},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="coreAdvantage != null and coreAdvantage != ''">
+				CORE_ADVANTAGE=#{coreAdvantage},
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				ORG_ENTITY_ID=#{orgEntity.id},
+			</if>
+			MODIFY_TIME=SYSDATE(),
+			<if test="province != null and province != ''">
+				PROVINCE=#{province},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="partnerType != null and partnerType != ''">
+				PARTNER_Type=#{partnerType},
+			</if>
+			<if test="contactMail != null and contactMail != ''">
+				CONTACT_MAIL=#{contactMail},
+			</if>
+			<if test="partnerGrade != null and partnerGrade != ''">
+				PARTNER_GRADE=#{partnerGrade},
+			</if>
+			<if test="contactPhone != null and contactPhone != ''">
+				CONTACT_PHONE=#{contactPhone},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+		</set>
+		WHERE ID=#{id}
+	</update>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+					    http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+
+	<bean id="scheduledTaskRegistrar" class="org.springframework.scheduling.config.ScheduledTaskRegistrar" />
+	<bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" >
+		<property name="taskExecutor" ref="schedulerTaskExecutor"></property>
+	
+	</bean>
+	<!-- 配置任意一个executor，将覆盖默认的quartz的配置。 -->
+	<!--  
+	<bean id="schedulerTaskExecutor" class="java.util.concurrent.ScheduledThreadPoolExecutor" >
+		<constructor-arg>
+			<value>20</value>
+		</constructor-arg>
+	</bean>
+	-->
+	<bean id="schedulerTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	    <property name="corePoolSize" value="10" />
+	    <property name="maxPoolSize" value="20" />
+	    <property name="queueCapacity" value="2500" />
+	</bean>
+	
+</beans>

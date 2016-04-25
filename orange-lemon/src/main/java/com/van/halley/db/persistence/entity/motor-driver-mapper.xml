@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="motorcadedriver">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		DRIVING_NUMBER AS drivingNumber,
+		STATUS AS status,
+		QUASI_TYPE AS quasiType,
+		REG_TIME AS registerTime,
+		ID AS id,
+		DESCN AS descn,
+		CERTIFICATION AS certification,
+		ADRESS AS address,
+		VALID_TIME AS validTime,
+		GENDER AS gender,
+		DISPLAY_NAME AS displayName,
+		MODIFY_TIME AS modifyTime,
+		TELEPHONE AS telephone,
+		DRIVER_TYPE AS driverType,
+		DISP_INX AS displayIndex
+	</sql>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultType="MotorcadeDriver">
+		select
+		<include refid="selectId" />
+		from MOTOR_DRIVER
+		<where>
+			<if test="t.driverType != null and t.driverType != ''">
+				and DRIVER_TYPE = #{t.driverType}
+			</if>
+			
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.drivingNumber != null and t.drivingNumber != ''">
+				and DRIVING_NUMBER = #{t.drivingNumber}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.quasiType != null and t.quasiType != ''">
+				and QUASI_TYPE = #{t.quasiType}
+			</if>
+			<if test="t.registerTime != null and t.registerTime != ''">
+				and REG_TIME = #{t.registerTime}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.certification != null and t.certification != ''">
+				and CERTIFICATION = #{t.certification}
+			</if>
+			<if test="t.address != null and t.address != ''">
+				and ADRESS = #{t.address}
+			</if>
+			<if test="t.validTime != null and t.validTime != ''">
+				and VALID_TIME = #{t.validTime}
+			</if>
+			<if test="t.gender != null and t.gender != ''">
+				and GENDER = #{t.gender}
+			</if>
+			<if test="t.displayName != null and t.displayName != ''">
+				and DISPLAY_NAME = #{t.displayName}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.telephone != null and t.telephone != ''">
+				and TELEPHONE = #{t.telephone}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="MotorcadeDriver"
+		resultType="MotorcadeDriver">
+		select
+		<include refid="selectId" />
+		from MOTOR_DRIVER
+		<where>
+			<if test="driverType != null and driverType != ''">
+				and DRIVER_TYPE = #{driverType}
+			</if>
+			
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="drivingNumber != null and drivingNumber != ''">
+				and DRIVING_NUMBER = #{drivingNumber}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="quasiType != null and quasiType != ''">
+				and QUASI_TYPE = #{quasiType}
+			</if>
+			<if test="registerTime != null and registerTime != ''">
+				and REG_TIME = #{registerTime}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="certification != null and certification != ''">
+				and CERTIFICATION = #{certification}
+			</if>
+			<if test="address != null and address != ''">
+				and ADRESS = #{address}
+			</if>
+			<if test="validTime != null and validTime != ''">
+				and VALID_TIME = #{validTime}
+			</if>
+			<if test="gender != null and gender != ''">
+				and GENDER = #{gender}
+			</if>
+			<if test="displayName != null and displayName != ''">
+				and DISPLAY_NAME = #{displayName}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="telephone != null and telephone != ''">
+				and TELEPHONE = #{telephone}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="MotorcadeDriver">
+		select
+		<include refid="selectId" />
+		from MOTOR_DRIVER
+	</select>
+
+	<select id="count" parameterType="MotorcadeDriver" resultType="int">
+		select count(0) from MOTOR_DRIVER
+		<where>
+			<if test="driverType != null and driverType != ''">
+				and DRIVER_TYPE = #{driverType}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="drivingNumber != null and drivingNumber != ''">
+				and DRIVING_NUMBER = #{drivingNumber}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="quasiType != null and quasiType != ''">
+				and QUASI_TYPE = #{quasiType}
+			</if>
+			<if test="registerTime != null and registerTime != ''">
+				and REG_TIME = #{registerTime}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="certification != null and certification != ''">
+				and CERTIFICATION = #{certification}
+			</if>
+			<if test="address != null and address != ''">
+				and ADRESS = #{address}
+			</if>
+			<if test="validTime != null and validTime != ''">
+				and VALID_TIME = #{validTime}
+			</if>
+			<if test="gender != null and gender != ''">
+				and GENDER = #{gender}
+			</if>
+			<if test="displayName != null and displayName != ''">
+				and DISPLAY_NAME = #{displayName}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="telephone != null and telephone != ''">
+				and TELEPHONE = #{telephone}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="MotorcadeDriver">
+		insert into MOTOR_DRIVER(DRIVER_TYPE, CREATE_TIME, DRIVING_NUMBER, STATUS,
+		QUASI_TYPE, REG_TIME, ID, DESCN, CERTIFICATION, ADRESS, VALID_TIME,
+		GENDER, DISPLAY_NAME, MODIFY_TIME, TELEPHONE, DISP_INX )values (#{driverType},
+		#{createTime}, #{drivingNumber}, #{status}, #{quasiType},
+		#{registerTime},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{descn},
+		#{certification},
+		#{address},
+		#{validTime},
+		#{gender},
+		#{displayName},
+		#{modifyTime},
+		#{telephone},
+		#{displayIndex}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from MOTOR_DRIVER where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="MotorcadeDriver">
+		select
+		<include refid="selectId" />
+		from MOTOR_DRIVER where id=#{id}
+	</select>
+
+	<update id="update" parameterType="MotorcadeDriver">
+		update MOTOR_DRIVER
+		<set>
+			<if test="driverType != null and driverType != ''">
+				DRIVER_TYPE = #{driverType},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="drivingNumber != null and drivingNumber != ''">
+				DRIVING_NUMBER=#{drivingNumber},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="quasiType != null and quasiType != ''">
+				QUASI_TYPE=#{quasiType},
+			</if>
+			<if test="registerTime != null and registerTime != ''">
+				REG_TIME=#{registerTime},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="certification != null and certification != ''">
+				CERTIFICATION=#{certification},
+			</if>
+			<if test="address != null and address != ''">
+				ADRESS=#{address},
+			</if>
+			<if test="validTime != null and validTime != ''">
+				VALID_TIME=#{validTime},
+			</if>
+			<if test="gender != null and gender != ''">
+				GENDER=#{gender},
+			</if>
+			<if test="displayName != null and displayName != ''">
+				DISPLAY_NAME=#{displayName},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="telephone != null and telephone != ''">
+				TELEPHONE=#{telephone},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

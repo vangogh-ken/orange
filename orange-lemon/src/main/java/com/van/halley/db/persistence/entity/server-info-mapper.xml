@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="serverinfo">
+	<!-- 以下与实体类的中字段一致 -->
+	<sql id="selectId">
+		id,
+		cpuUsage,
+		setCpuUsage,
+		jvmUsage,
+		setJvmUsage,
+		ramUsage,
+		setRamUsage,
+		operTime,
+		email,
+		mark
+	</sql>
+	<!-- 查询 -->
+	<select id="query" resultType="ServerInfo" parameterType="java.util.HashMap">
+		select
+		<include refid="selectId" />
+		from SYS_INFO_SERVER  
+		<where>
+		<if test="t.email != null and t.email != ''">
+			email like '%${t.email}%'
+		</if>
+		</where>
+		
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+	
+	<!-- 查询 -->
+	<select id="getAll" resultType="ServerInfo" parameterType="ServerInfo">
+		select
+		<include refid="selectId" />
+		from SYS_INFO_SERVER  order By operTime DESC
+	</select>
+
+	<!-- 总记录数 -->
+	<select id="count" parameterType="ServerInfo" resultType="int">
+		select count(*) from SYS_INFO_SERVER
+		<where>
+		<if test="email != null and email != ''">
+			email like '%${email}%'
+		</if>
+		</where>
+	</select>
+	
+	<!-- 新增 -->
+	<insert id="add" parameterType="ServerInfo">
+		insert into SYS_INFO_SERVER(
+		id,
+		cpuUsage,
+		setCpuUsage,
+		jvmUsage,
+		setJvmUsage,
+		ramUsage,
+		setRamUsage,
+		operTime,
+		email,mark
+		) 
+		values(
+		UUID(),
+		#{cpuUsage},
+		#{setCpuUsage},
+		#{jvmUsage},
+		#{setJvmUsage},
+		#{ramUsage},
+		#{setJvmUsage},
+		#{operTime},
+		#{email},#{mark})
+	</insert>
+	
+	<delete id="deleteById" parameterType="String">
+		delete from SYS_INFO_SERVER where id=#{id}
+	</delete>
+	
+	<select id="getById" parameterType="String" resultType="ServerInfo">
+		select * from SYS_INFO_SERVER where id= #{id}
+	</select>
+	
+</mapper>

@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freightprice">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		STATUS AS status,
+		REGULAR AS regular,
+		EXCHANGE_RATE AS exchangeRate,
+		EFFECT_TIME AS effectTime,
+		COUNT_UNIT AS countUnit,
+		METER_TYPE AS meterType,
+		PERIOD AS period,
+		ACTUAL_COUNT AS actualCount,
+		CURRENCY AS currency,
+		DESCN AS descn,
+		ID AS id,
+		MONEY_COUNT AS moneyCount,
+		ACTUAL AS actual,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		INCOME_OR_EXPENSE AS incomeOrExpense,
+		
+		FRE_PACT_ID,
+		FRE_PART_ID,
+		FAS_INVOICE_TYPE_ID,
+		FRE_EXPENSE_TYPE_ID
+	</sql>
+	
+	<resultMap id="freightPriceMap" type="com.van.halley.db.persistence.entity.FreightPrice" >
+        <id property="id" column="ID" />
+        <result property="incomeOrExpense" column="INCOME_OR_EXPENSE" />
+        <result property="invoiceType" column="INVOICE_TYPE" />
+        <result property="actual" column="ACTUAL" />
+        <result property="regular" column="REGULAR" />
+        <result property="countUnit" column="COUNT_UNIT" />
+        <result property="moneyCount" column="MONEY_COUNT" />
+        <result property="actualCount" column="ACTUAL_COUNT" />
+        <result property="currency" column="CURRENCY" />
+        <result property="exchangeRate" column="EXCHANGE_RATE" />
+        <result property="meterType" column="METER_TYPE" />
+        <result property="period" column="PERIOD" />
+        <result property="effectTime" column="EFFECT_TIME" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        
+        <association property="freightPart" column="FRE_PART_ID" select="freightpart.getById" ></association>
+        <association property="freightPact" column="FRE_PACT_ID" select="freightpact.getById" ></association>
+        <association property="fasInvoiceType" column="FAS_INVOICE_TYPE_ID" select="fasinvoicetype.getById" ></association>
+        <association property="freightExpenseType" column="FRE_EXPENSE_TYPE_ID" select="freightexpensetype.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" resultMap="freightPriceMap" useCache="false">
+		select
+		<include refid="selectId" />
+		from FRE_PRICE
+		<where>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.freightPact != null and t.freightPact != ''">
+				and FRE_PACT_ID = #{t.freightPact.id}
+			</if>
+			<if test="t.freightExpenseType != null and t.freightExpenseType != ''">
+				and FRE_EXPENSE_TYPE_ID = #{t.freightExpenseType.id}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.regular != null and t.regular != ''">
+				and REGULAR = #{t.regular}
+			</if>
+			<if test="t.exchangeRate != null and t.exchangeRate != ''">
+				and EXCHANGE_RATE = #{t.exchangeRate}
+			</if>
+			<if test="t.effectTime != null and t.effectTime != ''">
+				and EFFECT_TIME = #{t.effectTime}
+			</if>
+			<if test="t.countUnit != null and t.countUnit != ''">
+				and COUNT_UNIT = #{t.countUnit}
+			</if>
+			<if test="t.meterType != null and t.meterType != ''">
+				and METER_TYPE = #{t.meterType}
+			</if>
+			<if test="t.freightPart != null and t.freightPart != ''">
+				and FRE_PART_ID = #{t.freightPart.id}
+			</if>
+			<if test="t.period != null and t.period != ''">
+				and PERIOD = #{t.period}
+			</if>
+			<if test="t.actualCount != null and t.actualCount != ''">
+				and ACTUAL_COUNT = #{t.actualCount}
+			</if>
+			<if test="t.fasInvoiceType != null and t.fasInvoiceType != ''">
+				and FAS_INVOICE_TYPE_ID = #{t.fasInvoiceType.id}
+			</if>
+			<if test="t.currency != null and t.currency != ''">
+				and CURRENCY = #{t.currency}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.moneyCount != null and t.moneyCount != ''">
+				and MONEY_COUNT = #{t.moneyCount}
+			</if>
+			<if test="t.actual != null and t.actual != ''">
+				and ACTUAL = #{t.actual}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.incomeOrExpense != null and t.incomeOrExpense != ''">
+				and INCOME_OR_EXPENSE = #{t.incomeOrExpense}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FreightPrice"
+		resultMap="freightPriceMap">
+		select
+		<include refid="selectId" />
+		from FRE_PRICE
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="freightPact != null and freightPact != ''">
+				and FRE_PACT_ID = #{freightPact.id}
+			</if>
+			<if test="freightExpenseType != null and freightExpenseType != ''">
+				and FRE_EXPENSE_TYPE_ID = #{freightExpenseType.id}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="regular != null and regular != ''">
+				and REGULAR = #{regular}
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				and EXCHANGE_RATE = #{exchangeRate}
+			</if>
+			<if test="effectTime != null and effectTime != ''">
+				and EFFECT_TIME = #{effectTime}
+			</if>
+			<if test="countUnit != null and countUnit != ''">
+				and COUNT_UNIT = #{countUnit}
+			</if>
+			<if test="meterType != null and meterType != ''">
+				and METER_TYPE = #{meterType}
+			</if>
+			<if test="freightPart != null and freightPart != ''">
+				and FRE_PART_ID = #{freightPart.id}
+			</if>
+			<if test="period != null and period != ''">
+				and PERIOD = #{period}
+			</if>
+			<if test="actualCount != null and actualCount != ''">
+				and ACTUAL_COUNT = #{actualCount}
+			</if>
+			<if test="fasInvoiceType != null and fasInvoiceType != ''">
+				and FAS_INVOICE_TYPE_ID = #{fasInvoiceType.id}
+			</if>
+			<if test="currency != null and currency != ''">
+				and CURRENCY = #{currency}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				and MONEY_COUNT = #{moneyCount}
+			</if>
+			<if test="actual != null and actual != ''">
+				and ACTUAL = #{actual}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="incomeOrExpense != null and incomeOrExpense != ''">
+				and INCOME_OR_EXPENSE = #{incomeOrExpense}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="freightPriceMap">
+		select
+		<include refid="selectId" />
+		from FRE_PRICE
+	</select>
+
+	<select id="count" parameterType="FreightPrice" resultType="int">
+		select count(0) from FRE_PRICE
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="freightPact != null and freightPact != ''">
+				and FRE_PACT_ID = #{freightPact.id}
+			</if>
+			<if test="freightExpenseType != null and freightExpenseType != ''">
+				and FRE_EXPENSE_TYPE_ID = #{freightExpenseType.id}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="regular != null and regular != ''">
+				and REGULAR = #{regular}
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				and EXCHANGE_RATE = #{exchangeRate}
+			</if>
+			<if test="effectTime != null and effectTime != ''">
+				and EFFECT_TIME = #{effectTime}
+			</if>
+			<if test="countUnit != null and countUnit != ''">
+				and COUNT_UNIT = #{countUnit}
+			</if>
+			<if test="meterType != null and meterType != ''">
+				and METER_TYPE = #{meterType}
+			</if>
+			<if test="freightPart != null and freightPart != ''">
+				and FRE_PART_ID = #{freightPart.id}
+			</if>
+			<if test="period != null and period != ''">
+				and PERIOD = #{period}
+			</if>
+			<if test="actualCount != null and actualCount != ''">
+				and ACTUAL_COUNT = #{actualCount}
+			</if>
+			<if test="fasInvoiceType != null and fasInvoiceType != ''">
+				and FAS_INVOICE_TYPE_ID = #{fasInvoiceType.id}
+			</if>
+			<if test="currency != null and currency != ''">
+				and CURRENCY = #{currency}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				and MONEY_COUNT = #{moneyCount}
+			</if>
+			<if test="actual != null and actual != ''">
+				and ACTUAL = #{actual}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="incomeOrExpense != null and incomeOrExpense != ''">
+				and INCOME_OR_EXPENSE = #{incomeOrExpense}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FreightPrice">
+		insert into FRE_PRICE( CREATE_TIME, FRE_PACT_ID, FRE_EXPENSE_TYPE_ID,
+		STATUS, REGULAR, EXCHANGE_RATE, EFFECT_TIME,
+		COUNT_UNIT, METER_TYPE, FRE_PART_ID, PERIOD, ACTUAL_COUNT,
+		FAS_INVOICE_TYPE_ID, CURRENCY, DESCN, ID, MONEY_COUNT,
+		ACTUAL, MODIFY_TIME, DISP_INX, INCOME_OR_EXPENSE )values (
+		#{createTime}, #{freightPact.id}, #{freightExpenseType.id}, #{status},
+		#{regular}, #{exchangeRate}, #{effectTime},
+		#{countUnit}, #{meterType}, #{freightPart.id}, #{period}, #{actualCount},
+		#{fasInvoiceType.id}, #{currency}, #{descn},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{moneyCount},
+		#{actual},
+		#{modifyTime},
+		#{displayIndex},
+		#{incomeOrExpense}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FRE_PRICE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="freightPriceMap">
+		select
+		<include refid="selectId" />
+		from FRE_PRICE where id=#{id}
+	</select>
+	
+	<!-- 获取原始成本信息 -->
+	<select id="getByOriginalTime" resultMap="freightPriceMap">
+		SELECT CREATE_TIME AS createTime,
+		STATUS AS status,
+		REGULAR AS regular,
+		EXCHANGE_RATE AS exchangeRate,
+		EFFECT_TIME AS effectTime,
+		COUNT_UNIT AS countUnit,
+		METER_TYPE AS meterType,
+		PERIOD AS period,
+		ACTUAL_COUNT AS actualCount,
+		CURRENCY AS currency,
+		DESCN AS descn,
+		ID AS id,
+		MONEY_COUNT AS moneyCount,
+		ACTUAL AS actual,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		INCOME_OR_EXPENSE AS incomeOrExpense,
+		
+		FRE_PACT_ID,
+		FRE_PART_ID,
+		FAS_INVOICE_TYPE_ID,
+		FRE_EXPENSE_TYPE_ID
+		FROM FRE_PRICE AS P
+		WHERE EXISTS (SELECT 1 FROM 
+		(SELECT MIN(CREATE_TIME) AS CREATE_TIME, FRE_PART_ID, FRE_EXPENSE_TYPE_ID, FAS_INVOICE_TYPE_ID, COUNT_UNIT 
+		FROM FRE_PRICE GROUP BY FRE_PART_ID, FRE_EXPENSE_TYPE_ID, FAS_INVOICE_TYPE_ID, COUNT_UNIT) AS A
+		WHERE 
+		A.FRE_PART_ID = P.FRE_PART_ID 
+		AND A.FRE_EXPENSE_TYPE_ID = P.FRE_EXPENSE_TYPE_ID 
+		AND A.COUNT_UNIT=P.COUNT_UNIT
+		AND A.FAS_INVOICE_TYPE_ID = P.FAS_INVOICE_TYPE_ID 
+		AND A.CREATE_TIME = P.CREATE_TIME) 
+	</select>
+	
+	<!-- 以状态来获取原始成本信息-->
+	<select id="getByOriginalStatus" resultMap="freightPriceMap">
+		SELECT CREATE_TIME AS createTime,
+		STATUS AS status,
+		REGULAR AS regular,
+		EXCHANGE_RATE AS exchangeRate,
+		EFFECT_TIME AS effectTime,
+		COUNT_UNIT AS countUnit,
+		METER_TYPE AS meterType,
+		PERIOD AS period,
+		ACTUAL_COUNT AS actualCount,
+		CURRENCY AS currency,
+		DESCN AS descn,
+		ID AS id,
+		MONEY_COUNT AS moneyCount,
+		ACTUAL AS actual,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		INCOME_OR_EXPENSE AS incomeOrExpense,
+		
+		FRE_PACT_ID,
+		FRE_PART_ID,
+		FAS_INVOICE_TYPE_ID,
+		FRE_EXPENSE_TYPE_ID
+		FROM FRE_PRICE AS P
+		WHERE STATUS='O'
+	</select>
+	
+	<!--
+	<select id="getForCache" resultMap="freightPriceMap">
+		SELECT CREATE_TIME AS createTime,
+		STATUS AS status,
+		REGULAR AS regular,
+		EXCHANGE_RATE AS exchangeRate,
+		EFFECT_TIME AS effectTime,
+		COUNT_UNIT AS countUnit,
+		METER_TYPE AS meterType,
+		PERIOD AS period,
+		ACTUAL_COUNT AS actualCount,
+		CURRENCY AS currency,
+		DESCN AS descn,
+		ID AS id,
+		MONEY_COUNT AS moneyCount,
+		ACTUAL AS actual,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		INCOME_OR_EXPENSE AS incomeOrExpense,
+		
+		FRE_PACT_ID,
+		FRE_PART_ID,
+		FAS_INVOICE_TYPE_ID,
+		FRE_EXPENSE_TYPE_ID
+		FROM FRE_PRICE AS P
+		WHERE EXISTS (SELECT 1 FROM 
+		(SELECT MAX(CREATE_TIME) AS CREATE_TIME, FRE_PART_ID, FRE_EXPENSE_TYPE_ID, FAS_INVOICE_TYPE_ID, COUNT_UNIT 
+		FROM FRE_PRICE GROUP BY FRE_PART_ID, FRE_EXPENSE_TYPE_ID, FAS_INVOICE_TYPE_ID, COUNT_UNIT) AS A
+		WHERE 
+		A.FRE_PART_ID = P.FRE_PART_ID 
+		AND A.FRE_EXPENSE_TYPE_ID = P.FRE_EXPENSE_TYPE_ID 
+		AND A.COUNT_UNIT=P.COUNT_UNIT
+		AND A.FAS_INVOICE_TYPE_ID = P.FAS_INVOICE_TYPE_ID 
+		AND A.CREATE_TIME = P.CREATE_TIME) 
+		-->
+		<!--  
+		select
+		<include refid="selectId" />
+		from FRE_PRICE WHERE EXISTS (SELECT 1 FROM 
+		(SELECT P.ID AS PID FROM FRE_PRICE AS P
+		WHERE EXISTS (SELECT 1 FROM 
+		(SELECT MAX(CREATE_TIME) AS CREATE_TIME, FRE_PART_ID, FRE_EXPENSE_TYPE_ID, FAS_INVOICE_TYPE_ID, COUNT_UNIT 
+		FROM FRE_PRICE GROUP BY FRE_PART_ID, FRE_EXPENSE_TYPE_ID, FAS_INVOICE_TYPE_ID, COUNT_UNIT) AS A
+		WHERE 
+		A.FRE_PART_ID = P.FRE_PART_ID 
+		AND A.FRE_EXPENSE_TYPE_ID = P.FRE_EXPENSE_TYPE_ID 
+		AND A.COUNT_UNIT=P.COUNT_UNIT
+		AND A.FAS_INVOICE_TYPE_ID = P.FAS_INVOICE_TYPE_ID 
+		AND A.CREATE_TIME = P.CREATE_TIME  
+		)) AS T WHERE T.PID=ID
+		)
+		-->
+		 <!-- 
+		select
+		<include refid="selectId" />
+		from FRE_PRICE WHERE ID IN(
+			SELECT P.ID FROM (SELECT MAX(CREATE_TIME) AS CREATE_TIME,FRE_PART_ID, FRE_EXPENSE_TYPE_ID, FAS_INVOICE_TYPE_ID, COUNT_UNIT 
+			FROM FRE_PRICE GROUP BY FRE_PART_ID, FRE_EXPENSE_TYPE_ID, FAS_INVOICE_TYPE_ID, COUNT_UNIT) AS A, FRE_PRICE AS P
+			WHERE A.FRE_PART_ID = P.FRE_PART_ID AND A.FRE_EXPENSE_TYPE_ID = P.FRE_EXPENSE_TYPE_ID AND A.COUNT_UNIT=P.COUNT_UNIT
+			AND A.FAS_INVOICE_TYPE_ID = P.FAS_INVOICE_TYPE_ID AND A.CREATE_TIME = P.CREATE_TIME
+		)
+		-->
+		<!--  高效原始SQL
+		SELECT P.* FROM (SELECT MAX(CREATE_TIME) AS CREATE_TIME,FRE_PART_ID, FRE_EXPENSE_TYPE_ID, FAS_INVOICE_TYPE_ID FROM FRE_PRICE 
+		GROUP BY FRE_PART_ID, FRE_EXPENSE_TYPE_ID, FAS_INVOICE_TYPE_ID) AS A, FRE_PRICE AS P
+		WHERE A.FRE_PART_ID = P.FRE_PART_ID AND A.FRE_EXPENSE_TYPE_ID = P.FRE_EXPENSE_TYPE_ID 
+		AND A.FAS_INVOICE_TYPE_ID = P.FAS_INVOICE_TYPE_ID AND A.CREATE_TIME = P.CREATE_TIME
+		-->
+		
+		<!--  效率太低
+		FROM FRE_PRICE WHERE CREATE_TIME IN 
+		(SELECT MAX(CREATE_TIME) FROM FRE_PRICE GROUP BY FRE_PART_ID, FRE_EXPENSE_TYPE_ID, FAS_INVOICE_TYPE_ID)
+		
+	</select>
+	-->
+	<!-- 获取原始成本 -->
+	<select id="getOriginalPrice" parameterType="java.util.HashMap" resultMap="freightPriceMap">
+		select
+		<include refid="selectId" />
+		from FRE_PRICE where 
+		FRE_PART_ID=#{freightPartId} AND FRE_EXPENSE_TYPE_ID=#{freightExpenseTypeId} AND COUNT_UNIT=#{countUnit}
+		AND STATUS='O' ORDER BY CREATE_TIME ASC LIMIT 1
+		<!--  
+		select
+		<include refid="selectId" />
+		from FRE_PRICE where 
+		FRE_PART_ID=#{freightPartId} AND FRE_EXPENSE_TYPE_ID=#{freightExpenseTypeId} AND COUNT_UNIT=#{countUnit}
+		ORDER BY CREATE_TIME DESC LIMIT 1
+		-->
+	</select>
+
+	<update id="update" parameterType="FreightPrice">
+		update FRE_PRICE
+		<set>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="freightPact != null and freightPact != ''">
+				FRE_PACT_ID=#{freightPact.id},
+			</if>
+			<if test="freightExpenseType != null and freightExpenseType != ''">
+				FRE_EXPENSE_TYPE_ID=#{freightExpenseType.id},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="regular != null and regular != ''">
+				REGULAR=#{regular},
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				EXCHANGE_RATE=#{exchangeRate},
+			</if>
+			<if test="effectTime != null and effectTime != ''">
+				EFFECT_TIME=#{effectTime},
+			</if>
+			<if test="countUnit != null and countUnit != ''">
+				COUNT_UNIT=#{countUnit},
+			</if>
+			<if test="meterType != null and meterType != ''">
+				METER_TYPE=#{meterType},
+			</if>
+			<if test="freightPart != null and freightPart != ''">
+				FRE_PART_ID=#{freightPart.id},
+			</if>
+			<if test="period != null and period != ''">
+				PERIOD=#{period},
+			</if>
+			<!--  
+			<if test="actualCount != null and actualCount != ''">
+				ACTUAL_COUNT=#{actualCount},
+			</if>
+			-->
+				ACTUAL_COUNT=#{actualCount},
+			
+			<if test="fasInvoiceType != null and fasInvoiceType != ''">
+				FAS_INVOICE_TYPE_ID=#{fasInvoiceType.id},
+			</if>
+			<if test="currency != null and currency != ''">
+				CURRENCY=#{currency},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				MONEY_COUNT=#{moneyCount},
+			</if>
+			<if test="actual != null and actual != ''">
+				ACTUAL=#{actual},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="incomeOrExpense != null and incomeOrExpense != ''">
+				INCOME_OR_EXPENSE=#{incomeOrExpense},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

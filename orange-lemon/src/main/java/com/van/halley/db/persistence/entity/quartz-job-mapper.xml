@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="quartzjob">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		JOB_STATUS AS jobStatus,
+		MODIFY_TIME AS modifyTime,
+		CREATE_TIME AS createTime,
+		CONCURRENT AS concurrent,
+		ID AS id,
+		DESCN AS descn,
+		DISP_INX AS displayIndex,
+		STATUS AS status,
+		
+		START_TIME AS startTime,
+		END_TIME AS endTime,
+		
+		USER_ID,
+		QUARTZ_CRON_ID,
+		QUARTZ_TASK_ID
+	</sql>
+	
+	<resultMap id="quartzJobMap" type="com.van.halley.db.persistence.entity.QuartzJob">
+        <id property="id" column="ID" />
+        <result property="jobStatus" column="JOB_STATUS" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="concurrent" column="CONCURRENT" />
+        <result property="descn" column="DESCN" />
+        <result property="displayIndex" column="DISP_INX" />
+        <result property="status" column="STATUS" />
+        
+        <result property="startTime" column="START_TIME" />
+        <result property="endTime" column="END_TIME" />
+        
+        <association property="owner" column="USER_ID" select="user.getById" ></association>
+        <association property="quartzCron" column="QUARTZ_CRON_ID" select="quartzcron.getById" ></association>
+        <association property="quartzTask" column="QUARTZ_TASK_ID" select="quartztask.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="quartzJobMap">
+		select
+		<include refid="selectId" />
+		from QUARTZ_JOB
+		<where>
+			<if test="t.startTime != null and t.startTime != ''">
+				and START_TIME = #{t.startTime}
+			</if>
+			<if test="t.endTime != null and t.endTime != ''">
+				and END_TIME = #{t.endTime}
+			</if>
+			
+			
+			<if test="t.owner != null and t.owner != ''">
+				and USER_ID = #{t.owner.id}
+			</if>
+			<if test="t.jobStatus != null and t.jobStatus != ''">
+				and JOB_STATUS = #{t.jobStatus}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.concurrent != null and t.concurrent != ''">
+				and CONCURRENT = #{t.concurrent}
+			</if>
+			<if test="t.quartzCron != null and t.quartzCron != ''">
+				and QUARTZ_CRON_ID = #{t.quartzCron.id}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.quartzTask != null and t.quartzTask != ''">
+				and QUARTZ_TASK_ID = #{t.quartzTask.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="QuartzJob" resultMap="quartzJobMap">
+		select
+		<include refid="selectId" />
+		from QUARTZ_JOB
+		<where>
+			<if test="startTime != null and startTime != ''">
+				and START_TIME = #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and END_TIME = #{endTime}
+			</if>
+			<if test="owner != null and owner != ''">
+				and USER_ID = #{owner.id}
+			</if>
+			<if test="jobStatus != null and jobStatus != ''">
+				and JOB_STATUS = #{jobStatus}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="concurrent != null and concurrent != ''">
+				and CONCURRENT = #{concurrent}
+			</if>
+			<if test="quartzCron != null and quartzCron != ''">
+				and QUARTZ_CRON_ID = #{quartzCron.id}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="quartzTask != null and quartzTask != ''">
+				and QUARTZ_TASK_ID = #{quartzTask.id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="quartzJobMap">
+		select
+		<include refid="selectId" />
+		from QUARTZ_JOB
+	</select>
+
+	<select id="count" parameterType="QuartzJob" resultType="int">
+		select count(0) from QUARTZ_JOB
+		<where>
+			<if test="startTime != null and startTime != ''">
+				and START_TIME = #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and END_TIME = #{endTime}
+			</if>
+			<if test="owner != null and owner != ''">
+				and USER_ID = #{owner.id}
+			</if>
+			<if test="jobStatus != null and jobStatus != ''">
+				and JOB_STATUS = #{jobStatus}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="concurrent != null and concurrent != ''">
+				and CONCURRENT = #{concurrent}
+			</if>
+			<if test="quartzCron != null and quartzCron != ''">
+				and QUARTZ_CRON_ID = #{quartzCron.id}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="quartzTask != null and quartzTask != ''">
+				and QUARTZ_TASK_ID = #{quartzTask.id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="QuartzJob">
+		insert into QUARTZ_JOB(START_TIME,  END_TIME, USER_ID, JOB_STATUS, MODIFY_TIME, CREATE_TIME,
+		CONCURRENT, QUARTZ_CRON_ID, ID, QUARTZ_TASK_ID, DESCN, DISP_INX,
+		STATUS )values ( #{startTime}, #{endTime}, #{owner.id}, #{jobStatus}, #{modifyTime}, #{createTime},
+		#{concurrent}, #{quartzCron.id},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{quartzTask.id},
+		#{descn},
+		#{displayIndex},
+		#{status}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from QUARTZ_JOB where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="quartzJobMap">
+		select
+		<include refid="selectId" />
+		from QUARTZ_JOB where id=#{id}
+	</select>
+
+	<update id="update" parameterType="QuartzJob">
+		update QUARTZ_JOB
+		<set>
+			<if test="startTime != null and startTime != ''">
+				START_TIME = #{startTime},
+			</if>
+			<if test="endTime != null and endTime != ''">
+				END_TIME = #{endTime},
+			</if>
+			<if test="owner != null and owner != ''">
+				USER_ID=#{owner.id},
+			</if>
+			<if test="jobStatus != null and jobStatus != ''">
+				JOB_STATUS=#{jobStatus},
+			</if>
+			MODIFY_TIME=SYSDATE(),
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="concurrent != null and concurrent != ''">
+				CONCURRENT=#{concurrent},
+			</if>
+			<if test="quartzCron != null and quartzCron != ''">
+				QUARTZ_CRON_ID=#{quartzCron.id},
+			</if>
+			<if test="quartzTask != null and quartzTask != ''">
+				QUARTZ_TASK_ID=#{quartzTask.id},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+		</set>
+		WHERE ID=#{id}
+	</update>
+</mapper>

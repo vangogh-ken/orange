@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="motorcadefee">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		STATUS AS status,
+		EXCHANGE_RATE AS exchangeRate,
+		CURRENCY AS currency,
+		ID AS id,
+		DESCN AS descn,
+		MONEY_COUNT AS moneyCount,
+		FEE_TYPE AS feeType,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		INCOME_OR_EXPENSE AS incomeOrExpense,
+		
+		FAS_INVOICE_TYPE_ID,
+		MOTOR_DISPATCH_ID
+	</sql>
+
+	<resultMap id="motorcadeFeeMap" type="com.van.halley.db.persistence.entity.MotorcadeFee" >
+        <id property="id" column="ID" />
+        <result property="feeType" column="FEE_TYPE" />
+        <result property="incomeOrExpense" column="INCOME_OR_EXPENSE" />
+        <result property="currency" column="CURRENCY" />
+        <result property="exchangeRate" column="EXCHANGE_RATE" />
+        <result property="moneyCount" column="MONEY_COUNT" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="fasInvoiceType" column="FAS_INVOICE_TYPE_ID" select="fasinvoicetype.getById" ></association>
+        <association property="motorcadeDispatch" column="MOTOR_DISPATCH_ID" select="motorcadedispatch.getById" ></association>
+    </resultMap>
+    
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="motorcadeFeeMap">
+		select
+		<include refid="selectId" />
+		from MOTOR_FEE
+		<where>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.exchangeRate != null and t.exchangeRate != ''">
+				and EXCHANGE_RATE = #{t.exchangeRate}
+			</if>
+			<if test="t.currency != null and t.currency != ''">
+				and CURRENCY = #{t.currency}
+			</if>
+			<if test="t.fasInvoiceType != null and t.fasInvoiceType != ''">
+				and FAS_INVOICE_TYPE_ID = #{t.fasInvoiceType.id}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.motorcadeDispatch != null and t.motorcadeDispatch != ''">
+				and MOTOR_DISPATCH_ID = #{t.motorcadeDispatch.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.moneyCount != null and t.moneyCount != ''">
+				and MONEY_COUNT = #{t.moneyCount}
+			</if>
+			<if test="t.feeType != null and t.feeType != ''">
+				and FEE_TYPE = #{t.feeType}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.incomeOrExpense != null and t.incomeOrExpense != ''">
+				and INCOME_OR_EXPENSE = #{t.incomeOrExpense}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="MotorcadeFee"
+		resultMap="motorcadeFeeMap">
+		select
+		<include refid="selectId" />
+		from MOTOR_FEE
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				and EXCHANGE_RATE = #{exchangeRate}
+			</if>
+			<if test="currency != null and currency != ''">
+				and CURRENCY = #{currency}
+			</if>
+			<if test="fasInvoiceType != null and fasInvoiceType != ''">
+				and FAS_INVOICE_TYPE_ID = #{fasInvoiceType.id}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="motorcadeDispatch != null and motorcadeDispatch != ''">
+				and MOTOR_DISPATCH_ID = #{motorcadeDispatch.id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				and MONEY_COUNT = #{moneyCount}
+			</if>
+			<if test="feeType != null and feeType != ''">
+				and FEE_TYPE = #{feeType}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="incomeOrExpense != null and incomeOrExpense != ''">
+				and INCOME_OR_EXPENSE = #{incomeOrExpense}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="motorcadeFeeMap">
+		select
+		<include refid="selectId" />
+		from MOTOR_FEE
+	</select>
+
+	<select id="count" parameterType="MotorcadeFee" resultType="int">
+		select count(0) from MOTOR_FEE
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				and EXCHANGE_RATE = #{exchangeRate}
+			</if>
+			<if test="currency != null and currency != ''">
+				and CURRENCY = #{currency}
+			</if>
+			<if test="fasInvoiceType != null and fasInvoiceType != ''">
+				and FAS_INVOICE_TYPE_ID = #{fasInvoiceType.id}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="motorcadeDispatch != null and motorcadeDispatch != ''">
+				and MOTOR_DISPATCH_ID = #{motorcadeDispatch.id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				and MONEY_COUNT = #{moneyCount}
+			</if>
+			<if test="feeType != null and feeType != ''">
+				and FEE_TYPE = #{feeType}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="incomeOrExpense != null and incomeOrExpense != ''">
+				and INCOME_OR_EXPENSE = #{incomeOrExpense}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="MotorcadeFee">
+		insert into MOTOR_FEE( CREATE_TIME, STATUS, EXCHANGE_RATE, CURRENCY,
+		FAS_INVOICE_TYPE_ID, ID, MOTOR_DISPATCH_ID, DESCN, MONEY_COUNT,
+		FEE_TYPE, MODIFY_TIME, DISP_INX, INCOME_OR_EXPENSE )values (
+		#{createTime}, #{status}, #{exchangeRate}, #{currency},
+		#{fasInvoiceType.id},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{motorcadeDispatch.id},
+		#{descn},
+		#{moneyCount},
+		#{feeType},
+		#{modifyTime},
+		#{displayIndex},
+		#{incomeOrExpense}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from MOTOR_FEE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="motorcadeFeeMap">
+		select
+		<include refid="selectId" />
+		from MOTOR_FEE where id=#{id}
+	</select>
+	
+	<!-- 获取派单费用 -->
+	<select id="getByMotorcadeDispatchId" parameterType="String" resultMap="motorcadeFeeMap">
+		select
+		<include refid="selectId" />
+		from MOTOR_FEE where MOTOR_DISPATCH_ID=#{motorcadeDispatchId}
+	</select>
+
+	<update id="update" parameterType="MotorcadeFee">
+		update MOTOR_FEE
+		<set>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				EXCHANGE_RATE=#{exchangeRate},
+			</if>
+			<if test="currency != null and currency != ''">
+				CURRENCY=#{currency},
+			</if>
+			<if test="fasInvoiceType != null and fasInvoiceType != ''">
+				FAS_INVOICE_TYPE_ID=#{fasInvoiceType.id},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="motorcadeDispatch != null and motorcadeDispatch != ''">
+				MOTOR_DISPATCH_ID=#{motorcadeDispatch.id},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				MONEY_COUNT=#{moneyCount},
+			</if>
+			<if test="feeType != null and feeType != ''">
+				FEE_TYPE=#{feeType},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="incomeOrExpense != null and incomeOrExpense != ''">
+				INCOME_OR_EXPENSE=#{incomeOrExpense},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

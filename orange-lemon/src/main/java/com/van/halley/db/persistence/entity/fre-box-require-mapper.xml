@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freightboxrequire">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		BOX_SOURCE AS boxSource,
+		BOX_TYPE AS boxType,
+		BOX_COUNT AS boxCount,
+		BEGIN_STATION AS beginStation,
+		STATUS AS status,
+		BOX_CONDITION AS boxCondition,
+		BOX_BELONG AS boxBelong,
+		ARRIVE_STATION AS arriveStation,
+		ID AS id,
+		DESCN AS descn,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		BL_NO AS blNo,
+		
+		FRE_ORDER_ID
+	</sql>
+	
+	<resultMap id="freightBoxRequireMap" type="com.van.halley.db.persistence.entity.FreightBoxRequire">
+        <id property="id" column="ID" />
+        <result property="boxSource" column="BOX_SOURCE" />
+        <result property="boxType" column="BOX_TYPE" />
+        <result property="boxBelong" column="BOX_BELONG" />
+        <result property="boxCondition" column="BOX_CONDITION" />
+        <result property="boxCount" column="BOX_COUNT" />
+        <result property="beginStation" column="BEGIN_STATION" />
+        <result property="arriveStation" column="ARRIVE_STATION" />
+        <result property="blNo" column="BL_NO" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="freightOrder" column="FRE_ORDER_ID" select="freightorder.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="freightBoxRequireMap">
+		select
+		<include refid="selectId" />
+		from FRE_BOX_REQUIRE
+		<where>
+			<if test="t.blNo != null and t.blNo != ''">
+				and BL_NO = #{t.blNo}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.boxSource != null and t.boxSource != ''">
+				and BOX_SOURCE = #{t.boxSource}
+			</if>
+			<if test="t.boxType != null and t.boxType != ''">
+				and BOX_TYPE = #{t.boxType}
+			</if>
+			<if test="t.boxCount != null and t.boxCount != ''">
+				and BOX_COUNT = #{t.boxCount}
+			</if>
+			<if test="t.beginStation != null and t.beginStation != ''">
+				and BEGIN_STATION = #{t.beginStation}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.boxCondition != null and t.boxCondition != ''">
+				and BOX_CONDITION = #{t.boxCondition}
+			</if>
+			<if test="t.boxBelong != null and t.boxBelong != ''">
+				and BOX_BELONG = #{t.boxBelong}
+			</if>
+			<if test="t.arriveStation != null and t.arriveStation != ''">
+				and ARRIVE_STATION = #{t.arriveStation}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.freightOrder != null and t.freightOrder != ''">
+				and FRE_ORDER_ID = #{t.freightOrder.id}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FreightBoxRequire"
+		resultMap="freightBoxRequireMap">
+		select
+		<include refid="selectId" />
+		from FRE_BOX_REQUIRE
+		<where>
+			<if test="blNo != null and blNo != ''">
+				and BL_NO = #{blNo}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="boxSource != null and boxSource != ''">
+				and BOX_SOURCE = #{boxSource}
+			</if>
+			<if test="boxType != null and boxType != ''">
+				and BOX_TYPE = #{boxType}
+			</if>
+			<if test="boxCount != null and boxCount != ''">
+				and BOX_COUNT = #{boxCount}
+			</if>
+			<if test="beginStation != null and beginStation != ''">
+				and BEGIN_STATION = #{beginStation}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="boxCondition != null and boxCondition != ''">
+				and BOX_CONDITION = #{boxCondition}
+			</if>
+			<if test="boxBelong != null and boxBelong != ''">
+				and BOX_BELONG = #{boxBelong}
+			</if>
+			<if test="arriveStation != null and arriveStation != ''">
+				and ARRIVE_STATION = #{arriveStation}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="freightOrder != null and freightOrder != ''">
+				and FRE_ORDER_ID = #{freightOrder.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="freightBoxRequireMap">
+		select
+		<include refid="selectId" />
+		from FRE_BOX_REQUIRE
+	</select>
+
+	<select id="count" parameterType="FreightBoxRequire" resultType="int">
+		select count(0) from FRE_BOX_REQUIRE
+		<where>
+			<if test="blNo != null and blNo != ''">
+				and BL_NO = #{blNo}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="boxSource != null and boxSource != ''">
+				and BOX_SOURCE = #{boxSource}
+			</if>
+			<if test="boxType != null and boxType != ''">
+				and BOX_TYPE = #{boxType}
+			</if>
+			<if test="boxCount != null and boxCount != ''">
+				and BOX_COUNT = #{boxCount}
+			</if>
+			<if test="beginStation != null and beginStation != ''">
+				and BEGIN_STATION = #{beginStation}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="boxCondition != null and boxCondition != ''">
+				and BOX_CONDITION = #{boxCondition}
+			</if>
+			<if test="boxBelong != null and boxBelong != ''">
+				and BOX_BELONG = #{boxBelong}
+			</if>
+			<if test="arriveStation != null and arriveStation != ''">
+				and ARRIVE_STATION = #{arriveStation}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="freightOrder != null and freightOrder != ''">
+				and FRE_ORDER_ID = #{freightOrder.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FreightBoxRequire">
+		insert into FRE_BOX_REQUIRE( CREATE_TIME, BOX_SOURCE, BOX_TYPE,
+		BOX_COUNT, BEGIN_STATION, STATUS, BOX_CONDITION, BOX_BELONG,
+		ARRIVE_STATION, ID, DESCN, FRE_ORDER_ID, MODIFY_TIME, DISP_INX, BL_NO )values
+		( #{createTime}, #{boxSource}, #{boxType}, #{boxCount},
+		#{beginStation}, #{status}, #{boxCondition}, #{boxBelong},
+		#{arriveStation},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{descn},
+		#{freightOrder.id},
+		#{modifyTime},
+		#{displayIndex},
+		#{blNo}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FRE_BOX_REQUIRE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="freightBoxRequireMap">
+		select
+		<include refid="selectId" />
+		from FRE_BOX_REQUIRE where id=#{id}
+	</select>
+	
+	<!-- 获取订单相关的所有箱需 -->
+	<select id="getByFreightOrderId" parameterType="String" resultMap="freightBoxRequireMap">
+		select
+		<include refid="selectId" />
+		from FRE_BOX_REQUIRE where FRE_ORDER_ID=#{freightOrderId}
+	</select>
+
+	<update id="update" parameterType="FreightBoxRequire">
+		update FRE_BOX_REQUIRE
+		<set>
+			<if test="blNo != null and blNo != ''">
+				BL_NO = #{blNo},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="boxSource != null and boxSource != ''">
+				BOX_SOURCE=#{boxSource},
+			</if>
+			<if test="boxType != null and boxType != ''">
+				BOX_TYPE=#{boxType},
+			</if>
+			<if test="boxCount != null and boxCount != ''">
+				BOX_COUNT=#{boxCount},
+			</if>
+			<if test="beginStation != null and beginStation != ''">
+				BEGIN_STATION=#{beginStation},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="boxCondition != null and boxCondition != ''">
+				BOX_CONDITION=#{boxCondition},
+			</if>
+			<if test="boxBelong != null and boxBelong != ''">
+				BOX_BELONG=#{boxBelong},
+			</if>
+			<if test="arriveStation != null and arriveStation != ''">
+				ARRIVE_STATION=#{arriveStation},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="freightOrder != null and freightOrder != ''">
+				FRE_ORDER_ID=#{freightOrder.id},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

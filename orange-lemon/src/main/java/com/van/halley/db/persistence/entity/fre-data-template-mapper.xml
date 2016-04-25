@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freightdatatemplate">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		DESCN AS descn,
+		ID AS id,
+		CREATE_TIME AS createTime,
+		STATUS AS status,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		TEMPLATE_NAME AS templateName,
+		
+		FRE_ACTION_ID,
+		USER_ID
+	</sql>
+	
+	<resultMap id="freightDataTemplateMap" type="com.van.halley.db.persistence.entity.FreightDataTemplate">
+        <id property="id" column="ID" />
+        <result property="templateName" column="TEMPLATE_NAME" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="freightAction" column="FRE_ACTION_ID" select="freightaction.getById" ></association>
+        <association property="owner" column="USER_ID" select="user.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="freightDataTemplateMap">
+		select
+		<include refid="selectId" />
+		from FRE_DATA_TEMPLATE
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.freightAction != null and t.freightAction != ''">
+				and FRE_ACTION_ID = #{t.freightAction.id}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.owner != null and t.owner != ''">
+				and USER_ID = #{t.owner.id}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.templateName != null and t.templateName != ''">
+				and TEMPLATE_NAME = #{t.templateName}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FreightDataTemplate"
+		resultMap="freightDataTemplateMap">
+		select
+		<include refid="selectId" />
+		from FRE_DATA_TEMPLATE
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="freightAction != null and freightAction != ''">
+				and FRE_ACTION_ID = #{freightAction.id}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="owner != null and owner != ''">
+				and USER_ID = #{owner.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="templateName != null and templateName != ''">
+				and TEMPLATE_NAME = #{templateName}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="freightDataTemplateMap">
+		select
+		<include refid="selectId" />
+		from FRE_DATA_TEMPLATE
+	</select>
+
+	<select id="count" parameterType="FreightDataTemplate"
+		resultType="int">
+		select count(0) from FRE_DATA_TEMPLATE
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="freightAction != null and freightAction != ''">
+				and FRE_ACTION_ID = #{freightAction.id}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="owner != null and owner != ''">
+				and USER_ID = #{owner.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="templateName != null and templateName != ''">
+				and TEMPLATE_NAME = #{templateName}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FreightDataTemplate">
+		insert into FRE_DATA_TEMPLATE( DESCN, ID, CREATE_TIME, FRE_ACTION_ID,
+		STATUS, USER_ID, MODIFY_TIME, DISP_INX, TEMPLATE_NAME )values (
+		#{descn},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{createTime},
+		#{freightAction.id},
+		#{status},
+		#{owner.id},
+		#{modifyTime},
+		#{displayIndex},
+		#{templateName}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FRE_DATA_TEMPLATE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="freightDataTemplateMap">
+		select
+		<include refid="selectId" />
+		from FRE_DATA_TEMPLATE where id=#{id}
+	</select>
+	
+	<!-- 通过动作ID对数据模板进行过滤 -->
+	<select id="getByFreightActionId" parameterType="java.util.HashMap" resultMap="freightDataTemplateMap">
+		select
+		<include refid="selectId" />
+		from FRE_DATA_TEMPLATE where USER_ID=#{userId} 
+		<!--  
+		低效率
+		AND FRE_ACTION_ID IN(SELECT ID AS AAID FROM FRE_ACTION WHERE FRE_ACTION_TYPE_ID=(SELECT FRE_ACTION_TYPE_ID FROM FRE_ACTION WHERE ID=#{freightActionId}))
+		-->
+		AND EXISTS ( SELECT * FROM (SELECT ID AS AAID FROM FRE_ACTION WHERE FRE_ACTION_TYPE_ID=(SELECT FRE_ACTION_TYPE_ID FROM FRE_ACTION WHERE ID=#{freightActionId})) AS T WHERE T.AAID=FRE_ACTION_ID)
+	</select>
+
+	<update id="update" parameterType="FreightDataTemplate">
+		update FRE_DATA_TEMPLATE
+		<set>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="freightAction != null and freightAction != ''">
+				FRE_ACTION_ID=#{freightAction.id},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="owner != null and owner != ''">
+				USER_ID=#{owner.id},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="templateName != null and templateName != ''">
+				TEMPLATE_NAME=#{templateName},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freightpact">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		PART_A AS partA,
+		CREATE_TIME AS createTime,
+		PART_B AS partB,
+		DEFAULT_RATE AS defaultRate,
+		STATUS AS status,
+		EFFECT_DATE AS effectDate,
+		TRANSACTOR AS transactor,
+		DEFAULT_SETTLE_DAYS AS defaultSettleDays,
+		PACT_NUMBER AS pactNumber,
+		CURRENCY AS currency,
+		DESCN AS descn,
+		ID AS id,
+		SIGN_DATE AS signDate,
+		CUT_OFF_DATE AS cutOffDate,
+		MONEY_COUNT AS moneyCount,
+		PACT_CONTENT AS pactContent,
+		PAY_TYPE AS payType,
+		MODIFY_TIME AS modifyTime,
+		PACT_TYPE AS pactType,
+		DISP_INX AS displayIndex,
+		PACT_TITLE AS pactTitle,
+		INCOME_OR_EXPENSE AS incomeOrExpense,
+		PART_C AS partC
+	</sql>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultType="FreightPact">
+		select
+		<include refid="selectId" />
+		from FRE_PACT
+		<where>
+			<if test="t.partA != null and t.partA != ''">
+				and PART_A = #{t.partA}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.partB != null and t.partB != ''">
+				and PART_B = #{t.partB}
+			</if>
+			<if test="t.defaultRate != null and t.defaultRate != ''">
+				and DEFAULT_RATE = #{t.defaultRate}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.effectDate != null and t.effectDate != ''">
+				and EFFECT_DATE = #{t.effectDate}
+			</if>
+			<if test="t.transactor != null and t.transactor != ''">
+				and TRANSACTOR = #{t.transactor}
+			</if>
+			<if test="t.defaultSettleDays != null and t.defaultSettleDays != ''">
+				and DEFAULT_SETTLE_DAYS = #{t.defaultSettleDays}
+			</if>
+			<if test="t.pactNumber != null and t.pactNumber != ''">
+				and PACT_NUMBER = #{t.pactNumber}
+			</if>
+			<if test="t.currency != null and t.currency != ''">
+				and CURRENCY = #{t.currency}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.signDate != null and t.signDate != ''">
+				and SIGN_DATE = #{t.signDate}
+			</if>
+			<if test="t.cutOffDate != null and t.cutOffDate != ''">
+				and CUT_OFF_DATE = #{t.cutOffDate}
+			</if>
+			<if test="t.moneyCount != null and t.moneyCount != ''">
+				and MONEY_COUNT = #{t.moneyCount}
+			</if>
+			<if test="t.pactContent != null and t.pactContent != ''">
+				and PACT_CONTENT = #{t.pactContent}
+			</if>
+			<if test="t.payType != null and t.payType != ''">
+				and PAY_TYPE = #{t.payType}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.pactType != null and t.pactType != ''">
+				and PACT_TYPE = #{t.pactType}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.pactTitle != null and t.pactTitle != ''">
+				and PACT_TITLE = #{t.pactTitle}
+			</if>
+			<if test="t.incomeOrExpense != null and t.incomeOrExpense != ''">
+				and INCOME_OR_EXPENSE = #{t.incomeOrExpense}
+			</if>
+			<if test="t.partC != null and t.partC != ''">
+				and PART_C = #{t.partC}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FreightPact"
+		resultType="FreightPact">
+		select
+		<include refid="selectId" />
+		from FRE_PACT
+		<where>
+			<if test="partA != null and partA != ''">
+				and PART_A = #{partA}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="partB != null and partB != ''">
+				and PART_B = #{partB}
+			</if>
+			<if test="defaultRate != null and defaultRate != ''">
+				and DEFAULT_RATE = #{defaultRate}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="effectDate != null and effectDate != ''">
+				and EFFECT_DATE = #{effectDate}
+			</if>
+			<if test="transactor != null and transactor != ''">
+				and TRANSACTOR = #{transactor}
+			</if>
+			<if test="defaultSettleDays != null and defaultSettleDays != ''">
+				and DEFAULT_SETTLE_DAYS = #{defaultSettleDays}
+			</if>
+			<if test="pactNumber != null and pactNumber != ''">
+				and PACT_NUMBER = #{pactNumber}
+			</if>
+			<if test="currency != null and currency != ''">
+				and CURRENCY = #{currency}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="signDate != null and signDate != ''">
+				and SIGN_DATE = #{signDate}
+			</if>
+			<if test="cutOffDate != null and cutOffDate != ''">
+				and CUT_OFF_DATE = #{cutOffDate}
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				and MONEY_COUNT = #{moneyCount}
+			</if>
+			<if test="pactContent != null and pactContent != ''">
+				and PACT_CONTENT = #{pactContent}
+			</if>
+			<if test="payType != null and payType != ''">
+				and PAY_TYPE = #{payType}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="pactType != null and pactType != ''">
+				and PACT_TYPE = #{pactType}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="pactTitle != null and pactTitle != ''">
+				and PACT_TITLE = #{pactTitle}
+			</if>
+			<if test="incomeOrExpense != null and incomeOrExpense != ''">
+				and INCOME_OR_EXPENSE = #{incomeOrExpense}
+			</if>
+			<if test="partC != null and partC != ''">
+				and PART_C = #{partC}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="FreightPact">
+		select
+		<include refid="selectId" />
+		from FRE_PACT
+	</select>
+
+	<select id="count" parameterType="FreightPact" resultType="int">
+		select count(0) from FRE_PACT
+		<where>
+			<if test="partA != null and partA != ''">
+				and PART_A = #{partA}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="partB != null and partB != ''">
+				and PART_B = #{partB}
+			</if>
+			<if test="defaultRate != null and defaultRate != ''">
+				and DEFAULT_RATE = #{defaultRate}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="effectDate != null and effectDate != ''">
+				and EFFECT_DATE = #{effectDate}
+			</if>
+			<if test="transactor != null and transactor != ''">
+				and TRANSACTOR = #{transactor}
+			</if>
+			<if test="defaultSettleDays != null and defaultSettleDays != ''">
+				and DEFAULT_SETTLE_DAYS = #{defaultSettleDays}
+			</if>
+			<if test="pactNumber != null and pactNumber != ''">
+				and PACT_NUMBER = #{pactNumber}
+			</if>
+			<if test="currency != null and currency != ''">
+				and CURRENCY = #{currency}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="signDate != null and signDate != ''">
+				and SIGN_DATE = #{signDate}
+			</if>
+			<if test="cutOffDate != null and cutOffDate != ''">
+				and CUT_OFF_DATE = #{cutOffDate}
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				and MONEY_COUNT = #{moneyCount}
+			</if>
+			<if test="pactContent != null and pactContent != ''">
+				and PACT_CONTENT = #{pactContent}
+			</if>
+			<if test="payType != null and payType != ''">
+				and PAY_TYPE = #{payType}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="pactType != null and pactType != ''">
+				and PACT_TYPE = #{pactType}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="pactTitle != null and pactTitle != ''">
+				and PACT_TITLE = #{pactTitle}
+			</if>
+			<if test="incomeOrExpense != null and incomeOrExpense != ''">
+				and INCOME_OR_EXPENSE = #{incomeOrExpense}
+			</if>
+			<if test="partC != null and partC != ''">
+				and PART_C = #{partC}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FreightPact">
+		insert into FRE_PACT( PART_A, CREATE_TIME, PART_B, DEFAULT_RATE,
+		STATUS, EFFECT_DATE, TRANSACTOR, DEFAULT_SETTLE_DAYS, PACT_NUMBER,
+		CURRENCY, DESCN, ID, SIGN_DATE, CUT_OFF_DATE, MONEY_COUNT,
+		PACT_CONTENT, PAY_TYPE, MODIFY_TIME, PACT_TYPE, DISP_INX, PACT_TITLE,
+		INCOME_OR_EXPENSE, PART_C )values ( #{partA}, #{createTime}, #{partB},
+		#{defaultRate}, #{status}, #{effectDate}, #{transactor},
+		#{defaultSettleDays}, #{pactNumber}, #{currency}, #{descn},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{signDate},
+		#{cutOffDate},
+		#{moneyCount},
+		#{pactContent},
+		#{payType},
+		#{modifyTime},
+		#{pactType},
+		#{displayIndex},
+		#{pactTitle},
+		#{incomeOrExpense},
+		#{partC}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FRE_PACT where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="FreightPact">
+		select
+		<include refid="selectId" />
+		from FRE_PACT where id=#{id}
+	</select>
+
+	<update id="update" parameterType="FreightPact">
+		update FRE_PACT
+		<set>
+			<if test="partA != null and partA != ''">
+				PART_A=#{partA},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="partB != null and partB != ''">
+				PART_B=#{partB},
+			</if>
+			<if test="defaultRate != null and defaultRate != ''">
+				DEFAULT_RATE=#{defaultRate},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="effectDate != null and effectDate != ''">
+				EFFECT_DATE=#{effectDate},
+			</if>
+			<if test="transactor != null and transactor != ''">
+				TRANSACTOR=#{transactor},
+			</if>
+			<if test="defaultSettleDays != null and defaultSettleDays != ''">
+				DEFAULT_SETTLE_DAYS=#{defaultSettleDays},
+			</if>
+			<if test="pactNumber != null and pactNumber != ''">
+				PACT_NUMBER=#{pactNumber},
+			</if>
+			<if test="currency != null and currency != ''">
+				CURRENCY=#{currency},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="signDate != null and signDate != ''">
+				SIGN_DATE=#{signDate},
+			</if>
+			<if test="cutOffDate != null and cutOffDate != ''">
+				CUT_OFF_DATE=#{cutOffDate},
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				MONEY_COUNT=#{moneyCount},
+			</if>
+			<if test="pactContent != null and pactContent != ''">
+				PACT_CONTENT=#{pactContent},
+			</if>
+			<if test="payType != null and payType != ''">
+				PAY_TYPE=#{payType},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="pactType != null and pactType != ''">
+				PACT_TYPE=#{pactType},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="pactTitle != null and pactTitle != ''">
+				PACT_TITLE=#{pactTitle},
+			</if>
+			<if test="incomeOrExpense != null and incomeOrExpense != ''">
+				INCOME_OR_EXPENSE=#{incomeOrExpense},
+			</if>
+			<if test="partC != null and partC != ''">
+				PART_C=#{partC},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

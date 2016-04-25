@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="workcalrule">
+	<sql id="selectId">
+		ID AS id,
+		WORK_DATE AS workDate,
+		STATUS AS status,
+		NAME AS name,
+		YEAR AS year,
+		WEEK AS week,
+		TYPE_ID
+	</sql>
+	
+	<resultMap id="workCalRuleResult" type="com.van.halley.db.persistence.entity.WorkCalRule">
+        <id property="id" column="ID" />
+        <result property="workDate" column="WORK_DATE" />
+        <result property="status" column="STATUS" />
+        <result property="name" column="NAME" />
+        <result property="year" column="YEAR" />
+        <result property="week" column="WEEK" />
+        
+        <association property="workCalType" column="TYPE_ID" select="workcaltype.getById" ></association>
+    </resultMap>
+    
+	<select id="query" parameterType="java.util.HashMap" resultMap="workCalRuleResult">
+		select
+		<include refid="selectId" />
+		from OUT_WORK_CAL_RULE
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.workDate != null and t.workDate != ''">
+				and WORK_DATE = #{t.workDate}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.name != null and t.name != ''">
+				and NAME = #{t.name}
+			</if>
+			<if test="t.workCalType != null and t.workCalType != ''">
+				and TYPE_ID = #{t.workCalType.id}
+			</if>
+			<if test="t.year != null and t.year != ''">
+				and YEAR = #{t.year}
+			</if>
+			<if test="t.week != null and t.week != ''">
+				and WEEK = #{t.week}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="WorkCalRule"
+		resultMap="workCalRuleResult">
+		select
+		<include refid="selectId" />
+		from OUT_WORK_CAL_RULE
+		<where>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="workDate != null and workDate != ''">
+				and WORK_DATE = #{workDate}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="name != null and name != ''">
+				and NAME = #{name}
+			</if>
+			<if test="workCalType != null and workCalType != ''">
+				and TYPE_ID = #{workCalType.id}
+			</if>
+			<if test="year != null and year != ''">
+				and YEAR = #{year}
+			</if>
+			<if test="week != null and week != ''">
+				and WEEK = #{week}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="workCalRuleResult">
+		select
+		<include refid="selectId" />
+		from OUT_WORK_CAL_RULE
+	</select>
+	<select id="count" parameterType="WorkCalRule" resultType="int">
+		select count(0) from OUT_WORK_CAL_RULE
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.workDate != null and t.workDate != ''">
+				and WORK_DATE = #{t.workDate}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.name != null and t.name != ''">
+				and NAME = #{t.name}
+			</if>
+			<if test="t.workCalType != null and t.workCalType != ''">
+				and TYPE_ID = #{t.workCalType.id}
+			</if>
+			<if test="t.year != null and t.year != ''">
+				and YEAR = #{t.year}
+			</if>
+			<if test="t.week != null and t.week != ''">
+				and WEEK = #{t.week}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="add" parameterType="WorkCalRule"> insert into OUT_WORK_CAL_RULE(
+		ID, WORK_DATE, STATUS, NAME, TYPE_ID, YEAR, WEEK )values (UUID(),
+		#{workDate}, #{status}, #{name}, #{workCalType.id}, #{year}, #{week} )
+	</insert>
+	
+	<delete id="deleteById" parameterType="String">
+		delete from OUT_WORK_CAL_RULE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="workCalRuleResult">
+		select
+		<include refid="selectId" />
+		from OUT_WORK_CAL_RULE where id=#{id}
+	</select>
+
+	<update id="update" parameterType="WorkCalRule">
+		update OUT_WORK_CAL_RULE
+		<set>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="workDate != null and workDate != ''">
+				WORK_DATE=#{workDate},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="name != null and name != ''">
+				NAME=#{name},
+			</if>
+			<if test="workCalType != null and workCalType != ''">
+				TYPE_ID=#{workCalType.id},
+			</if>
+			<if test="year != null and year != ''">
+				YEAR=#{year},
+			</if>
+			<if test="week != null and week != ''">
+				WEEK=#{week},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

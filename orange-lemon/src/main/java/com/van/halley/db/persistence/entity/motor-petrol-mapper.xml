@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="motorcadepetrol">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		
+		STATUS AS status,
+		EXCHANGE_RATE AS exchangeRate,
+		LUBRICATE_CAPACITY AS lubricateCapacity,
+		CURRENCY AS currency,
+		FUEL_CONSUMPTION_MONTH AS fuelConsumptionMonth,
+		ID AS id,
+		DESCN AS descn,
+		MONEY_COUNT AS moneyCount,
+		LUBRICATE_TIME AS lubricateTime,
+		FUEL_CONSUMPTION_LAST AS fuelConsumptionLast,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		KILOMITER_COUNT AS kilometerCount,
+		
+		MOTOR_DRIVER_ID,
+		FAS_INVOICE_TYPE_ID,
+		MOTOR_TRUCK_ID
+	</sql>
+
+	<resultMap id="motorcadePetrolMap" type="com.van.halley.db.persistence.entity.MotorcadePetrol" >
+        <id property="id" column="ID" />
+        <result property="lubricateCapacity" column="LUBRICATE_CAPACITY" />
+        <result property="lubricateTime" column="LUBRICATE_TIME" />
+        <result property="currency" column="CURRENCY" />
+        <result property="exchangeRate" column="EXCHANGE_RATE" />
+        <result property="moneyCount" column="MONEY_COUNT" />
+        <result property="kilometerCount" column="KILOMITER_COUNT" />
+        <result property="fuelConsumptionLast" column="FUEL_CONSUMPTION_LAST" />
+        <result property="fuelConsumptionMonth" column="FUEL_CONSUMPTION_MONTH" />
+        
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="fasInvoiceType" column="FAS_INVOICE_TYPE_ID" select="fasinvoicetype.getById" ></association>
+        <association property="motorcadeTruck" column="MOTOR_TRUCK_ID" select="motorcadetruck.getById" ></association>
+        <association property="motorcadeDriver" column="MOTOR_DRIVER_ID" select="motorcadedriver.getById" ></association>
+    </resultMap>
+    
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="motorcadePetrolMap">
+		select
+		<include refid="selectId" />
+		from MOTOR_PETROL
+		<where>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.motorcadeDriver != null and t.motorcadeDriver != ''">
+				and MOTOR_DRIVER_ID = #{t.motorcadeDriver.id}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.exchangeRate != null and t.exchangeRate != ''">
+				and EXCHANGE_RATE = #{t.exchangeRate}
+			</if>
+			<if test="t.lubricateCapacity != null and t.lubricateCapacity != ''">
+				and LUBRICATE_CAPACITY = #{t.lubricateCapacity}
+			</if>
+			<if test="t.currency != null and t.currency != ''">
+				and CURRENCY = #{t.currency}
+			</if>
+			<if test="t.fasInvoiceType != null and t.fasInvoiceType != ''">
+				and FAS_INVOICE_TYPE_ID = #{t.fasInvoiceType.id}
+			</if>
+			<if test="t.fuelConsumptionMonth != null and t.fuelConsumptionMonth != ''">
+				and FUEL_CONSUMPTION_MONTH = #{t.fuelConsumptionMonth}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.moneyCount != null and t.moneyCount != ''">
+				and MONEY_COUNT = #{t.moneyCount}
+			</if>
+			<if test="t.lubricateTime != null and t.lubricateTime != ''">
+				and LUBRICATE_TIME = #{t.lubricateTime}
+			</if>
+			<if test="t.motorcadeTruck != null and t.motorcadeTruck != ''">
+				and MOTOR_TRUCK_ID = #{t.motorcadeTruck.id}
+			</if>
+			<if test="t.fuelConsumptionLast != null and t.fuelConsumptionLast != ''">
+				and FUEL_CONSUMPTION_LAST = #{t.fuelConsumptionLast}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.kilometerCount != null and t.kilometerCount != ''">
+				and KILOMITER_COUNT = #{t.kilometerCount}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="MotorcadePetrol"
+		resultMap="motorcadePetrolMap">
+		select
+		<include refid="selectId" />
+		from MOTOR_PETROL
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="motorcadeDriver != null and motorcadeDriver != ''">
+				and MOTOR_DRIVER_ID = #{motorcadeDriver.id}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				and EXCHANGE_RATE = #{exchangeRate}
+			</if>
+			<if test="lubricateCapacity != null and lubricateCapacity != ''">
+				and LUBRICATE_CAPACITY = #{lubricateCapacity}
+			</if>
+			<if test="currency != null and currency != ''">
+				and CURRENCY = #{currency}
+			</if>
+			<if test="fasInvoiceType != null and fasInvoiceType != ''">
+				and FAS_INVOICE_TYPE_ID = #{fasInvoiceType.id}
+			</if>
+			<if test="fuelConsumptionMonth != null and fuelConsumptionMonth != ''">
+				and FUEL_CONSUMPTION_MONTH = #{fuelConsumptionMonth}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				and MONEY_COUNT = #{moneyCount}
+			</if>
+			<if test="lubricateTime != null and lubricateTime != ''">
+				and LUBRICATE_TIME = #{lubricateTime}
+			</if>
+			<if test="motorcadeTruck != null and motorcadeTruck != ''">
+				and MOTOR_TRUCK_ID = #{motorcadeTruck.id}
+			</if>
+			<if test="fuelConsumptionLast != null and fuelConsumptionLast != ''">
+				and FUEL_CONSUMPTION_LAST = #{fuelConsumptionLast}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="kilometerCount != null and kilometerCount != ''">
+				and KILOMITER_COUNT = #{kilometerCount}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="motorcadePetrolMap">
+		select
+		<include refid="selectId" />
+		from MOTOR_PETROL
+	</select>
+
+	<select id="count" parameterType="MotorcadePetrol" resultType="int">
+		select count(0) from MOTOR_PETROL
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="motorcadeDriver != null and motorcadeDriver != ''">
+				and MOTOR_DRIVER_ID = #{motorcadeDriver.id}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				and EXCHANGE_RATE = #{exchangeRate}
+			</if>
+			<if test="lubricateCapacity != null and lubricateCapacity != ''">
+				and LUBRICATE_CAPACITY = #{lubricateCapacity}
+			</if>
+			<if test="currency != null and currency != ''">
+				and CURRENCY = #{currency}
+			</if>
+			<if test="fasInvoiceType != null and fasInvoiceType != ''">
+				and FAS_INVOICE_TYPE_ID = #{fasInvoiceType.id}
+			</if>
+			<if test="fuelConsumptionMonth != null and fuelConsumptionMonth != ''">
+				and FUEL_CONSUMPTION_MONTH = #{fuelConsumptionMonth}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				and MONEY_COUNT = #{moneyCount}
+			</if>
+			<if test="lubricateTime != null and lubricateTime != ''">
+				and LUBRICATE_TIME = #{lubricateTime}
+			</if>
+			<if test="motorcadeTruck != null and motorcadeTruck != ''">
+				and MOTOR_TRUCK_ID = #{motorcadeTruck.id}
+			</if>
+			<if test="fuelConsumptionLast != null and fuelConsumptionLast != ''">
+				and FUEL_CONSUMPTION_LAST = #{fuelConsumptionLast}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="kilometerCount != null and kilometerCount != ''">
+				and KILOMITER_COUNT = #{kilometerCount}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="MotorcadePetrol">
+		insert into MOTOR_PETROL( CREATE_TIME, MOTOR_DRIVER_ID, STATUS,
+		EXCHANGE_RATE, LUBRICATE_CAPACITY, CURRENCY, FAS_INVOICE_TYPE_ID,
+		FUEL_CONSUMPTION_MONTH, ID, DESCN, MONEY_COUNT, LUBRICATE_TIME,
+		MOTOR_TRUCK_ID, FUEL_CONSUMPTION_LAST, MODIFY_TIME, DISP_INX,
+		KILOMITER_COUNT )values ( #{createTime}, #{motorcadeDriver.id},
+		#{status}, #{exchangeRate}, #{lubricateCapacity}, #{currency},
+		#{fasInvoiceType.id}, #{fuelConsumptionMonth},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{descn},
+		#{moneyCount},
+		#{lubricateTime},
+		#{motorcadeTruck.id},
+		#{fuelConsumptionLast},
+		#{modifyTime},
+		#{displayIndex},
+		#{kilometerCount}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from MOTOR_PETROL where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="motorcadePetrolMap">
+		select
+		<include refid="selectId" />
+		from MOTOR_PETROL where id=#{id}
+	</select>
+
+	<select id="getFuelConsumption" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<!--  
+		SELECT fuelConsumptionLast, fuelConsumptionMonth  FROM (SELECT 
+		(CASE WHEN MAX(L.KILOMITER_COUNT) = MIN(L.KILOMITER_COUNT)  THEN 0 
+		ELSE 
+		(SELECT LUBRICATE_CAPACITY FROM MOTOR_PETROL WHERE LUBRICATE_TIME = #{lubricateTime} AND MOTOR_TRUCK_ID=#{motorcadeTruckId} ORDER BY LUBRICATE_TIME DESC LIMIT 1)/((MAX(L.KILOMITER_COUNT) - MIN(L.KILOMITER_COUNT))/100) END) 
+		AS fuelConsumptionLast FROM 
+		(SELECT * FROM MOTOR_PETROL WHERE LUBRICATE_TIME &lt;= #{lubricateTime} AND MOTOR_TRUCK_ID=#{motorcadeTruckId} ORDER BY LUBRICATE_TIME DESC LIMIT 2) AS L) AS T1
+		
+		LEFT JOIN
+		
+		(SELECT 
+		(CASE WHEN MAX(KILOMITER_COUNT) = MIN(KILOMITER_COUNT) THEN SUM(LUBRICATE_CAPACITY)/(MAX(KILOMITER_COUNT)/100)
+		ELSE SUM(LUBRICATE_CAPACITY)/((MAX(KILOMITER_COUNT) - MIN(KILOMITER_COUNT))/100) END) AS fuelConsumptionMonth 
+		FROM MOTOR_PETROL WHERE MONTH(LUBRICATE_TIME)= MONTH(#{lubricateTime}) AND YEAR(LUBRICATE_TIME)= YEAR(#{lubricateTime} AND MOTOR_TRUCK_ID=#{motorcadeTruckId}) AS T2
+		ON 1=1
+		-->
+		<!--  
+		SELECT fuelConsumptionLast, fuelConsumptionMonth  FROM (SELECT 
+		(CASE WHEN MAX(L.KILOMITER_COUNT) = MIN(L.KILOMITER_COUNT)  THEN 0 
+		ELSE 
+		(SELECT LUBRICATE_CAPACITY FROM MOTOR_PETROL WHERE LUBRICATE_TIME = #{lubricateTime} AND MOTOR_TRUCK_ID=#{motorcadeTruckId} ORDER BY LUBRICATE_TIME DESC LIMIT 1)/((MAX(L.KILOMITER_COUNT) - MIN(L.KILOMITER_COUNT))/100) END) 
+		AS fuelConsumptionLast FROM 
+		(SELECT * FROM MOTOR_PETROL WHERE LUBRICATE_TIME &lt;= #{lubricateTime} AND MOTOR_TRUCK_ID=#{motorcadeTruckId} ORDER BY LUBRICATE_TIME DESC LIMIT 2) AS L) AS T1
+		
+		LEFT JOIN
+		
+		(SELECT 
+		(CASE WHEN MAX(KILOMITER_COUNT) = MIN(KILOMITER_COUNT) THEN SUM(LUBRICATE_CAPACITY)/(MAX(KILOMITER_COUNT)/100)
+		ELSE SUM(LUBRICATE_CAPACITY)/((MAX(KILOMITER_COUNT) - (SELECT (CASE WHEN COUNT(1)=0 THEN 0 ELSE MAX(KILOMITER_COUNT) END) FROM MOTOR_PETROL 
+		WHERE MONTH(LUBRICATE_TIME)= MONTH(SELECT DATE_ADD(#{lubricateTime}, INTERVAL -1 MONTH)) 
+		AND YEAR(LUBRICATE_TIME)= YEAR(SELECT DATE_ADD(#{lubricateTime}, INTERVAL -1 MONTH)) 
+		AND MOTOR_TRUCK_ID=#{motorcadeTruckId} ORDER BY LUBRICATE_TIME DESC LIMIT 1))/100) END) AS fuelConsumptionMonth 
+		FROM MOTOR_PETROL WHERE MONTH(LUBRICATE_TIME)= MONTH(#{lubricateTime}) AND YEAR(LUBRICATE_TIME)= YEAR(#{lubricateTime} AND MOTOR_TRUCK_ID=#{motorcadeTruckId}) AS T2
+		ON 1=1
+		-->
+		
+		SELECT 
+		fuelConsumptionLast, fuelConsumptionMonth  
+		FROM (SELECT    
+		(CASE WHEN MAX(L.KILOMITER_COUNT) = MIN(L.KILOMITER_COUNT)  THEN 0    ELSE    (SELECT LUBRICATE_CAPACITY FROM MOTOR_PETROL 
+		WHERE LUBRICATE_TIME = #{lubricateTime} 
+		AND MOTOR_TRUCK_ID=#{motorcadeTruckId} ORDER BY LUBRICATE_TIME DESC LIMIT 1)/((MAX(L.KILOMITER_COUNT) - MIN(L.KILOMITER_COUNT))/100) END)    
+		AS fuelConsumptionLast FROM    
+		(SELECT * FROM MOTOR_PETROL 
+		WHERE LUBRICATE_TIME &lt;= #{lubricateTime} AND MOTOR_TRUCK_ID=#{motorcadeTruckId} ORDER BY LUBRICATE_TIME DESC LIMIT 2) AS L) AS T1      
+		LEFT JOIN      
+		(SELECT    (   CASE WHEN 1=2 THEN 0   ELSE 
+		SUM(LUBRICATE_CAPACITY)/
+		(((MAX(KILOMITER_COUNT) - (SELECT    CASE WHEN COUNT(1)=0 THEN 0    
+		ELSE KILOMITER_COUNT END    
+		FROM MOTOR_PETROL    WHERE MOTOR_TRUCK_ID=#{motorcadeTruckId}   
+		AND LUBRICATE_TIME &lt;  
+		(SELECT MIN(LUBRICATE_TIME) FROM MOTOR_PETROL    
+		WHERE MONTH(LUBRICATE_TIME)= MONTH(#{lubricateTime})    
+		AND YEAR(LUBRICATE_TIME)= YEAR(#{lubricateTime})    
+		AND MOTOR_TRUCK_ID=#{motorcadeTruckId})
+		ORDER BY LUBRICATE_TIME DESC LIMIT 1)
+		
+		))/100) END)    AS fuelConsumptionMonth    
+		FROM MOTOR_PETROL    
+		WHERE MONTH(LUBRICATE_TIME)= MONTH(#{lubricateTime})    
+		AND YEAR(LUBRICATE_TIME)= YEAR(#{lubricateTime})    
+		AND MOTOR_TRUCK_ID=#{motorcadeTruckId} ) AS T2   ON 1=1
+		
+	</select>	
+
+	<update id="update" parameterType="MotorcadePetrol">
+		update MOTOR_PETROL
+		<set>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="motorcadeDriver != null and motorcadeDriver != ''">
+				MOTOR_DRIVER_ID=#{motorcadeDriver.id},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="exchangeRate != null and exchangeRate != ''">
+				EXCHANGE_RATE=#{exchangeRate},
+			</if>
+			<if test="lubricateCapacity != null and lubricateCapacity != ''">
+				LUBRICATE_CAPACITY=#{lubricateCapacity},
+			</if>
+			<if test="currency != null and currency != ''">
+				CURRENCY=#{currency},
+			</if>
+			<if test="fasInvoiceType != null and fasInvoiceType != ''">
+				FAS_INVOICE_TYPE_ID=#{fasInvoiceType.id},
+			</if>
+			<if test="fuelConsumptionMonth != null and fuelConsumptionMonth != ''">
+				FUEL_CONSUMPTION_MONTH=#{fuelConsumptionMonth},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				MONEY_COUNT=#{moneyCount},
+			</if>
+			<if test="lubricateTime != null and lubricateTime != ''">
+				LUBRICATE_TIME=#{lubricateTime},
+			</if>
+			<if test="motorcadeTruck != null and motorcadeTruck != ''">
+				MOTOR_TRUCK_ID=#{motorcadeTruck.id},
+			</if>
+			<if test="fuelConsumptionLast != null and fuelConsumptionLast != ''">
+				FUEL_CONSUMPTION_LAST=#{fuelConsumptionLast},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="kilometerCount != null and kilometerCount != ''">
+				KILOMITER_COUNT=#{kilometerCount},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

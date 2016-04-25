@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bpmconfignotice">
+	<sql id="selectId">
+		ID AS id,
+		TYPE AS type,
+		RECEIVER AS receiver,
+		DUE_DATE AS dueDate,
+		TEMPLATE_ID,
+		NODE_ID
+	</sql>
+	
+	<resultMap id="bpmConfigNoticeResult" type="com.van.halley.db.persistence.entity.BpmConfigNotice">
+        <id property="id" column="ID" />
+        <result property="type" column="TYPE" />
+        <result property="receiver" column="RECEIVER" />
+        <result property="dueDate" column="DUE_DATE" />
+        
+        <association property="bpmMailTemplate" column="TEMPLATE_ID" select="bpmmailtemplate.getById"></association>
+        <association property="bpmConfigNode" column="NODE_ID" select="bpmconfignode.getById"></association>
+    </resultMap>
+    
+	<select id="query" parameterType="java.util.HashMap" resultMap="bpmConfigNoticeResult" >
+		select
+		<include refid="selectId" />
+		from BPM_CONF_NOTICE
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and id = #{t.id}
+			</if>
+			<if test="t.bpmMailTemplate != null and t.bpmMailTemplate != ''">
+				and TEMPLATE_ID  = #{t.bpmMailTemplate.id}
+			</if>
+			<if test="t.bpmConfigNode != null and t.bpmConfigNode != ''">
+				and NODE_ID  = #{t.bpmConfigNode.id}
+			</if>
+			<if test="t.type != null and t.type != ''">
+				and type = #{t.type}
+			</if>
+			<if test="t.receiver != null and t.receiver != ''">
+				and receiver = #{t.receiver}
+			</if>
+			<if test="t.dueDate != null and t.dueDate != ''">
+				and DUE_DATE  = #{t.dueDate}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+	<select id="queryForList" parameterType="BpmConfigNotice" resultMap="bpmConfigNoticeResult">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_NOTICE
+		<where>
+			<if test="id != null and id != ''">
+				and id = #{id}
+			</if>
+			<if test="bpmMailTemplate != null and bpmMailTemplate != ''">
+				and TEMPLATE_ID  = #{bpmMailTemplate.id}
+			</if>
+			<if test="bpmConfigNode != null and bpmConfigNode != ''">
+				and NODE_ID  = #{bpmConfigNode.id}
+			</if>
+			<if test="type != null and type != ''">
+				and type = #{type}
+			</if>
+			<if test="receiver != null and receiver != ''">
+				and receiver = #{receiver}
+			</if>
+			<if test="dueDate != null and dueDate != ''">
+				and DUE_DATE  = #{dueDate}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getAll" resultMap="bpmConfigNoticeResult">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_NOTICE
+	</select>
+	
+	<select id="count" parameterType="BpmConfigNotice" resultType="int">
+		select count(0) from BPM_CONF_NOTICE
+		<where>
+			<if test="t.id != null and t.id != ''">
+				and id = #{t.id}
+			</if>
+			<if test="t.bpmMailTemplate != null and t.bpmMailTemplate != ''">
+				and TEMPLATE_ID  = #{t.bpmMailTemplate.id}
+			</if>
+			<if test="t.bpmConfigNode != null and t.bpmConfigNode != ''">
+				and NODE_ID  = #{t.bpmConfigNode.id}
+			</if>
+			<if test="t.type != null and t.type != ''">
+				and type = #{t.type}
+			</if>
+			<if test="t.receiver != null and t.receiver != ''">
+				and receiver = #{t.receiver}
+			</if>
+			<if test="t.dueDate != null and t.dueDate != ''">
+				and DUE_DATE  = #{t.dueDate}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="add" parameterType="BpmConfigNotice"> 
+		insert into BPM_CONF_NOTICE(id, TEMPLATE_ID , NODE_ID , type, receiver, DUE_DATE)
+		values (UUID(), #{bpmMailTemplate.id}, #{bpmConfigNode.id}, #{type}, #{receiver}, #{dueDate})
+	</insert>
+	
+	<delete id="deleteById" parameterType="String"> 
+		delete from BPM_CONF_NOTICE where id=#{id}
+	</delete>
+	
+	<select id="getById" parameterType="String" resultMap="bpmConfigNoticeResult">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_NOTICE where id=#{id}
+	</select>
+	
+	<select id="getByNodeId" parameterType="String" resultMap="bpmConfigNoticeResult">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_NOTICE where NODE_ID=#{nodeId}
+	</select>
+	
+	<update id="update" parameterType="BpmConfigNotice">
+		update BPM_CONF_NOTICE
+		<set>
+			<if test="id != null and id != ''">
+				id=#{id},
+			</if>
+			<if test="bpmMailTemplate != null and bpmMailTemplate != ''">
+				TEMPLATE_ID =#{bpmMailTemplate.id},
+			</if>
+			<if test="bpmConfigNode != null and bpmConfigNode != ''">
+				NODE_ID =#{bpmConfigNode.id},
+			</if>
+			<if test="type != null and type != ''">
+				type=#{type},
+			</if>
+			<if test="receiver != null and receiver != ''">
+				receiver=#{receiver},
+			</if>
+			<if test="dueDate != null and dueDate != ''">
+				DUE_DATE =#{dueDate},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

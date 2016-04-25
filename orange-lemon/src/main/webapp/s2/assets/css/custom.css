@@ -1,0 +1,19 @@
+.page-footer-fixed .footer{
+	background-color:#000;
+}
+
+div.uploader input{
+	cursor: pointer;
+}
+
+.icon-62:HOVER{
+	border: 2px solid rgb(0, 92, 87);
+}
+
+.footer .footer-tools .go-top{
+	background-color: rgb(0, 92, 87);
+}
+
+.footer .footer-tools .go-top i{
+	color: #e02222;
+}

@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="resource">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		ICON AS icon,
+		CREATE_TIME AS createTime,
+		STATUS AS status,
+		ENABLE AS enable,
+		RESOURCE_URL AS resourceUrl,
+		RESOURCE_TYPE AS resourceType,
+		ID AS id,
+		DESCN AS descn,
+		RESOURCE_KEY AS resourceKey,
+		MODIFY_TIME AS modifyTime,
+		RESOURCE_NAME AS resourceName,
+		DISP_INX AS displayIndex,
+		PARENT_ID
+	</sql>
+
+	<resultMap id="resourceMap" type="com.van.halley.db.persistence.entity.Resource">
+        <id property="id" column="ID" />
+        <result property="resourceName" column="RESOURCE_NAME" />
+        <result property="resourceKey" column="RESOURCE_KEY" />
+        <result property="resourceUrl" column="RESOURCE_URL" />
+        <result property="resourceType" column="RESOURCE_TYPE" />
+        <result property="enable" column="ENABLE" />
+        <result property="icon" column="ICON" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="parentResource" column="PARENT_ID" select="resource.getById" ></association>
+    </resultMap>
+    
+	<select id="query" parameterType="java.util.HashMap" resultMap="resourceMap" useCache="false">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_RESOURCE
+		<where>
+			<if test="t.icon != null and t.icon != ''">
+				and ICON = #{t.icon}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.enable != null and t.enable != ''">
+				and ENABLE = #{t.enable}
+			</if>
+			<if test="t.resourceUrl != null and t.resourceUrl != ''">
+				and RESOURCE_URL = #{t.resourceUrl}
+			</if>
+			<if test="t.resourceType != null and t.resourceType != ''">
+				and RESOURCE_TYPE = #{t.resourceType}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.parentResource != null and t.parentResource != ''">
+				and PARENT_ID = #{t.parentResource.id}
+			</if>
+			<if test="t.resourceKey != null and t.resourceKey != ''">
+				and RESOURCE_KEY = #{t.resourceKey}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.resourceName != null and t.resourceName != ''">
+				and RESOURCE_NAME = #{t.resourceName}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="Resource" resultMap="resourceMap">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_RESOURCE
+		<where>
+			<if test="icon != null and icon != ''">
+				and ICON = #{icon}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="enable != null and enable != ''">
+				and ENABLE = #{enable}
+			</if>
+			<if test="resourceUrl != null and resourceUrl != ''">
+				and RESOURCE_URL = #{resourceUrl}
+			</if>
+			<if test="resourceType != null and resourceType != ''">
+				and RESOURCE_TYPE = #{resourceType}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="parentResource != null and parentResource != ''">
+				and PARENT_ID = #{parentResource.id}
+			</if>
+			<if test="resourceKey != null and resourceKey != ''">
+				and RESOURCE_KEY = #{resourceKey}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="resourceName != null and resourceName != ''">
+				and RESOURCE_NAME = #{resourceName}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			
+			ORDER BY DISP_INX ASC
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="resourceMap">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_RESOURCE ORDER BY DISP_INX ASC
+	</select>
+
+	<select id="count" parameterType="Resource" resultType="int">
+		select count(0) from SYS_AUTH_RESOURCE
+		<where>
+			<if test="t.icon != null and t.icon != ''">
+				and ICON = #{t.icon}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.enable != null and t.enable != ''">
+				and ENABLE = #{t.enable}
+			</if>
+			<if test="t.resourceUrl != null and t.resourceUrl != ''">
+				and RESOURCE_URL = #{t.resourceUrl}
+			</if>
+			<if test="t.resourceType != null and t.resourceType != ''">
+				and RESOURCE_TYPE = #{t.resourceType}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.parentResource != null and t.parentResource != ''">
+				and PARENT_ID = #{t.parentResource.id}
+			</if>
+			<if test="t.resourceKey != null and t.resourceKey != ''">
+				and RESOURCE_KEY = #{t.resourceKey}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.resourceName != null and t.resourceName != ''">
+				and RESOURCE_NAME = #{t.resourceName}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="Resource">
+		insert into SYS_AUTH_RESOURCE( ICON, CREATE_TIME, STATUS, ENABLE,
+		RESOURCE_URL, RESOURCE_TYPE, ID, DESCN, PARENT_ID, RESOURCE_KEY,
+		MODIFY_TIME, RESOURCE_NAME, DISP_INX )values ( #{icon}, #{createTime},
+		#{status}, #{enable}, #{resourceUrl}, #{resourceType},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{descn},
+		#{parentResource.id},
+		#{resourceKey},
+		#{modifyTime},
+		#{resourceName},
+		#{displayIndex}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from SYS_AUTH_RESOURCE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="resourceMap">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_RESOURCE where id=#{id}
+	</select>
+
+	<update id="update" parameterType="Resource">
+		update SYS_AUTH_RESOURCE
+		<set>
+			<if test="icon != null and icon != ''">
+				ICON=#{icon},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="enable != null and enable != ''">
+				ENABLE=#{enable},
+			</if>
+			<if test="resourceUrl != null and resourceUrl != ''">
+				RESOURCE_URL=#{resourceUrl},
+			</if>
+			<if test="resourceType != null and resourceType != ''">
+				RESOURCE_TYPE=#{resourceType},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="parentResource != null and parentResource != ''">
+				PARENT_ID=#{parentResource.id},
+			</if>
+			<if test="resourceKey != null and resourceKey != ''">
+				RESOURCE_KEY=#{resourceKey},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="resourceName != null and resourceName != ''">
+				RESOURCE_NAME=#{resourceName},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<!-- 获取该用户的权限-->
+	<select id="getResourceByUserId" parameterType="String" resultMap="resourceMap">
+		SELECT 
+		<include refid="selectId" />
+		FROM SYS_AUTH_RESOURCE WHERE ID in( SELECT DISTINCT RESOURCE_ID FROM
+		SYS_AUTH_ROLE_RESOURCE WHERE ROLE_ID in( SELECT ROLE_ID FROM SYS_AUTH_USER_ROLE WHERE USER_ID=#{userId}))
+		AND ENABLE='T'
+		ORDER BY DISP_INX ASC
+	</select>
+	
+	<!-- 获取该角色的权限-->
+	<select id="getResourceByRoleId" parameterType="String" resultMap="resourceMap" flushCache="true">
+		SELECT 
+		<include refid="selectId" />
+		FROM SYS_AUTH_RESOURCE WHERE ID in(SELECT DISTINCT RESOURCE_ID FROM SYS_AUTH_ROLE_RESOURCE WHERE ROLE_ID = #{roleId})
+		AND ENABLE='T'
+		ORDER BY DISP_INX ASC
+	</select>
+	
+	<!-- 获取该职位的权限-->
+	<select id="getResourceByPositionId" parameterType="String" resultMap="resourceMap" flushCache="true">
+		<!--  效率低
+		SELECT 
+		<include refid="selectId" />
+		FROM SYS_AUTH_RESOURCE WHERE ID IN(SELECT DISTINCT RESOURCE_ID FROM SYS_AUTH_ROLE_RESOURCE 
+		WHERE ROLE_ID IN(SELECT ROLE_ID FROM SYS_AUTH_POSITION_ROLE WHERE POSITION_ID=#{positionId}))
+		ORDER BY DISP_INX ASC
+		-->
+		<!-- 
+		SELECT 
+		<include refid="selectId" />
+		 FROM (SELECT * FROM (SELECT DISTINCT RESOURCE_ID FROM SYS_AUTH_ROLE_RESOURCE WHERE ROLE_ID IN(SELECT ROLE_ID FROM SYS_AUTH_POSITION_ROLE WHERE POSITION_ID=#{positionId})) AS I 
+		 LEFT JOIN
+		 SYS_AUTH_RESOURCE AS R ON I.RESOURCE_ID=R.ID
+		 WHERE R.ENABLE='T'
+		 ORDER BY DISP_INX ASC) AS T WHERE T.ID IS NOT NULL
+		  -->
+		 <!--  
+		SELECT 
+		<include refid="selectId" />
+		FROM SYS_AUTH_RESOURCE AS R
+		WHERE 
+		R.ENABLE='T'
+		AND EXISTS (SELECT 1 FROM SYS_AUTH_ROLE_RESOURCE AS RR WHERE R.ID = RR.RESOURCE_ID 
+		AND EXISTS (SELECT 1 FROM SYS_AUTH_POSITION_ROLE AS PR WHERE PR.POSITION_ID=#{positionId} AND PR.ROLE_ID=RR.ROLE_ID))
+		ORDER BY DISP_INX ASC
+		-->
+		
+		SELECT 
+		<include refid="selectId" />
+		 FROM 
+		SYS_AUTH_RESOURCE AS R WHERE EXISTS ( SELECT 1 FROM 
+		(SELECT RESOURCE_ID FROM SYS_AUTH_ROLE_RESOURCE AS RR WHERE EXISTS
+		(SELECT 1 FROM (SELECT ROLE_ID FROM SYS_AUTH_POSITION_ROLE AS PR WHERE PR.POSITION_ID=#{positionId}) AS T WHERE RR.ROLE_ID=T.ROLE_ID)) AS T WHERE R.ID=T.RESOURCE_ID )
+		AND R.ENABLE='T'
+		ORDER BY DISP_INX ASC
+	</select>
+	
+	<!-- 角色与资源之间的关联
+	<select id="getByRoleId" parameterType="String" resultType="Role">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_RESOURCE where id in (SELECT RESOURCE_ID FROM SYS_AUTH_ROLE_RESOURCE where ROLE_ID=#{roleId})
+	</select>
+	-->
+	<insert id="addRoleResource" parameterType="RoleResource">
+		insert into SYS_AUTH_ROLE_RESOURCE(ID, ROLE_ID, RESOURCE_ID) values (UUID(), #{roleId}, #{resourceId})
+	</insert>
+	<delete id="deleteRoleResource" parameterType="String">
+		delete from SYS_AUTH_ROLE_RESOURCE where ROLE_ID=#{roleId}
+	</delete>
+</mapper>

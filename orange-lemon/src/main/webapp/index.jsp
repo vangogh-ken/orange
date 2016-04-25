@@ -1,11 +1,4 @@
-<%@page language="java" pageEncoding="UTF-8" %>
-<%@page import="com.van.orange.T" %>
-<html>
-<%
-T t = new T();
-t.t();
-%>
-<body>
-<h2>Hello World2!</h2>
-</body>
-</html>
+<%@page language="java" contentType="text/html;charset=UTF-8"%>
+<%@include file="/common/taglibs.jsp"%>
+<%response.sendRedirect(request.getContextPath() + "/base/dashboard.do");%>
+

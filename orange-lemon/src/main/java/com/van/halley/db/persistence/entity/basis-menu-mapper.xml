@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="basismenu"> 
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<sql id="selectId"> 
+CREATE_TIME AS createTime,
+CONF_PRIME_URL AS configPrimeUrl,
+BASIS_APPLICATION_ID AS basisApplication,
+STATUS AS status,
+ENABLE AS enable,
+ID AS id,
+DESCN AS descn,
+PARENT_ID AS parentResource,
+CONF_MANAGE_URL AS configManageUrl,
+BASIS_SUBSTANCE_TYPE_ID AS basisSubstanceType,
+MODIFY_TIME AS modifyTime,
+DISP_INX AS displayIndex,
+MENU_NAME AS menuName,
+MENU_KEY AS menuKey
+</sql>
+
+<select id="query" parameterType="java.util.HashMap" useCache="false" resultType="BasisMenu" > 
+select 
+<include refid="selectId" /> 
+from BASIS_MENU
+<where>
+<if test="t.createTime != null and t.createTime != ''">
+and CREATE_TIME = #{t.createTime}
+</if>
+<if test="t.configPrimeUrl != null and t.configPrimeUrl != ''">
+and CONF_PRIME_URL = #{t.configPrimeUrl}
+</if>
+<if test="t.basisApplication != null and t.basisApplication != ''">
+and BASIS_APPLICATION_ID = #{t.basisApplication}
+</if>
+<if test="t.status != null and t.status != ''">
+and STATUS = #{t.status}
+</if>
+<if test="t.enable != null and t.enable != ''">
+and ENABLE = #{t.enable}
+</if>
+<if test="t.id != null and t.id != ''">
+and ID = #{t.id}
+</if>
+<if test="t.descn != null and t.descn != ''">
+and DESCN = #{t.descn}
+</if>
+<if test="t.parentResource != null and t.parentResource != ''">
+and PARENT_ID = #{t.parentResource}
+</if>
+<if test="t.configManageUrl != null and t.configManageUrl != ''">
+and CONF_MANAGE_URL = #{t.configManageUrl}
+</if>
+<if test="t.basisSubstanceType != null and t.basisSubstanceType != ''">
+and BASIS_SUBSTANCE_TYPE_ID = #{t.basisSubstanceType}
+</if>
+<if test="t.modifyTime != null and t.modifyTime != ''">
+and MODIFY_TIME = #{t.modifyTime}
+</if>
+<if test="t.displayIndex != null and t.displayIndex != ''">
+and DISP_INX = #{t.displayIndex}
+</if>
+<if test="t.menuName != null and t.menuName != ''">
+and MENU_NAME = #{t.menuName}
+</if>
+<if test="t.menuKey != null and t.menuKey != ''">
+and MENU_KEY = #{t.menuKey}
+</if>
+<if test="pageView.filterText != null and pageView.filterText != ''">
+and ${pageView.filterText}
+</if>
+</where>
+<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+<if test="pageView.orderBy != null and pageView.orderBy != ''">
+order by ${pageView.orderBy}
+<if test="pageView.order != null and pageView.order != ''">
+<if test="pageView.order == 'ASC'">
+ASC
+</if>
+<if test="pageView.order == 'DESC'">
+DESC
+</if>
+</if>
+</if>
+</select>
+
+<select id="queryForList" parameterType="BasisMenu" resultType="BasisMenu">
+select
+<include refid="selectId" />
+from BASIS_MENU
+<where>
+<if test="createTime != null and createTime != ''">
+and CREATE_TIME = #{createTime}
+</if>
+<if test="configPrimeUrl != null and configPrimeUrl != ''">
+and CONF_PRIME_URL = #{configPrimeUrl}
+</if>
+<if test="basisApplication != null and basisApplication != ''">
+and BASIS_APPLICATION_ID = #{basisApplication}
+</if>
+<if test="status != null and status != ''">
+and STATUS = #{status}
+</if>
+<if test="enable != null and enable != ''">
+and ENABLE = #{enable}
+</if>
+<if test="id != null and id != ''">
+and ID = #{id}
+</if>
+<if test="descn != null and descn != ''">
+and DESCN = #{descn}
+</if>
+<if test="parentResource != null and parentResource != ''">
+and PARENT_ID = #{parentResource}
+</if>
+<if test="configManageUrl != null and configManageUrl != ''">
+and CONF_MANAGE_URL = #{configManageUrl}
+</if>
+<if test="basisSubstanceType != null and basisSubstanceType != ''">
+and BASIS_SUBSTANCE_TYPE_ID = #{basisSubstanceType}
+</if>
+<if test="modifyTime != null and modifyTime != ''">
+and MODIFY_TIME = #{modifyTime}
+</if>
+<if test="displayIndex != null and displayIndex != ''">
+and DISP_INX = #{displayIndex}
+</if>
+<if test="menuName != null and menuName != ''">
+and MENU_NAME = #{menuName}
+</if>
+<if test="menuKey != null and menuKey != ''">
+and MENU_KEY = #{menuKey}
+</if>
+</where>
+</select>
+
+<select id="getAll" resultType="BasisMenu">
+select
+<include refid="selectId" />
+from BASIS_MENU
+</select>
+
+<select id="count" parameterType="BasisMenu" resultType="int">
+select count(0) from BASIS_MENU
+<where>
+<if test="createTime != null and createTime != ''">
+and CREATE_TIME = #{createTime}
+</if>
+<if test="configPrimeUrl != null and configPrimeUrl != ''">
+and CONF_PRIME_URL = #{configPrimeUrl}
+</if>
+<if test="basisApplication != null and basisApplication != ''">
+and BASIS_APPLICATION_ID = #{basisApplication}
+</if>
+<if test="status != null and status != ''">
+and STATUS = #{status}
+</if>
+<if test="enable != null and enable != ''">
+and ENABLE = #{enable}
+</if>
+<if test="id != null and id != ''">
+and ID = #{id}
+</if>
+<if test="descn != null and descn != ''">
+and DESCN = #{descn}
+</if>
+<if test="parentResource != null and parentResource != ''">
+and PARENT_ID = #{parentResource}
+</if>
+<if test="configManageUrl != null and configManageUrl != ''">
+and CONF_MANAGE_URL = #{configManageUrl}
+</if>
+<if test="basisSubstanceType != null and basisSubstanceType != ''">
+and BASIS_SUBSTANCE_TYPE_ID = #{basisSubstanceType}
+</if>
+<if test="modifyTime != null and modifyTime != ''">
+and MODIFY_TIME = #{modifyTime}
+</if>
+<if test="displayIndex != null and displayIndex != ''">
+and DISP_INX = #{displayIndex}
+</if>
+<if test="menuName != null and menuName != ''">
+and MENU_NAME = #{menuName}
+</if>
+<if test="menuKey != null and menuKey != ''">
+and MENU_KEY = #{menuKey}
+</if>
+</where>
+</select>
+
+<insert id="add" parameterType="BasisMenu">
+insert into BASIS_MENU(
+CREATE_TIME,
+CONF_PRIME_URL,
+BASIS_APPLICATION_ID,
+STATUS,
+ENABLE,
+ID,
+DESCN,
+PARENT_ID,
+CONF_MANAGE_URL,
+BASIS_SUBSTANCE_TYPE_ID,
+MODIFY_TIME,
+DISP_INX,
+MENU_NAME,
+MENU_KEY
+)values (
+#{createTime},
+#{configPrimeUrl},
+#{basisApplication},
+#{status},
+#{enable},
+<if test="id != null and id != '' ">
+#{id},
+</if>
+<if test="id == null or id == '' ">
+UUID(),
+</if>
+#{descn},
+#{parentResource},
+#{configManageUrl},
+#{basisSubstanceType},
+#{modifyTime},
+#{displayIndex},
+#{menuName},
+#{menuKey}
+)
+</insert>
+
+<delete id="deleteById" parameterType="String">
+delete from BASIS_MENU where id=#{id}
+</delete>
+
+<select id="getById" parameterType="String" resultType="BasisMenu">
+select <include refid="selectId" />
+from BASIS_MENU where id=#{id}
+</select>
+
+<update id="update" parameterType="BasisMenu">
+update BASIS_MENU
+<set>
+<if test="createTime != null and createTime != ''">
+CREATE_TIME=#{createTime},
+</if>
+<if test="configPrimeUrl != null and configPrimeUrl != ''">
+CONF_PRIME_URL=#{configPrimeUrl},
+</if>
+<if test="basisApplication != null and basisApplication != ''">
+BASIS_APPLICATION_ID=#{basisApplication},
+</if>
+<if test="status != null and status != ''">
+STATUS=#{status},
+</if>
+<if test="enable != null and enable != ''">
+ENABLE=#{enable},
+</if>
+<if test="id != null and id != ''">
+ID=#{id},
+</if>
+<if test="descn != null and descn != ''">
+DESCN=#{descn},
+</if>
+<if test="parentResource != null and parentResource != ''">
+PARENT_ID=#{parentResource},
+</if>
+<if test="configManageUrl != null and configManageUrl != ''">
+CONF_MANAGE_URL=#{configManageUrl},
+</if>
+<if test="basisSubstanceType != null and basisSubstanceType != ''">
+BASIS_SUBSTANCE_TYPE_ID=#{basisSubstanceType},
+</if>
+<if test="modifyTime != null and modifyTime != ''">
+MODIFY_TIME=#{modifyTime},
+</if>
+<if test="displayIndex != null and displayIndex != ''">
+DISP_INX=#{displayIndex},
+</if>
+<if test="menuName != null and menuName != ''">
+MENU_NAME=#{menuName},
+</if>
+<if test="menuKey != null and menuKey != ''">
+MENU_KEY=#{menuKey},
+</if>
+</set>
+where id=#{id}
+</update>
+</mapper>

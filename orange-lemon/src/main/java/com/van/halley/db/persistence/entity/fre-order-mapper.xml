@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freightorder">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		THIRD_TYPE AS thirdType,
+		CREATE_TIME AS createTime,
+		CARGO_OWNER AS cargoOwner,
+		ORDER_SCOPE AS orderScope,
+		DELEGATE_CONTACT AS delegateContact,
+		CARGO_NAME AS cargoName,
+		ID AS id,
+		SECOND_TYPE AS secondType,
+		CREATOR_USER_ID AS creatorUserId,
+		PLACE_TIME AS placeTime,
+		EXPENSE_STATUS AS expenseStatus,
+		FINISH_TIME AS finishTime,
+		DEFICIT_REASON AS deficitReason,
+		COMMISSION AS commission,
+		MODIFY_TIME AS modifyTime,
+		CARGO_WEIGHT AS cargoWeight,
+		ORG_ENTITY_ID AS orgEntityId,
+		DISP_INX AS displayIndex,
+		FIRST_TYPE AS firstType,
+		CARGO_CAPACITY AS cargoCapacity,
+		FOURTH_TYPE AS fourthType,
+		STATUS AS status,
+		CARGO_AMOUNT AS cargoAmount,
+		ORDER_STATUS AS orderStatus,
+		MANIPULATOR AS manipulator,
+		DESCN AS descn,
+		SALESMAN AS salesman,
+		DELEGATE_PART AS delegatePart,
+		ORDER_NUMBER AS orderNumber,
+		DELEGATE_NUMBER AS delegateNumber,
+		CREATOR_USER_ID
+	</sql>
+	
+	<resultMap id="freightOrderMap" type="com.van.halley.db.persistence.entity.FreightOrder" >
+        <id property="id" column="ID" />
+        <result property="orderNumber" column="ORDER_NUMBER" />
+        <result property="salesman" column="SALESMAN" />
+        <result property="manipulator" column="MANIPULATOR" />
+        <result property="orderScope" column="ORDER_SCOPE" />
+        
+        <result property="firstType" column="FIRST_TYPE" />
+        <result property="secondType" column="SECOND_TYPE" />
+        <result property="thirdType" column="THIRD_TYPE" />
+        <result property="fourthType" column="FOURTH_TYPE" />
+        <result property="delegatePart" column="DELEGATE_PART" />
+        <result property="delegateNumber" column="DELEGATE_NUMBER" />
+        <result property="delegateContact" column="DELEGATE_CONTACT" />
+        <result property="commission" column="COMMISSION" />
+        <result property="cargoOwner" column="CARGO_OWNER" />
+        <result property="cargoName" column="CARGO_NAME" />
+        <result property="cargoAmount" column="CARGO_AMOUNT" />
+        <result property="cargoWeight" column="CARGO_WEIGHT" />
+        <result property="cargoCapacity" column="CARGO_CAPACITY" />
+        <result property="placeTime" column="PLACE_TIME" />
+        <result property="finishTime" column="FINISH_TIME" />
+        <result property="deficitReason" column="DEFICIT_REASON" />
+        <result property="expenseStatus" column="EXPENSE_STATUS" />
+        <result property="orderStatus" column="ORDER_STATUS" />
+        <result property="creatorUserId" column="CREATOR_USER_ID" />
+        <result property="orgEntityId" column="ORG_ENTITY_ID" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+       <association property="receptionist" column="CREATOR_USER_ID" select="user.getById" ></association>
+       <collection property="freightExpenses" column="ID" select="freightexpense.getByFreightOrderId"></collection>
+       <collection property="freightBoxRequires" column="ID" select="freightboxrequire.getByFreightOrderId"></collection>
+    </resultMap>
+	
+
+	<select id="query" parameterType="java.util.HashMap" resultMap="freightOrderMap" useCache="false">
+		select
+		<include refid="selectId" />
+		from FRE_ORDER
+		<where>
+			<if test="t.thirdType != null and t.thirdType != ''">
+				and THIRD_TYPE = #{t.thirdType}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.cargoOwner != null and t.cargoOwner != ''">
+				and CARGO_OWNER = #{t.cargoOwner}
+			</if>
+			<if test="t.orderScope != null and t.orderScope != ''">
+				and ORDER_SCOPE = #{t.orderScope}
+			</if>
+			<if test="t.delegateContact != null and t.delegateContact != ''">
+				and DELEGATE_CONTACT = #{t.delegateContact}
+			</if>
+			<if test="t.cargoName != null and t.cargoName != ''">
+				AND CARGO_NAME LIKE CONCAT('%','${t.cargoName}','%' ) 
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.secondType != null and t.secondType != ''">
+				and SECOND_TYPE = #{t.secondType}
+			</if>
+			<if test="t.creatorUserId != null and t.creatorUserId != ''">
+				and CREATOR_USER_ID = #{t.creatorUserId}
+			</if>
+			<if test="t.placeTime != null and t.placeTime != ''">
+				and PLACE_TIME = #{t.placeTime}
+			</if>
+			<if test="t.expenseStatus != null and t.expenseStatus != ''">
+				and EXPENSE_STATUS = #{t.expenseStatus}
+			</if>
+			<if test="t.finishTime != null and t.finishTime != ''">
+				and FINISH_TIME = #{t.finishTime}
+			</if>
+			<if test="t.deficitReason != null and t.deficitReason != ''">
+				and DEFICIT_REASON = #{t.deficitReason}
+			</if>
+			<if test="t.commission != null and t.commission != ''">
+				and COMMISSION = #{t.commission}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.cargoWeight != null and t.cargoWeight != ''">
+				and CARGO_WEIGHT = #{t.cargoWeight}
+			</if>
+			<if test="t.orgEntityId != null and t.orgEntityId != ''">
+				and ORG_ENTITY_ID = #{t.orgEntityId}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.firstType != null and t.firstType != ''">
+				and FIRST_TYPE = #{t.firstType}
+			</if>
+			<if test="t.cargoCapacity != null and t.cargoCapacity != ''">
+				and CARGO_CAPACITY = #{t.cargoCapacity}
+			</if>
+			<if test="t.fourthType != null and t.fourthType != ''">
+				and FOURTH_TYPE = #{t.fourthType}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.cargoAmount != null and t.cargoAmount != ''">
+				and CARGO_AMOUNT = #{t.cargoAmount}
+			</if>
+			<if test="t.orderStatus != null and t.orderStatus != ''">
+				and ORDER_STATUS = #{t.orderStatus}
+			</if>
+			<if test="t.manipulator != null and t.manipulator != ''">
+				and MANIPULATOR = #{t.manipulator}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.salesman != null and t.salesman != ''">
+				and SALESMAN = #{t.salesman}
+			</if>
+			<if test="t.delegatePart != null and t.delegatePart != ''">
+				AND DELEGATE_PART LIKE CONCAT('%','${t.delegatePart}','%' ) 
+			</if>
+			<if test="t.orderNumber != null and t.orderNumber != ''">
+				AND ORDER_NUMBER LIKE CONCAT('%','${t.orderNumber}','%' ) 
+			</if>
+			<if test="t.delegateNumber != null and t.delegateNumber != ''">
+				and DELEGATE_NUMBER = #{t.delegateNumber}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+		<if test="pageView.orderBy == null or pageView.orderBy == ''">
+			ORDER BY CREATE_TIME DESC
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FreightOrder"
+		resultMap="freightOrderMap">
+		select
+		<include refid="selectId" />
+		from FRE_ORDER
+		<where>
+			<if test="thirdType != null and thirdType != ''">
+				and THIRD_TYPE = #{thirdType}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="cargoOwner != null and cargoOwner != ''">
+				and CARGO_OWNER = #{cargoOwner}
+			</if>
+			<if test="orderScope != null and orderScope != ''">
+				and ORDER_SCOPE = #{orderScope}
+			</if>
+			<if test="delegateContact != null and delegateContact != ''">
+				and DELEGATE_CONTACT = #{delegateContact}
+			</if>
+			<if test="cargoName != null and cargoName != ''">
+				and CARGO_NAME = #{cargoName}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="secondType != null and secondType != ''">
+				and SECOND_TYPE = #{secondType}
+			</if>
+			<if test="creatorUserId != null and creatorUserId != ''">
+				and CREATOR_USER_ID = #{creatorUserId}
+			</if>
+			<if test="placeTime != null and placeTime != ''">
+				and PLACE_TIME = #{placeTime}
+			</if>
+			<if test="expenseStatus != null and expenseStatus != ''">
+				and EXPENSE_STATUS = #{expenseStatus}
+			</if>
+			<if test="finishTime != null and finishTime != ''">
+				and FINISH_TIME = #{finishTime}
+			</if>
+			<if test="deficitReason != null and deficitReason != ''">
+				and DEFICIT_REASON = #{deficitReason}
+			</if>
+			<if test="commission != null and commission != ''">
+				and COMMISSION = #{commission}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="cargoWeight != null and cargoWeight != ''">
+				and CARGO_WEIGHT = #{cargoWeight}
+			</if>
+			<if test="orgEntityId != null and orgEntityId != ''">
+				and ORG_ENTITY_ID = #{orgEntityId}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="firstType != null and firstType != ''">
+				and FIRST_TYPE = #{firstType}
+			</if>
+			<if test="cargoCapacity != null and cargoCapacity != ''">
+				and CARGO_CAPACITY = #{cargoCapacity}
+			</if>
+			<if test="fourthType != null and fourthType != ''">
+				and FOURTH_TYPE = #{fourthType}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="cargoAmount != null and cargoAmount != ''">
+				and CARGO_AMOUNT = #{cargoAmount}
+			</if>
+			<if test="orderStatus != null and orderStatus != ''">
+				and ORDER_STATUS = #{orderStatus}
+			</if>
+			<if test="manipulator != null and manipulator != ''">
+				and MANIPULATOR = #{manipulator}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="salesman != null and salesman != ''">
+				and SALESMAN = #{salesman}
+			</if>
+			<if test="delegatePart != null and delegatePart != ''">
+				and DELEGATE_PART = #{delegatePart}
+			</if>
+			<if test="orderNumber != null and orderNumber != ''">
+				and ORDER_NUMBER = #{orderNumber}
+			</if>
+			<if test="delegateNumber != null and delegateNumber != ''">
+				and DELEGATE_NUMBER = #{delegateNumber}
+			</if>
+		</where>
+		
+		ORDER BY ORDER_NUMBER DESC
+	</select>
+
+	<select id="getAll" resultMap="freightOrderMap">
+		select
+		<include refid="selectId" />
+		from FRE_ORDER 
+		
+		ORDER BY ORDER_NUMBER ASC
+	</select>
+
+	<select id="count" parameterType="FreightOrder" resultType="int">
+		select count(0) from FRE_ORDER
+		<where>
+			<if test="thirdType != null and thirdType != ''">
+				and THIRD_TYPE = #{thirdType}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="cargoOwner != null and cargoOwner != ''">
+				and CARGO_OWNER = #{cargoOwner}
+			</if>
+			<if test="orderScope != null and orderScope != ''">
+				and ORDER_SCOPE = #{orderScope}
+			</if>
+			<if test="delegateContact != null and delegateContact != ''">
+				and DELEGATE_CONTACT = #{delegateContact}
+			</if>
+			<if test="cargoName != null and cargoName != ''">
+				and CARGO_NAME = #{cargoName}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="secondType != null and secondType != ''">
+				and SECOND_TYPE = #{secondType}
+			</if>
+			<if test="creatorUserId != null and creatorUserId != ''">
+				and CREATOR_USER_ID = #{creatorUserId}
+			</if>
+			<if test="placeTime != null and placeTime != ''">
+				and PLACE_TIME = #{placeTime}
+			</if>
+			<if test="expenseStatus != null and expenseStatus != ''">
+				and EXPENSE_STATUS = #{expenseStatus}
+			</if>
+			<if test="finishTime != null and finishTime != ''">
+				and FINISH_TIME = #{finishTime}
+			</if>
+			<if test="deficitReason != null and deficitReason != ''">
+				and DEFICIT_REASON = #{deficitReason}
+			</if>
+			<if test="commission != null and commission != ''">
+				and COMMISSION = #{commission}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="cargoWeight != null and cargoWeight != ''">
+				and CARGO_WEIGHT = #{cargoWeight}
+			</if>
+			<if test="orgEntityId != null and orgEntityId != ''">
+				and ORG_ENTITY_ID = #{orgEntityId}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="firstType != null and firstType != ''">
+				and FIRST_TYPE = #{firstType}
+			</if>
+			<if test="cargoCapacity != null and cargoCapacity != ''">
+				and CARGO_CAPACITY = #{cargoCapacity}
+			</if>
+			<if test="fourthType != null and fourthType != ''">
+				and FOURTH_TYPE = #{fourthType}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="cargoAmount != null and cargoAmount != ''">
+				and CARGO_AMOUNT = #{cargoAmount}
+			</if>
+			<if test="orderStatus != null and orderStatus != ''">
+				and ORDER_STATUS = #{orderStatus}
+			</if>
+			<if test="manipulator != null and manipulator != ''">
+				and MANIPULATOR = #{manipulator}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="salesman != null and salesman != ''">
+				and SALESMAN = #{salesman}
+			</if>
+			<if test="delegatePart != null and delegatePart != ''">
+				and DELEGATE_PART = #{delegatePart}
+			</if>
+			<if test="orderNumber != null and orderNumber != ''">
+				and ORDER_NUMBER = #{orderNumber}
+			</if>
+			<if test="delegateNumber != null and delegateNumber != ''">
+				and DELEGATE_NUMBER = #{delegateNumber}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FreightOrder">
+		insert into FRE_ORDER( THIRD_TYPE, CREATE_TIME, CARGO_OWNER,
+		ORDER_SCOPE, DELEGATE_CONTACT, CARGO_NAME, ID, SECOND_TYPE,
+		CREATOR_USER_ID, PLACE_TIME, EXPENSE_STATUS, FINISH_TIME,
+		DEFICIT_REASON, COMMISSION, MODIFY_TIME, CARGO_WEIGHT,
+		ORG_ENTITY_ID, DISP_INX, FIRST_TYPE, CARGO_CAPACITY, FOURTH_TYPE,
+		STATUS, CARGO_AMOUNT, ORDER_STATUS, MANIPULATOR, DESCN, SALESMAN,
+		DELEGATE_PART, ORDER_NUMBER, DELEGATE_NUMBER )values ( #{thirdType},
+		#{createTime}, #{cargoOwner}, #{orderScope}, #{delegateContact},
+		#{cargoName},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{secondType},
+		#{creatorUserId},
+		#{placeTime},
+		#{expenseStatus},
+		#{finishTime},
+		#{deficitReason},
+		#{commission},
+		#{modifyTime},
+		#{cargoWeight},
+		#{orgEntityId},
+		#{displayIndex},
+		#{firstType},
+		#{cargoCapacity},
+		#{fourthType},
+		#{status},
+		#{cargoAmount},
+		#{orderStatus},
+		#{manipulator},
+		#{descn},
+		#{salesman},
+		#{delegatePart},
+		#{orderNumber},
+		#{delegateNumber}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FRE_ORDER where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="freightOrderMap">
+		select
+		<include refid="selectId" />
+		from FRE_ORDER where id=#{id}
+	</select>
+	
+	<select id="getByFreightStatementId" parameterType="String" resultMap="freightOrderMap">
+		SELECT
+		<include refid="selectId" />
+		FROM FRE_ORDER WHERE ID IN(SELECT FRE_ORDER_ID FROM FRE_EXPENSE WHERE FRE_STATEMENT_ID=#{freightStatementId})
+	</select>
+
+	<update id="update" parameterType="FreightOrder">
+		update FRE_ORDER
+		<set>
+			<if test="thirdType != null and thirdType != ''">
+				THIRD_TYPE=#{thirdType},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="cargoOwner != null and cargoOwner != ''">
+				CARGO_OWNER=#{cargoOwner},
+			</if>
+			<if test="orderScope != null and orderScope != ''">
+				ORDER_SCOPE=#{orderScope},
+			</if>
+			<if test="delegateContact != null and delegateContact != ''">
+				DELEGATE_CONTACT=#{delegateContact},
+			</if>
+			<if test="cargoName != null and cargoName != ''">
+				CARGO_NAME=#{cargoName},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="secondType != null and secondType != ''">
+				SECOND_TYPE=#{secondType},
+			</if>
+			<if test="creatorUserId != null and creatorUserId != ''">
+				CREATOR_USER_ID=#{creatorUserId},
+			</if>
+			<if test="placeTime != null and placeTime != ''">
+				PLACE_TIME=#{placeTime},
+			</if>
+			<if test="expenseStatus != null and expenseStatus != ''">
+				EXPENSE_STATUS=#{expenseStatus},
+			</if>
+			<if test="finishTime != null and finishTime != ''">
+				FINISH_TIME=#{finishTime},
+			</if>
+			<if test="deficitReason != null and deficitReason != ''">
+				DEFICIT_REASON=#{deficitReason},
+			</if>
+			<if test="commission != null and commission != ''">
+				COMMISSION=#{commission},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="cargoWeight != null and cargoWeight != ''">
+				CARGO_WEIGHT=#{cargoWeight},
+			</if>
+			<if test="orgEntityId != null and orgEntityId != ''">
+				ORG_ENTITY_ID=#{orgEntityId},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="firstType != null and firstType != ''">
+				FIRST_TYPE=#{firstType},
+			</if>
+			<if test="cargoCapacity != null and cargoCapacity != ''">
+				CARGO_CAPACITY=#{cargoCapacity},
+			</if>
+			<if test="fourthType != null and fourthType != ''">
+				FOURTH_TYPE=#{fourthType},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="cargoAmount != null and cargoAmount != ''">
+				CARGO_AMOUNT=#{cargoAmount},
+			</if>
+			<if test="orderStatus != null and orderStatus != ''">
+				ORDER_STATUS=#{orderStatus},
+			</if>
+			<if test="manipulator != null and manipulator != ''">
+				MANIPULATOR=#{manipulator},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="salesman != null and salesman != ''">
+				SALESMAN=#{salesman},
+			</if>
+			<if test="delegatePart != null and delegatePart != ''">
+				DELEGATE_PART=#{delegatePart},
+			</if>
+			<if test="orderNumber != null and orderNumber != ''">
+				ORDER_NUMBER=#{orderNumber},
+			</if>
+			<if test="delegateNumber != null and delegateNumber != ''">
+				DELEGATE_NUMBER=#{delegateNumber},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

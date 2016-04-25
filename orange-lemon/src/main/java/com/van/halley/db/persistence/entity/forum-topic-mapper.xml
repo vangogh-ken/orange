@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="forumtopic">
+	<sql id="selectId">
+		ID AS id,
+		TITLE AS title,
+		CONTENT AS content,
+		CREATE_TIME AS createTime,
+		MODIFY_TIME AS modifyTime,
+		HIT_COUNT AS hitCount,
+		POST_COUNT AS postCount,
+		USER_ID
+	</sql>
+	
+	<resultMap id="forumTopicResult" type="com.van.halley.db.persistence.entity.ForumTopic">
+        <id property="id" column="ID" />
+        <result property="title" column="TITLE" />
+        <result property="content" column="CONTENT" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="hitCount" column="HIT_COUNT" />
+        <result property="postCount" column="POST_COUNT" />
+        
+        <association property="user" column="USER_ID" select="user.getById" ></association>
+        <collection property="forumPosts" column="ID" select="forumpost.getByForumTopicId"></collection>
+    </resultMap>
+    
+	<select id="query" parameterType="java.util.HashMap" resultMap="forumTopicResult" >
+		select
+		<include refid="selectId" />
+		from OUT_FORUM_TOPIC
+		<where>
+			<if test="t.id != null and t.id != ''">
+				ID = #{t.id}
+			</if>
+			<if test="t.title != null and t.title != ''">
+				and TITLE = #{t.title}
+			</if>
+			<if test="t.content != null and t.content != ''">
+				and CONTENT = #{t.content}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.hitCount != null and t.hitCount != ''">
+				and HIT_COUNT = #{t.hitCount}
+			</if>
+			<if test="t.postCount != null and t.postCount != ''">
+				and POST_COUNT = #{t.postCount}
+			</if>
+			<if test="t.user != null and t.user != ''">
+				and USER_ID = #{t.user.id}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+	<select id="queryForList" parameterType="ForumTopic"
+		resultMap="forumTopicResult">
+		select
+		<include refid="selectId" />
+		from OUT_FORUM_TOPIC
+		<where>
+			<if test="id != null and id != ''">
+				and id = #{id}
+			</if>
+			<if test="title != null and title != ''">
+				and TITLE = #{title}
+			</if>
+			<if test="content != null and content != ''">
+				and CONTENT = #{content}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="hitCount != null and hitCount != ''">
+				and HIT_COUNT = #{hitCount}
+			</if>
+			<if test="postCount != null and postCount != ''">
+				and POST_COUNT = #{postCount}
+			</if>
+			<if test="user != null and user != ''">
+				and USER_ID = #{user.id}
+			</if>
+		</where>
+	</select>
+	<select id="getAll" resultMap="forumTopicResult">
+		select
+		<include refid="selectId" />
+		from OUT_FORUM_TOPIC
+	</select>
+	<select id="count" parameterType="ForumTopic" resultType="int">
+		select count(0) from OUT_FORUM_TOPIC
+		<where>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="title != null and title != ''">
+				and TITLE = #{title}
+			</if>
+			<if test="content != null and content != ''">
+				and CONTENT = #{content}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="hitCount != null and hitCount != ''">
+				and HIT_COUNT = #{hitCount}
+			</if>
+			<if test="postCount != null and postCount != ''">
+				and POST_COUNT = #{postCount}
+			</if>
+			<if test="user != null and user != ''">
+				and USER_ID = #{user.id}
+			</if>
+		</where>
+	</select>
+	<insert id="add" parameterType="ForumTopic"> 
+	insert into OUT_FORUM_TOPIC( ID,
+		TITLE, CONTENT, CREATE_TIME, MODIFY_TIME, HIT_COUNT, POST_COUNT, USER_ID)
+		values ( UUID(), #{title}, #{content}, #{createTime},
+		#{modifyTime}, #{hitCount}, #{postCount}, #{user.id})
+	</insert>
+	<delete id="deleteById" parameterType="String"> 
+		delete from OUT_FORUM_TOPIC where id=#{id}
+	</delete>
+	<select id="getById" parameterType="String" resultMap="forumTopicResult">
+		select
+		<include refid="selectId" />
+		from OUT_FORUM_TOPIC where id=#{id}
+	</select>
+	
+	<update id="update" parameterType="ForumTopic">
+		update OUT_FORUM_TOPIC
+		<set>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="title != null and title != ''">
+				TITLE=#{title},
+			</if>
+			<if test="content != null and content != ''">
+				CONTENT=#{content},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="hitCount != null and hitCount != ''">
+				HIT_COUNT=#{hitCount},
+			</if>
+			<if test="postCount != null and postCount != ''">
+				POST_COUNT=#{postCount},
+			</if>
+			<if test="user != null and user != ''">
+				USER_ID=#{user.id}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

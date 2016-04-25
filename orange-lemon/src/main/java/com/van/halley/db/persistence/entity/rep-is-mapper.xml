@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reportis">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		DESCN AS descn,
+		TEMPLATE_ID AS templateId,
+		ID AS id,
+		CREATE_TIME AS createTime,
+		STATUS AS status,
+		TEMPLATE_STREAM AS templateStream,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex
+	</sql>
+	
+	<resultMap id="reportIsMap" type="com.van.halley.db.persistence.entity.ReportIs">
+        <id property="id" column="ID" />
+        <result property="templateId" column="TEMPLATE_ID" />
+        <result property="templateStream" column="TEMPLATE_STREAM" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="reportIsMap">
+		select
+		<include refid="selectId" />
+		from REP_IS
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.templateId != null and t.templateId != ''">
+				and TEMPLATE_ID = #{t.templateId}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.templateStream != null and t.templateStream != ''">
+				and TEMPLATE_STREAM = #{t.templateStream}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="ReportIs" resultMap="reportIsMap">
+		select
+		<include refid="selectId" />
+		from REP_IS
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="templateId != null and templateId != ''">
+				and TEMPLATE_ID = #{templateId}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="templateStream != null and templateStream != ''">
+				and TEMPLATE_STREAM = #{templateStream}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="reportIsMap">
+		select
+		<include refid="selectId" />
+		from REP_IS
+	</select>
+
+	<select id="count" parameterType="ReportIs" resultType="int">
+		select count(0) from REP_IS
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="templateId != null and templateId != ''">
+				and TEMPLATE_ID = #{templateId}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="templateStream != null and templateStream != ''">
+				and TEMPLATE_STREAM = #{templateStream}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="ReportIs">
+		insert into REP_IS( DESCN, TEMPLATE_ID, ID, CREATE_TIME, STATUS,
+		TEMPLATE_STREAM, MODIFY_TIME, DISP_INX )values ( #{descn},
+		#{templateId},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{createTime},
+		#{status},
+		#{templateStream},
+		#{modifyTime},
+		#{displayIndex}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from REP_IS where id=#{id}
+	</delete>
+
+	<delete id="deleteByReportTemplateId" parameterType="String">
+		delete from REP_IS where TEMPLATE_ID=#{reportTemplateId}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="reportIsMap">
+		select
+		<include refid="selectId" />
+		from REP_IS where id=#{id}
+	</select>
+	<!-- 此处添加排序和LIMIT是为了解决自动更新时未正确删除应当被删除的数据 -->
+	<select id="getByReportTemplateId" parameterType="String" resultMap="reportIsMap">
+		select
+		<include refid="selectId" />
+		from REP_IS where TEMPLATE_ID=#{reportTemplateId} ORDER BY CREATE_TIME DESC LIMIT 1
+	</select>
+
+	<update id="update" parameterType="ReportIs">
+		update REP_IS
+		<set>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="templateId != null and templateId != ''">
+				TEMPLATE_ID=#{templateId},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="templateStream != null and templateStream != ''">
+				TEMPLATE_STREAM=#{templateStream},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

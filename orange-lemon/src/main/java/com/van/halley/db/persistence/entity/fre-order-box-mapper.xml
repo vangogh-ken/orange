@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freightorderbox">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		DESCN AS descn,
+		ID AS id,
+		CREATE_TIME AS createTime,
+		LOCATION AS location,
+		STATUS AS status,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		
+		FRE_BOX_REQUIRE_ID,
+		FRE_SEAL_ID,
+		FRE_BOX_ID
+	</sql>
+	
+	<resultMap id="freightOrderBoxMap" type="com.van.halley.db.persistence.entity.FreightOrderBox">
+        <id property="id" column="ID" />
+        <result property="location" column="LOCATION" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="freightSeal" column="FRE_SEAL_ID" select="freightseal.getById" ></association>
+        <association property="freightBox" column="FRE_BOX_ID" select="freightbox.getById" ></association>
+        <association property="freightBoxRequire" column="FRE_BOX_REQUIRE_ID" select="freightboxrequire.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="freightOrderBoxMap">
+		select
+		<include refid="selectId" />
+		from FRE_ORDER_BOX
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.freightBoxRequire != null and t.freightBoxRequire != ''">
+				and FRE_BOX_REQUIRE_ID = #{t.freightBoxRequire.id}
+			</if>
+			<if test="t.location != null and t.location != ''">
+				and LOCATION = #{t.location}
+			</if>
+			<if test="t.freightSeal != null and t.freightSeal != ''">
+				and FRE_SEAL_ID = #{t.freightSeal.id}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.freightBox != null and t.freightBox != ''">
+				and FRE_BOX_ID = #{t.freightBox.id}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FreightOrderBox"
+		resultMap="freightOrderBoxMap">
+		select
+		<include refid="selectId" />
+		from FRE_ORDER_BOX
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="freightBoxRequire != null and freightBoxRequire != ''">
+				and FRE_BOX_REQUIRE_ID = #{freightBoxRequire.id}
+			</if>
+			<if test="location != null and location != ''">
+				and LOCATION = #{location}
+			</if>
+			<if test="freightSeal != null and freightSeal != ''">
+				and FRE_SEAL_ID = #{freightSeal.id}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="freightBox != null and freightBox != ''">
+				and FRE_BOX_ID = #{freightBox.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="freightOrderBoxMap">
+		select
+		<include refid="selectId" />
+		from FRE_ORDER_BOX
+	</select>
+
+	<select id="count" parameterType="FreightOrderBox" resultType="int">
+		select count(0) from FRE_ORDER_BOX
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="freightBoxRequire != null and freightBoxRequire != ''">
+				and FRE_BOX_REQUIRE_ID = #{freightBoxRequire.id}
+			</if>
+			<if test="location != null and location != ''">
+				and LOCATION = #{location}
+			</if>
+			<if test="freightSeal != null and freightSeal != ''">
+				and FRE_SEAL_ID = #{freightSeal.id}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="freightBox != null and freightBox != ''">
+				and FRE_BOX_ID = #{freightBox.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FreightOrderBox">
+		insert into FRE_ORDER_BOX( DESCN, ID, CREATE_TIME, FRE_BOX_REQUIRE_ID,
+		LOCATION, FRE_SEAL_ID, STATUS, FRE_BOX_ID, MODIFY_TIME,
+		DISP_INX )values ( #{descn},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{createTime},
+		#{freightBoxRequire.id},
+		#{location},
+		#{freightSeal.id},
+		#{status},
+		#{freightBox.id},
+		#{modifyTime},
+		#{displayIndex}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FRE_ORDER_BOX where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="freightOrderBoxMap">
+		select
+		<include refid="selectId" />
+		from FRE_ORDER_BOX where id=#{id}
+	</select>
+	
+	<select id="getByFreightOrderId" parameterType="String" resultMap="freightOrderBoxMap">
+		select
+		
+		B.DESCN AS descn,
+		B.ID AS id,
+		B.CREATE_TIME AS createTime,
+		B.LOCATION AS location,
+		B.STATUS AS status,
+		B.MODIFY_TIME AS modifyTime,
+		B.DISP_INX AS displayIndex,
+		
+		B.FRE_BOX_REQUIRE_ID,
+		B.FRE_SEAL_ID,
+		B.FRE_BOX_ID
+		
+		from 
+		FRE_ORDER_BOX AS B
+		LEFT JOIN 
+		(SELECT ID FROM FRE_BOX_REQUIRE WHERE FRE_ORDER_ID=#{freightOrderId}) AS R
+		ON R.ID=B.FRE_BOX_REQUIRE_ID
+		WHERE R.ID IS NOT NULL
+		<!--  
+		select
+		<include refid="selectId" />
+		from FRE_ORDER_BOX where FRE_BOX_REQUIRE_ID IN (SELECT ID FROM FRE_BOX_REQUIRE WHERE FRE_ORDER_ID=#{freightOrderId})
+		ORDER BY FRE_BOX_REQUIRE_ID ASC
+		-->
+	</select>
+	
+	<select id="getByFreightBoxRequireId" parameterType="String" resultMap="freightOrderBoxMap">
+		select
+		<include refid="selectId" />
+		from FRE_ORDER_BOX where FRE_BOX_REQUIRE_ID =#{freightBoxRequireId}
+	</select>
+	
+	<!-- 费用与箱封之间的关联-->
+	<select id="getByFreightExpenseId" parameterType="String" resultMap="freightOrderBoxMap" flushCache="true">
+		<!--  
+		效率低，通过连接提高效率
+		select
+		<include refid="selectId" />
+		from FRE_ORDER_BOX where id in (SELECT FRE_ORDER_BOX_ID FROM  FRE_EXPENSE_BOX where FRE_EXPENSE_ID=#{freightExpenseId})
+		-->
+		<!--  
+		select
+		<include refid="selectId" />
+		FROM 
+		((SELECT B.*, E.FRE_ORDER_BOX_ID from FRE_ORDER_BOX AS B 
+		LEFT JOIN
+		(SELECT FRE_ORDER_BOX_ID FROM FRE_EXPENSE_BOX where FRE_EXPENSE_ID=#{freightExpenseId}) AS E
+		ON E.FRE_ORDER_BOX_ID=B.ID )) AS T
+		WHERE T.FRE_ORDER_BOX_ID IS NOT NULL
+		ORDER BY FRE_BOX_REQUIRE_ID ASC
+		-->
+		
+		SELECT 
+		B.DESCN AS descn,
+		B.ID AS id,
+		B.CREATE_TIME AS createTime,
+		B.LOCATION AS location,
+		B.STATUS AS status,
+		B.MODIFY_TIME AS modifyTime,
+		B.DISP_INX AS displayIndex,
+		
+		B.FRE_BOX_REQUIRE_ID,
+		B.FRE_SEAL_ID,
+		B.FRE_BOX_ID
+		
+		from 
+		(SELECT FRE_ORDER_BOX_ID FROM FRE_EXPENSE_BOX where FRE_EXPENSE_ID=#{freightExpenseId}) AS E
+		LEFT JOIN FRE_ORDER_BOX AS B 
+		ON E.FRE_ORDER_BOX_ID=B.ID
+		WHERE B.ID IS NOT NULL
+	</select>
+	<insert id="addExpenseBox" parameterType="FreightExpenseBox" >
+		insert into  FRE_EXPENSE_BOX(ID, FRE_EXPENSE_ID, FRE_ORDER_BOX_ID) values (UUID(), #{freightExpenseId}, #{freightOrderBoxId})
+	</insert>
+	<delete id="deleteExpenseBox" parameterType="String" >
+		delete from  FRE_EXPENSE_BOX where FRE_EXPENSE_ID=#{freightExpenseId}
+	</delete>
+	
+	<!-- 动作与箱封之间的关联-->
+	<select id="getByFreightActionId" parameterType="String" resultMap="freightOrderBoxMap" flushCache="true">
+		SELECT 
+		B.DESCN AS descn,
+		B.ID AS id,
+		B.CREATE_TIME AS createTime,
+		B.LOCATION AS location,
+		B.STATUS AS status,
+		B.MODIFY_TIME AS modifyTime,
+		B.DISP_INX AS displayIndex,
+		
+		B.FRE_BOX_REQUIRE_ID,
+		B.FRE_SEAL_ID,
+		B.FRE_BOX_ID
+		
+		from 
+		(SELECT FRE_ORDER_BOX_ID FROM FRE_ACTION_BOX where FRE_ACTION_ID=#{freightActionId}) AS A
+		LEFT JOIN FRE_ORDER_BOX AS B 
+		ON A.FRE_ORDER_BOX_ID=B.ID
+		WHERE B.ID IS NOT NULL
+		<!--  
+		select
+		<include refid="selectId" />
+		from FRE_ORDER_BOX where EXISTS (SELECT 1 FROM (SELECT FRE_ORDER_BOX_ID FROM  
+		FRE_ACTION_BOX where FRE_ACTION_ID=#{freightActionId}) AS T WHERE T.FRE_ORDER_BOX_ID=ID)
+		-->
+		<!--  
+		效率低
+		select
+		<include refid="selectId" />
+		from FRE_ORDER_BOX where id in (SELECT FRE_ORDER_BOX_ID FROM  FRE_ACTION_BOX where FRE_ACTION_ID=#{freightActionId})
+		-->
+	</select>
+	<insert id="addActionBox" parameterType="FreightActionBox" >
+		insert into  FRE_ACTION_BOX(ID, FRE_ACTION_ID, FRE_ORDER_BOX_ID) values (UUID(), #{freightActionId}, #{freightOrderBoxId})
+	</insert>
+	<delete id="deleteActionBox" parameterType="String" >
+		delete from  FRE_ACTION_BOX where FRE_ACTION_ID=#{freightActionId}
+	</delete>
+
+	<update id="update" parameterType="FreightOrderBox">
+		update FRE_ORDER_BOX
+		<set>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="freightBoxRequire != null and freightBoxRequire != ''">
+				FRE_BOX_REQUIRE_ID=#{freightBoxRequire.id},
+			</if>
+			<if test="location != null and location != ''">
+				LOCATION = #{location},
+			</if>
+			<if test="freightSeal != null and freightSeal != ''">
+				FRE_SEAL_ID=#{freightSeal.id},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="freightBox != null and freightBox != ''">
+				FRE_BOX_ID=#{freightBox.id},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

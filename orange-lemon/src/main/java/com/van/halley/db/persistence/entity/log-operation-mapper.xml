@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="operationlog">
+	<!-- 以下与实体类的中字段一致 -->
+	<sql id="selectId">
+		ID AS id ,
+		USER_ID,
+		MODULE AS module,
+		TYPE AS type,
+		ACTION_TIME AS actionTime,
+		IP AS ipAddress,
+		CREATE_TIME AS createTime,
+		PRIMARY_KEY AS primaryKey,
+		CONTENT AS content
+	</sql>
+	
+	<resultMap id="operationLogResult" type="com.van.halley.db.persistence.entity.OperationLog">
+        <id property="id" column="ID" />
+        <result property="module" column="MODULE" />
+        <result property="type" column="TYPE" />
+        <result property="actionTime" column="ACTION_TIME" />
+        <result property="ipAddress" column="IP" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="primaryKey" column="PRIMARY_KEY" />
+        <result property="content" column="CONTENT" />
+        <association property="user" column="USER_ID" select="user.getById"></association>
+    </resultMap>
+	
+	<select id="query" parameterType="java.util.HashMap" resultMap="operationLogResult">
+		select
+		<include refid="selectId" />
+		from SYS_INFO_LOG_OPERATION
+		<where>
+			<if test="t.user != null and t.user != ''">
+				USER_ID =#{t.user.id}
+			</if>
+			<if test="t.module != null and t.module != ''">
+				and MODULE = #{t.module}
+			</if>
+			<if test="t.type != null and t.type != ''">
+				and TYPE = #{t.type}
+			</if>
+			<if test="t.primaryKey != null and t.primaryKey != ''">
+				and PRIMARY_KEY = #{t.primaryKey}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+	
+	<select id="getAll" resultMap="operationLogResult">
+		select
+		<include refid="selectId" />
+		from SYS_INFO_LOG_OPERATION 
+	</select>
+	
+	<insert id="add" parameterType="OperationLog">
+		insert into SYS_INFO_LOG_OPERATION(
+		ID,
+		USER_ID,
+		MODULE,
+		TYPE,
+		ACTION_Time,
+		IP,
+		CREATE_TIME,
+		PRIMARY_KEY,
+		CONTENT
+		)
+		values (
+		UUID(),
+		#{user.id},
+		#{module},
+		#{type},
+		#{actionTime},
+		#{ipAddress},
+		#{createTime},
+		#{primaryKey},
+		#{content}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from SYS_INFO_LOG_OPERATION where id=#{id}
+	</delete>
+	
+	<select id="getById" parameterType="String" resultMap="operationLogResult">
+		select
+		<include refid="selectId" />
+		from SYS_INFO_LOG_OPERATION where id=#{id}
+	</select>
+	
+	<update id="update" parameterType="OperationLog">
+		update SYS_INFO_LOG_OPERATION
+		<set>
+		USER_ID=#{user.id},
+		MODULE=#{module},
+		TYPE=#{type},
+		IP=#{ipAddress}
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freightactionfield">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		VCOLUMN AS vColumn,
+		STATUS AS status,
+		FIELD_TYPE AS fieldType,
+		CAN_SELECT AS canSelect,
+		VATTR_ID AS vAttrId,
+		VCLS_ID AS vClsId,
+		DESCN AS descn,
+		ID AS id,
+		FOR_BOX AS forBox,
+		FIELD_COLUMN AS fieldColumn,
+		VFILTER_ID AS vFilterId,
+		PARTICIPATE AS participate,
+		FIELD_NAME AS fieldName,
+		REQUIRED AS required,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		
+		FRE_ACTION_TYPE_ID
+	</sql>
+	
+	<resultMap id="freightActionFieldMap" type="com.van.halley.db.persistence.entity.FreightActionField">
+        <id property="id" column="ID" />
+        <result property="fieldName" column="FIELD_NAME" />
+        <result property="fieldColumn" column="FIELD_COLUMN" />
+        <result property="fieldType" column="FIELD_TYPE" />
+        <result property="required" column="REQUIRED" />
+        <result property="participate" column="PARTICIPATE" />
+        <result property="canSelect" column="CAN_SELECT" />
+        <result property="vAttrId" column="VATTR_ID" />
+        <result property="vClsId" column="VCLS_ID" />
+        <result property="vColumn" column="VCOLUMN" />
+        <result property="vFilterId" column="VFILTER_ID" />
+        <result property="forBox" column="FOR_BOX" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="freightActionType" column="FRE_ACTION_TYPE_ID" select="freightactiontype.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="freightActionFieldMap">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_FIELD
+		<where>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.vColumn != null and t.vColumn != ''">
+				and VCOLUMN = #{t.vColumn}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.fieldType != null and t.fieldType != ''">
+				and FIELD_TYPE = #{t.fieldType}
+			</if>
+			<if test="t.freightActionType != null and t.freightActionType != ''">
+				and FRE_ACTION_TYPE_ID = #{t.freightActionType.id}
+			</if>
+			<if test="t.canSelect != null and t.canSelect != ''">
+				and CAN_SELECT = #{t.canSelect}
+			</if>
+			<if test="t.vAttrId != null and t.vAttrId != ''">
+				and VATTR_ID = #{t.vAttrId}
+			</if>
+			<if test="t.vClsId != null and t.vClsId != ''">
+				and VCLS_ID = #{t.vClsId}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.forBox != null and t.forBox != ''">
+				and FOR_BOX = #{t.forBox}
+			</if>
+			<if test="t.fieldColumn != null and t.fieldColumn != ''">
+				and FIELD_COLUMN = #{t.fieldColumn}
+			</if>
+			<if test="t.vFilterId != null and t.vFilterId != ''">
+				and VFILTER_ID = #{t.vFilterId}
+			</if>
+			<if test="t.participate != null and t.participate != ''">
+				and PARTICIPATE = #{t.participate}
+			</if>
+			<if test="t.fieldName != null and t.fieldName != ''">
+				and FIELD_NAME = #{t.fieldName}
+			</if>
+			<if test="t.required != null and t.required != ''">
+				and REQUIRED = #{t.required}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FreightActionField"
+		resultMap="freightActionFieldMap">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_FIELD
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="vColumn != null and vColumn != ''">
+				and VCOLUMN = #{vColumn}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="fieldType != null and fieldType != ''">
+				and FIELD_TYPE = #{fieldType}
+			</if>
+			<if test="freightActionType != null and freightActionType != ''">
+				and FRE_ACTION_TYPE_ID = #{freightActionType.id}
+			</if>
+			<if test="canSelect != null and canSelect != ''">
+				and CAN_SELECT = #{canSelect}
+			</if>
+			<if test="vAttrId != null and vAttrId != ''">
+				and VATTR_ID = #{vAttrId}
+			</if>
+			<if test="vClsId != null and vClsId != ''">
+				and VCLS_ID = #{vClsId}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="forBox != null and forBox != ''">
+				and FOR_BOX = #{forBox}
+			</if>
+			<if test="fieldColumn != null and fieldColumn != ''">
+				and FIELD_COLUMN = #{fieldColumn}
+			</if>
+			<if test="vFilterId != null and vFilterId != ''">
+				and VFILTER_ID = #{vFilterId}
+			</if>
+			<if test="participate != null and participate != ''">
+				and PARTICIPATE = #{participate}
+			</if>
+			<if test="fieldName != null and fieldName != ''">
+				and FIELD_NAME = #{fieldName}
+			</if>
+			<if test="required != null and required != ''">
+				and REQUIRED = #{required}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="freightActionFieldMap">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_FIELD ORDER BY DISP_INX ASC
+	</select>
+
+	<select id="count" parameterType="FreightActionField"
+		resultType="int">
+		select count(0) from FRE_ACTION_FIELD
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="vColumn != null and vColumn != ''">
+				and VCOLUMN = #{vColumn}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="fieldType != null and fieldType != ''">
+				and FIELD_TYPE = #{fieldType}
+			</if>
+			<if test="freightActionType != null and freightActionType != ''">
+				and FRE_ACTION_TYPE_ID = #{freightActionType.id}
+			</if>
+			<if test="canSelect != null and canSelect != ''">
+				and CAN_SELECT = #{canSelect}
+			</if>
+			<if test="vAttrId != null and vAttrId != ''">
+				and VATTR_ID = #{vAttrId}
+			</if>
+			<if test="vClsId != null and vClsId != ''">
+				and VCLS_ID = #{vClsId}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="forBox != null and forBox != ''">
+				and FOR_BOX = #{forBox}
+			</if>
+			<if test="fieldColumn != null and fieldColumn != ''">
+				and FIELD_COLUMN = #{fieldColumn}
+			</if>
+			<if test="vFilterId != null and vFilterId != ''">
+				and VFILTER_ID = #{vFilterId}
+			</if>
+			<if test="participate != null and participate != ''">
+				and PARTICIPATE = #{participate}
+			</if>
+			<if test="fieldName != null and fieldName != ''">
+				and FIELD_NAME = #{fieldName}
+			</if>
+			<if test="required != null and required != ''">
+				and REQUIRED = #{required}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FreightActionField">
+		insert into FRE_ACTION_FIELD( CREATE_TIME, VCOLUMN, STATUS,
+		FIELD_TYPE, FRE_ACTION_TYPE_ID, CAN_SELECT, VATTR_ID, VCLS_ID, DESCN,
+		ID, FOR_BOX, FIELD_COLUMN, VFILTER_ID, PARTICIPATE, FIELD_NAME,
+		REQUIRED, MODIFY_TIME, DISP_INX )values ( #{createTime}, #{vColumn},
+		#{status}, #{fieldType}, #{freightActionType.id}, #{canSelect},
+		#{vAttrId}, #{vClsId}, #{descn},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{forBox},
+		#{fieldColumn},
+		#{vFilterId},
+		#{participate},
+		#{fieldName},
+		#{required},
+		#{modifyTime},
+		#{displayIndex}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FRE_ACTION_FIELD where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="freightActionFieldMap">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_FIELD where id=#{id}
+	</select>
+	
+	<!-- 获取动作所有的字段 -->
+	<select id="getByFreightActionTypeId" parameterType="String" resultMap="freightActionFieldMap">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_FIELD where FRE_ACTION_TYPE_ID=#{freightActionTypeId}
+		ORDER BY DISP_INX ASC
+	</select>
+	
+	<!-- 获取动作一般字段  <> 不等于符号用其他代码 -->
+	<select id="getNormalByFreightActionTypeId" parameterType="String" resultMap="freightActionFieldMap">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_FIELD where FRE_ACTION_TYPE_ID=#{freightActionTypeId} AND FOR_BOX ='F'
+		AND (STATUS !='F' OR STATUS IS NULL)
+		ORDER BY DISP_INX ASC
+	</select>
+	
+	<!-- 获取动作含箱字段 -->
+	<select id="getForBoxByFreightActionTypeId" parameterType="String" resultMap="freightActionFieldMap">
+		select
+		<include refid="selectId" />
+		from FRE_ACTION_FIELD where FRE_ACTION_TYPE_ID=#{freightActionTypeId} AND FOR_BOX ='T'
+		AND (STATUS !='F' OR STATUS IS NULL)
+		ORDER BY DISP_INX ASC
+	</select>
+	
+	<!-- 返回Action的信息(字段和值) -->
+	<select id="getFieldAndValueByActionId" parameterType="String" resultType="java.util.HashMap">
+		SELECT F.*, V.ID V_ID, V.STRING_VALUE, V.TEXT_VALUE, V.INT_VALUE, V.DOUBLE_VALUE, V.DATE_VALUE
+		 FROM 
+		 (SELECT * FROM FRE_ACTION_FIELD WHERE FRE_ACTION_TYPE_ID = (SELECT FRE_ACTION_TYPE_ID FROM FRE_ACTION WHERE ID=#{freightActionId})) F 
+		 LEFT JOIN 
+		(SELECT * FROM FRE_ACTION_VALUE WHERE FRE_ACTION_ID=#{freightActionId}) V 
+		ON V.ACTION_FIELD_ID=F.ID
+	</select>
+
+	<update id="update" parameterType="FreightActionField">
+		update FRE_ACTION_FIELD
+		<set>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="vColumn != null and vColumn != ''">
+				VCOLUMN=#{vColumn},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="fieldType != null and fieldType != ''">
+				FIELD_TYPE=#{fieldType},
+			</if>
+			<if test="freightActionType != null and freightActionType != ''">
+				FRE_ACTION_TYPE_ID=#{freightActionType.id},
+			</if>
+			<if test="canSelect != null and canSelect != ''">
+				CAN_SELECT=#{canSelect},
+			</if>
+			<if test="vAttrId != null and vAttrId != ''">
+				VATTR_ID=#{vAttrId},
+			</if>
+			<if test="vClsId != null and vClsId != ''">
+				VCLS_ID=#{vClsId},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="forBox != null and forBox != ''">
+				FOR_BOX=#{forBox},
+			</if>
+			<if test="fieldColumn != null and fieldColumn != ''">
+				FIELD_COLUMN=#{fieldColumn},
+			</if>
+			<if test="vFilterId != null and vFilterId != ''">
+				VFILTER_ID=#{vFilterId},
+			</if>
+			<if test="participate != null and participate != ''">
+				PARTICIPATE=#{participate},
+			</if>
+			<if test="fieldName != null and fieldName != ''">
+				FIELD_NAME=#{fieldName},
+			</if>
+			<if test="required != null and required != ''">
+				REQUIRED=#{required},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

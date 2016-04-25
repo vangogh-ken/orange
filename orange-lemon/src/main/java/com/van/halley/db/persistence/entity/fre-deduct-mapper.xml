@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freightdeduct">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		SETTLE_DONE_SALESMAN AS settleDoneSalesman,
+		SETTLE_TIME_SERVISE AS settleTimeService,
+		DEDUCT_COUNT_MANIPULATOR AS deductCountManipulator,
+		STATUS AS status,
+		SETTLE_TIME_MANIPULATOR AS settleTimeManipulator,
+		SETTLE_TIME_SALESMAN AS settleTimeSalesman,
+		SETTLE_DONE_SERVISE AS settleDoneService,
+		DEDUCT_COUNT_SERVISE AS deductCountService,
+		SETTLE_DONE_MANIPULATOR AS settleDoneManipulator,
+		DESCN AS descn,
+		ID AS id,
+		ORDER_BALANCE AS orderBalance,
+		DEDUCT_BALANCE AS deductBalance,
+		RECONCILE_TIME AS reconcileTime,
+		DEDUCT_COUNT_SALESMAN AS deductCountSalesman,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		DEDUCT_TYPE AS deductType,
+		DEDUCT_TIME AS deductTime,
+		
+		FRE_ORDER_ID,
+		ORG_ENTITY_ID
+	</sql>
+	
+	<resultMap id="freightDeductMap" type="com.van.halley.db.persistence.entity.FreightDeduct">
+        <id property="id" column="ID" />
+        <result property="deductType" column="DEDUCT_TYPE" />
+        <result property="deductTime" column="DEDUCT_TIME" />
+        <result property="orderBalance" column="ORDER_BALANCE" />
+        <result property="deductBalance" column="DEDUCT_BALANCE" />
+        <result property="deductCountSalesman" column="DEDUCT_COUNT_SALESMAN" />
+        <result property="settleDoneSalesman" column="SETTLE_DONE_SALESMAN" />
+        <result property="settleTimeSalesman" column="SETTLE_TIME_SALESMAN" />
+        <result property="deductCountService" column="DEDUCT_COUNT_SERVISE" />
+        <result property="settleDoneService" column="SETTLE_DONE_SERVISE" />
+        <result property="settleTimeService" column="SETTLE_TIME_SERVISE" />
+        <result property="deductCountManipulator" column="DEDUCT_COUNT_MANIPULATOR" />
+        <result property="settleDoneManipulator" column="SETTLE_DONE_MANIPULATOR" />
+        <result property="settleTimeManipulator" column="SETTLE_TIME_MANIPULATOR" />
+        <result property="reconcileTime" column="RECONCILE_TIME" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="freightOrder" column="FRE_ORDER_ID" select="freightorder.getById" ></association>
+        <association property="orgEntity" column="ORG_ENTITY_ID" select="orgentity.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false" resultMap="freightDeductMap">
+		select
+		<include refid="selectId" />
+		from FRE_DEDUCT
+		<where>
+			<if test="t.deductTime != null and t.deductTime != ''">
+				and DEDUCT_TIME = #{t.deductTime}
+			</if>
+			<if test="t.deductType != null and t.deductType != ''">
+				and DEDUCT_TYPE = #{t.deductType}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.settleDoneSalesman != null and t.settleDoneSalesman != ''">
+				and SETTLE_DONE_SALESMAN = #{t.settleDoneSalesman}
+			</if>
+			<if test="t.settleTimeService != null and t.settleTimeService != ''">
+				and SETTLE_TIME_SERVISE = #{t.settleTimeService}
+			</if>
+			<if
+				test="t.deductCountManipulator != null and t.deductCountManipulator != ''">
+				and DEDUCT_COUNT_MANIPULATOR = #{t.deductCountManipulator}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.orgEntity != null and t.orgEntity != ''">
+				and ORG_ENTITY_ID = #{t.orgEntity.id}
+			</if>
+			<if
+				test="t.settleTimeManipulator != null and t.settleTimeManipulator != ''">
+				and SETTLE_TIME_MANIPULATOR = #{t.settleTimeManipulator}
+			</if>
+			<if test="t.settleTimeSalesman != null and t.settleTimeSalesman != ''">
+				and SETTLE_TIME_SALESMAN = #{t.settleTimeSalesman}
+			</if>
+			<if test="t.settleDoneService != null and t.settleDoneService != ''">
+				and SETTLE_DONE_SERVISE = #{t.settleDoneService}
+			</if>
+			<if test="t.deductCountService != null and t.deductCountService != ''">
+				and DEDUCT_COUNT_SERVISE = #{t.deductCountService}
+			</if>
+			<if
+				test="t.settleDoneManipulator != null and t.settleDoneManipulator != ''">
+				and SETTLE_DONE_MANIPULATOR = #{t.settleDoneManipulator}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.orderBalance != null and t.orderBalance != ''">
+				and ORDER_BALANCE = #{t.orderBalance}
+			</if>
+			<if test="t.deductBalance != null and t.deductBalance != ''">
+				and DEDUCT_BALANCE = #{t.deductBalance}
+			</if>
+			<if test="t.freightOrder != null and t.freightOrder != ''">
+				and FRE_ORDER_ID = #{t.freightOrder.id}
+			</if>
+			<if test="t.reconcileTime != null and t.reconcileTime != ''">
+				and RECONCILE_TIME = #{t.reconcileTime}
+			</if>
+			<if test="t.deductCountSalesman != null and t.deductCountSalesman != ''">
+				and DEDUCT_COUNT_SALESMAN = #{t.deductCountSalesman}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FreightDeduct"
+		resultMap="freightDeductMap">
+		select
+		<include refid="selectId" />
+		from FRE_DEDUCT
+		<where>
+			<if test="deductTime != null and deductTime != ''">
+				and DEDUCT_TIME = #{deductTime}
+			</if>
+			<if test="deductType != null and deductType != ''">
+				and DEDUCT_TYPE = #{deductType}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="settleDoneSalesman != null and settleDoneSalesman != ''">
+				and SETTLE_DONE_SALESMAN = #{settleDoneSalesman}
+			</if>
+			<if test="settleTimeService != null and settleTimeService != ''">
+				and SETTLE_TIME_SERVISE = #{settleTimeService}
+			</if>
+			<if test="deductCountManipulator != null and deductCountManipulator != ''">
+				and DEDUCT_COUNT_MANIPULATOR = #{deductCountManipulator}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				and ORG_ENTITY_ID = #{orgEntity.id}
+			</if>
+			<if test="settleTimeManipulator != null and settleTimeManipulator != ''">
+				and SETTLE_TIME_MANIPULATOR = #{settleTimeManipulator}
+			</if>
+			<if test="settleTimeSalesman != null and settleTimeSalesman != ''">
+				and SETTLE_TIME_SALESMAN = #{settleTimeSalesman}
+			</if>
+			<if test="settleDoneService != null and settleDoneService != ''">
+				and SETTLE_DONE_SERVISE = #{settleDoneService}
+			</if>
+			<if test="deductCountService != null and deductCountService != ''">
+				and DEDUCT_COUNT_SERVISE = #{deductCountService}
+			</if>
+			<if test="settleDoneManipulator != null and settleDoneManipulator != ''">
+				and SETTLE_DONE_MANIPULATOR = #{settleDoneManipulator}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="orderBalance != null and orderBalance != ''">
+				and ORDER_BALANCE = #{orderBalance}
+			</if>
+			<if test="deductBalance != null and deductBalance != ''">
+				and DEDUCT_BALANCE = #{deductBalance}
+			</if>
+			<if test="freightOrder != null and freightOrder != ''">
+				and FRE_ORDER_ID = #{freightOrder.id}
+			</if>
+			<if test="reconcileTime != null and reconcileTime != ''">
+				and RECONCILE_TIME = #{reconcileTime}
+			</if>
+			<if test="deductCountSalesman != null and deductCountSalesman != ''">
+				and DEDUCT_COUNT_SALESMAN = #{deductCountSalesman}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="freightDeductMap">
+		select
+		<include refid="selectId" />
+		from FRE_DEDUCT
+	</select>
+
+	<select id="count" parameterType="FreightDeduct" resultType="int">
+		select count(0) from FRE_DEDUCT
+		<where>
+			<if test="deductTime != null and deductTime != ''">
+				and DEDUCT_TIME = #{deductTime}
+			</if>
+			<if test="deductType != null and deductType != ''">
+				and DEDUCT_TYPE = #{deductType}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="settleDoneSalesman != null and settleDoneSalesman != ''">
+				and SETTLE_DONE_SALESMAN = #{settleDoneSalesman}
+			</if>
+			<if test="settleTimeService != null and settleTimeService != ''">
+				and SETTLE_TIME_SERVISE = #{settleTimeService}
+			</if>
+			<if test="deductCountManipulator != null and deductCountManipulator != ''">
+				and DEDUCT_COUNT_MANIPULATOR = #{deductCountManipulator}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				and ORG_ENTITY_ID = #{orgEntity.id}
+			</if>
+			<if test="settleTimeManipulator != null and settleTimeManipulator != ''">
+				and SETTLE_TIME_MANIPULATOR = #{settleTimeManipulator}
+			</if>
+			<if test="settleTimeSalesman != null and settleTimeSalesman != ''">
+				and SETTLE_TIME_SALESMAN = #{settleTimeSalesman}
+			</if>
+			<if test="settleDoneService != null and settleDoneService != ''">
+				and SETTLE_DONE_SERVISE = #{settleDoneService}
+			</if>
+			<if test="deductCountService != null and deductCountService != ''">
+				and DEDUCT_COUNT_SERVISE = #{deductCountService}
+			</if>
+			<if test="settleDoneManipulator != null and settleDoneManipulator != ''">
+				and SETTLE_DONE_MANIPULATOR = #{settleDoneManipulator}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="orderBalance != null and orderBalance != ''">
+				and ORDER_BALANCE = #{orderBalance}
+			</if>
+			<if test="deductBalance != null and deductBalance != ''">
+				and DEDUCT_BALANCE = #{deductBalance}
+			</if>
+			<if test="freightOrder != null and freightOrder != ''">
+				and FRE_ORDER_ID = #{freightOrder.id}
+			</if>
+			<if test="reconcileTime != null and reconcileTime != ''">
+				and RECONCILE_TIME = #{reconcileTime}
+			</if>
+			<if test="deductCountSalesman != null and deductCountSalesman != ''">
+				and DEDUCT_COUNT_SALESMAN = #{deductCountSalesman}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FreightDeduct">
+		insert into FRE_DEDUCT( DEDUCT_TIME, CREATE_TIME, SETTLE_DONE_SALESMAN,
+		SETTLE_TIME_SERVISE, DEDUCT_COUNT_MANIPULATOR, STATUS, ORG_ENTITY_ID,
+		SETTLE_TIME_MANIPULATOR, SETTLE_TIME_SALESMAN, SETTLE_DONE_SERVISE,
+		DEDUCT_COUNT_SERVISE, SETTLE_DONE_MANIPULATOR, DESCN, ID, ORDER_BALANCE, DEDUCT_BALANCE,
+		FRE_ORDER_ID, RECONCILE_TIME, DEDUCT_COUNT_SALESMAN, MODIFY_TIME,
+		DISP_INX, DEDUCT_TYPE )values (#{deductTime}, #{createTime}, #{settleDoneSalesman},
+		#{settleTimeService}, #{deductCountManipulator}, #{status},
+		#{orgEntity.id}, #{settleTimeManipulator}, #{settleTimeSalesman},
+		#{settleDoneService}, #{deductCountService}, #{settleDoneManipulator},
+		#{descn},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{orderBalance},
+		#{deductBalance},
+		#{freightOrder.id},
+		#{reconcileTime},
+		#{deductCountSalesman},
+		#{modifyTime},
+		#{displayIndex},
+		#{deductType}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FRE_DEDUCT where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="freightDeductMap">
+		select
+		<include refid="selectId" />
+		from FRE_DEDUCT where id=#{id}
+	</select>
+	
+	<select id="getByFreightOrderId" parameterType="String" resultMap="freightDeductMap">
+		select
+		<include refid="selectId" />
+		from FRE_DEDUCT where FRE_ORDER_ID=#{freightOrderId} AND DEDUCT_TYPE='订单提成'
+	</select>
+
+	<update id="update" parameterType="FreightDeduct">
+		update FRE_DEDUCT
+		<set>
+			<if test="deductTime != null and deductTime != ''">
+				DEDUCT_TIME = #{deductTime},
+			</if>
+			<if test="deductType != null and deductType != ''">
+				DEDUCT_TYPE = #{deductType},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="settleDoneSalesman != null and settleDoneSalesman != ''">
+				SETTLE_DONE_SALESMAN=#{settleDoneSalesman},
+			</if>
+			<if test="settleTimeService != null and settleTimeService != ''">
+				SETTLE_TIME_SERVISE=#{settleTimeService},
+			</if>
+			<if test="deductCountManipulator != null and deductCountManipulator != ''">
+				DEDUCT_COUNT_MANIPULATOR=#{deductCountManipulator},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				ORG_ENTITY_ID=#{orgEntity.id},
+			</if>
+			<if test="settleTimeManipulator != null and settleTimeManipulator != ''">
+				SETTLE_TIME_MANIPULATOR=#{settleTimeManipulator},
+			</if>
+			<if test="settleTimeSalesman != null and settleTimeSalesman != ''">
+				SETTLE_TIME_SALESMAN=#{settleTimeSalesman},
+			</if>
+			<if test="settleDoneService != null and settleDoneService != ''">
+				SETTLE_DONE_SERVISE=#{settleDoneService},
+			</if>
+			<if test="deductCountService != null and deductCountService != ''">
+				DEDUCT_COUNT_SERVISE=#{deductCountService},
+			</if>
+			<if test="settleDoneManipulator != null and settleDoneManipulator != ''">
+				SETTLE_DONE_MANIPULATOR=#{settleDoneManipulator},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="orderBalance != null and orderBalance != ''">
+				ORDER_BALANCE = #{orderBalance},
+			</if>
+			<if test="deductBalance != null and deductBalance != ''">
+				DEDUCT_BALANCE = #{deductBalance},
+			</if>
+			<if test="freightOrder != null and freightOrder != ''">
+				FRE_ORDER_ID=#{freightOrder.id},
+			</if>
+			<if test="reconcileTime != null and reconcileTime != ''">
+				RECONCILE_TIME=#{reconcileTime},
+			</if>
+			<if test="deductCountSalesman != null and deductCountSalesman != ''">
+				DEDUCT_COUNT_SALESMAN=#{deductCountSalesman},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

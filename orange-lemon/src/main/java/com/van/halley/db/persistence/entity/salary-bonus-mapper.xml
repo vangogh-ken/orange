@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="salarybonus">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		OVERTIME_SUBSIDY AS overtimeSubsidy,
+		DESCN AS descn,
+		ACTUAL_PAYMENT AS actualPayment,
+		MODIFY_TIME AS modifyTime,
+		POST_BONUS AS postBonus,
+		RISK_DEBIT AS riskDebit,
+		DEDUCT_BONUS AS deductBonus,
+		PREDICT_DEBIT AS predictDebit,
+		ID AS id,
+		OTHER_DEBIT AS otherDebit,
+		SPECIAL_BONUS AS specialBonus,
+		EXECUTIVE_DEBIT AS executiveDebit,
+		SALARY_MONTH AS salaryMonth,
+		SALARY_YEAR AS salaryYear,
+		EXECUTIVE_BONUS AS executiveBonus,
+		CONFIRM_TIME AS confirmTime,
+		PERFORMANCE_BONUS AS performanceBonus,
+		PREDICT_PAYMENT AS predictPayment,
+		HOSING_SUBSIDY AS hosingSubsidy,
+		SALARY_GRADE_ID AS salaryGrade,
+		PROTECT_SUBSIDY AS protectSubsidy,
+		CREATE_TIME AS createTime,
+		COMPUTE_TIME AS computeTime,
+		SENIORITY_SUBSIDY AS senioritySubsidy,
+		PREDICT_SALARY AS predictSalary,
+		RISK_BONUS AS riskBonus,
+		DISP_INX AS displayIndex,
+		LUNCH_SUBSIDY AS lunchSubsidy,
+		STATUS AS status
+	</sql>
+	
+	<resultMap id="salaryBonusMap" type="com.van.halley.db.persistence.entity.SalaryBonus">
+        <id property="id" column="ID" />
+        <result property="overtimeSubsidy" column="OVERTIME_SUBSIDY" />
+        <result property="descn" column="DESCN" />
+        <result property="actualPayment" column="ACTUAL_PAYMENT" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="postBonus" column="POST_BONUS" />
+        <result property="riskDebit" column="RISK_DEBIT" />
+        <result property="deductBonus" column="DEDUCT_BONUS" />
+        <result property="predictDebit" column="PREDICT_DEBIT" />
+        <result property="otherDebit" column="OTHER_DEBIT" />
+        <result property="specialBonus" column="SPECIAL_BONUS" />
+        <result property="executiveDebit" column="EXECUTIVE_DEBIT" />
+        <result property="salaryMonth" column="SALARY_MONTH" />
+        <result property="salaryYear" column="SALARY_YEAR" />
+        <result property="executiveBonus" column="EXECUTIVE_BONUS" />
+        <result property="confirmTime" column="CONFIRM_TIME" />
+        <result property="performanceBonus" column="PERFORMANCE_BONUS" />
+        <result property="predictPayment" column="PREDICT_PAYMENT" />
+        <result property="hosingSubsidy" column="HOSING_SUBSIDY" />
+        <result property="protectSubsidy" column="PROTECT_SUBSIDY" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="computeTime" column="COMPUTE_TIME" />
+        <result property="senioritySubsidy" column="SENIORITY_SUBSIDY" />
+        <result property="predictSalary" column="PREDICT_SALARY" />
+        <result property="riskBonus" column="RISK_BONUS" />
+        <result property="displayIndex" column="DISP_INX" />
+        <result property="lunchSubsidy" column="LUNCH_SUBSIDY" />
+        <result property="status" column="STATUS" />
+        
+        <association property="salaryGrade" column="SALARY_GRADE_ID" select="salarygrade.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="salaryBonusMap">
+		select
+		<include refid="selectId" />
+		from SALARY_BONUS
+		<where>
+			<if test="t.overtimeSubsidy != null and t.overtimeSubsidy != ''">
+				and OVERTIME_SUBSIDY = #{t.overtimeSubsidy}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.actualPayment != null and t.actualPayment != ''">
+				and ACTUAL_PAYMENT = #{t.actualPayment}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.postBonus != null and t.postBonus != ''">
+				and POST_BONUS = #{t.postBonus}
+			</if>
+			<if test="t.riskDebit != null and t.riskDebit != ''">
+				and RISK_DEBIT = #{t.riskDebit}
+			</if>
+			<if test="t.deductBonus != null and t.deductBonus != ''">
+				and DEDUCT_BONUS = #{t.deductBonus}
+			</if>
+			<if test="t.predictDebit != null and t.predictDebit != ''">
+				and PREDICT_DEBIT = #{t.predictDebit}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.otherDebit != null and t.otherDebit != ''">
+				and OTHER_DEBIT = #{t.otherDebit}
+			</if>
+			<if test="t.specialBonus != null and t.specialBonus != ''">
+				and SPECIAL_BONUS = #{t.specialBonus}
+			</if>
+			<if test="t.executiveDebit != null and t.executiveDebit != ''">
+				and EXECUTIVE_DEBIT = #{t.executiveDebit}
+			</if>
+			<if test="t.salaryMonth != null and t.salaryMonth != ''">
+				and SALARY_MONTH = #{t.salaryMonth}
+			</if>
+			<if test="t.salaryYear != null and t.salaryYear != ''">
+				and SALARY_YEAR = #{t.salaryYear}
+			</if>
+			<if test="t.executiveBonus != null and t.executiveBonus != ''">
+				and EXECUTIVE_BONUS = #{t.executiveBonus}
+			</if>
+			<if test="t.confirmTime != null and t.confirmTime != ''">
+				and CONFIRM_TIME = #{t.confirmTime}
+			</if>
+			<if test="t.performanceBonus != null and t.performanceBonus != ''">
+				and PERFORMANCE_BONUS = #{t.performanceBonus}
+			</if>
+			<if test="t.predictPayment != null and t.predictPayment != ''">
+				and PREDICT_PAYMENT = #{t.predictPayment}
+			</if>
+			<if test="t.hosingSubsidy != null and t.hosingSubsidy != ''">
+				and HOSING_SUBSIDY = #{t.hosingSubsidy}
+			</if>
+			<if test="t.salaryGrade != null and t.salaryGrade != ''">
+				and SALARY_GRADE_ID = #{t.salaryGrade.id}
+			</if>
+			<if test="t.protectSubsidy != null and t.protectSubsidy != ''">
+				and PROTECT_SUBSIDY = #{t.protectSubsidy}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.computeTime != null and t.computeTime != ''">
+				and COMPUTE_TIME = #{t.computeTime}
+			</if>
+			<if test="t.senioritySubsidy != null and t.senioritySubsidy != ''">
+				and SENIORITY_SUBSIDY = #{t.senioritySubsidy}
+			</if>
+			<if test="t.predictSalary != null and t.predictSalary != ''">
+				and PREDICT_SALARY = #{t.predictSalary}
+			</if>
+			<if test="t.riskBonus != null and t.riskBonus != ''">
+				and RISK_BONUS = #{t.riskBonus}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.lunchSubsidy != null and t.lunchSubsidy != ''">
+				and LUNCH_SUBSIDY = #{t.lunchSubsidy}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="SalaryBonus"
+		resultMap="salaryBonusMap">
+		select
+		<include refid="selectId" />
+		from SALARY_BONUS
+		<where>
+			<if test="overtimeSubsidy != null and overtimeSubsidy != ''">
+				and OVERTIME_SUBSIDY = #{overtimeSubsidy}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="actualPayment != null and actualPayment != ''">
+				and ACTUAL_PAYMENT = #{actualPayment}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="postBonus != null and postBonus != ''">
+				and POST_BONUS = #{postBonus}
+			</if>
+			<if test="riskDebit != null and riskDebit != ''">
+				and RISK_DEBIT = #{riskDebit}
+			</if>
+			<if test="deductBonus != null and deductBonus != ''">
+				and DEDUCT_BONUS = #{deductBonus}
+			</if>
+			<if test="predictDebit != null and predictDebit != ''">
+				and PREDICT_DEBIT = #{predictDebit}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="otherDebit != null and otherDebit != ''">
+				and OTHER_DEBIT = #{otherDebit}
+			</if>
+			<if test="specialBonus != null and specialBonus != ''">
+				and SPECIAL_BONUS = #{specialBonus}
+			</if>
+			<if test="executiveDebit != null and executiveDebit != ''">
+				and EXECUTIVE_DEBIT = #{executiveDebit}
+			</if>
+			<if test="salaryMonth != null and salaryMonth != ''">
+				and SALARY_MONTH = #{salaryMonth}
+			</if>
+			<if test="salaryYear != null and salaryYear != ''">
+				and SALARY_YEAR = #{salaryYear}
+			</if>
+			<if test="executiveBonus != null and executiveBonus != ''">
+				and EXECUTIVE_BONUS = #{executiveBonus}
+			</if>
+			<if test="confirmTime != null and confirmTime != ''">
+				and CONFIRM_TIME = #{confirmTime}
+			</if>
+			<if test="performanceBonus != null and performanceBonus != ''">
+				and PERFORMANCE_BONUS = #{performanceBonus}
+			</if>
+			<if test="predictPayment != null and predictPayment != ''">
+				and PREDICT_PAYMENT = #{predictPayment}
+			</if>
+			<if test="hosingSubsidy != null and hosingSubsidy != ''">
+				and HOSING_SUBSIDY = #{hosingSubsidy}
+			</if>
+			<if test="salaryGrade != null and salaryGrade != ''">
+				and SALARY_GRADE_ID = #{salaryGrade.id}
+			</if>
+			<if test="protectSubsidy != null and protectSubsidy != ''">
+				and PROTECT_SUBSIDY = #{protectSubsidy}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="computeTime != null and computeTime != ''">
+				and COMPUTE_TIME = #{computeTime}
+			</if>
+			<if test="senioritySubsidy != null and senioritySubsidy != ''">
+				and SENIORITY_SUBSIDY = #{senioritySubsidy}
+			</if>
+			<if test="predictSalary != null and predictSalary != ''">
+				and PREDICT_SALARY = #{predictSalary}
+			</if>
+			<if test="riskBonus != null and riskBonus != ''">
+				and RISK_BONUS = #{riskBonus}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="lunchSubsidy != null and lunchSubsidy != ''">
+				and LUNCH_SUBSIDY = #{lunchSubsidy}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="salaryBonusMap">
+		select
+		<include refid="selectId" />
+		from SALARY_BONUS
+	</select>
+
+	<select id="count" parameterType="SalaryBonus" resultType="int">
+		select count(0) from SALARY_BONUS
+		<where>
+			<if test="overtimeSubsidy != null and overtimeSubsidy != ''">
+				and OVERTIME_SUBSIDY = #{overtimeSubsidy}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="actualPayment != null and actualPayment != ''">
+				and ACTUAL_PAYMENT = #{actualPayment}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="postBonus != null and postBonus != ''">
+				and POST_BONUS = #{postBonus}
+			</if>
+			<if test="riskDebit != null and riskDebit != ''">
+				and RISK_DEBIT = #{riskDebit}
+			</if>
+			<if test="deductBonus != null and deductBonus != ''">
+				and DEDUCT_BONUS = #{deductBonus}
+			</if>
+			<if test="predictDebit != null and predictDebit != ''">
+				and PREDICT_DEBIT = #{predictDebit}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="otherDebit != null and otherDebit != ''">
+				and OTHER_DEBIT = #{otherDebit}
+			</if>
+			<if test="specialBonus != null and specialBonus != ''">
+				and SPECIAL_BONUS = #{specialBonus}
+			</if>
+			<if test="executiveDebit != null and executiveDebit != ''">
+				and EXECUTIVE_DEBIT = #{executiveDebit}
+			</if>
+			<if test="salaryMonth != null and salaryMonth != ''">
+				and SALARY_MONTH = #{salaryMonth}
+			</if>
+			<if test="salaryYear != null and salaryYear != ''">
+				and SALARY_YEAR = #{salaryYear}
+			</if>
+			<if test="executiveBonus != null and executiveBonus != ''">
+				and EXECUTIVE_BONUS = #{executiveBonus}
+			</if>
+			<if test="confirmTime != null and confirmTime != ''">
+				and CONFIRM_TIME = #{confirmTime}
+			</if>
+			<if test="performanceBonus != null and performanceBonus != ''">
+				and PERFORMANCE_BONUS = #{performanceBonus}
+			</if>
+			<if test="predictPayment != null and predictPayment != ''">
+				and PREDICT_PAYMENT = #{predictPayment}
+			</if>
+			<if test="hosingSubsidy != null and hosingSubsidy != ''">
+				and HOSING_SUBSIDY = #{hosingSubsidy}
+			</if>
+			<if test="salaryGrade != null and salaryGrade != ''">
+				and SALARY_GRADE_ID = #{salaryGrade.id}
+			</if>
+			<if test="protectSubsidy != null and protectSubsidy != ''">
+				and PROTECT_SUBSIDY = #{protectSubsidy}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="computeTime != null and computeTime != ''">
+				and COMPUTE_TIME = #{computeTime}
+			</if>
+			<if test="senioritySubsidy != null and senioritySubsidy != ''">
+				and SENIORITY_SUBSIDY = #{senioritySubsidy}
+			</if>
+			<if test="predictSalary != null and predictSalary != ''">
+				and PREDICT_SALARY = #{predictSalary}
+			</if>
+			<if test="riskBonus != null and riskBonus != ''">
+				and RISK_BONUS = #{riskBonus}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="lunchSubsidy != null and lunchSubsidy != ''">
+				and LUNCH_SUBSIDY = #{lunchSubsidy}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="SalaryBonus">
+		insert into SALARY_BONUS( OVERTIME_SUBSIDY, DESCN, ACTUAL_PAYMENT,
+		MODIFY_TIME, POST_BONUS, RISK_DEBIT, DEDUCT_BONUS, PREDICT_DEBIT, ID,
+		OTHER_DEBIT, SPECIAL_BONUS, EXECUTIVE_DEBIT, SALARY_MONTH,
+		SALARY_YEAR, EXECUTIVE_BONUS, CONFIRM_TIME, PERFORMANCE_BONUS,
+		PREDICT_PAYMENT, HOSING_SUBSIDY, SALARY_GRADE_ID, PROTECT_SUBSIDY,
+		CREATE_TIME, COMPUTE_TIME, SENIORITY_SUBSIDY, PREDICT_SALARY,
+		RISK_BONUS, DISP_INX, LUNCH_SUBSIDY, STATUS )values (
+		#{overtimeSubsidy}, #{descn}, #{actualPayment}, #{modifyTime},
+		#{postBonus}, #{riskDebit}, #{deductBonus}, #{predictDebit},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{otherDebit},
+		#{specialBonus},
+		#{executiveDebit},
+		#{salaryMonth},
+		#{salaryYear},
+		#{executiveBonus},
+		#{confirmTime},
+		#{performanceBonus},
+		#{predictPayment},
+		#{hosingSubsidy},
+		#{salaryGrade.id},
+		#{protectSubsidy},
+		#{createTime},
+		#{computeTime},
+		#{senioritySubsidy},
+		#{predictSalary},
+		#{riskBonus},
+		#{displayIndex},
+		#{lunchSubsidy},
+		#{status}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from SALARY_BONUS where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="salaryBonusMap">
+		select
+		<include refid="selectId" />
+		from SALARY_BONUS where id=#{id}
+	</select>
+
+	<update id="update" parameterType="SalaryBonus">
+		update SALARY_BONUS
+		<set>
+			<if test="overtimeSubsidy != null and overtimeSubsidy != ''">
+				OVERTIME_SUBSIDY=#{overtimeSubsidy},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="actualPayment != null and actualPayment != ''">
+				ACTUAL_PAYMENT=#{actualPayment},
+			</if>
+			MODIFY_TIME=SYSDATE(),
+			<if test="postBonus != null and postBonus != ''">
+				POST_BONUS=#{postBonus},
+			</if>
+			<if test="riskDebit != null and riskDebit != ''">
+				RISK_DEBIT=#{riskDebit},
+			</if>
+			<if test="deductBonus != null and deductBonus != ''">
+				DEDUCT_BONUS=#{deductBonus},
+			</if>
+			<if test="predictDebit != null and predictDebit != ''">
+				PREDICT_DEBIT=#{predictDebit},
+			</if>
+			<if test="otherDebit != null and otherDebit != ''">
+				OTHER_DEBIT=#{otherDebit},
+			</if>
+			<if test="specialBonus != null and specialBonus != ''">
+				SPECIAL_BONUS=#{specialBonus},
+			</if>
+			<if test="executiveDebit != null and executiveDebit != ''">
+				EXECUTIVE_DEBIT=#{executiveDebit},
+			</if>
+			<if test="salaryMonth != null and salaryMonth != ''">
+				SALARY_MONTH=#{salaryMonth},
+			</if>
+			<if test="salaryYear != null and salaryYear != ''">
+				SALARY_YEAR=#{salaryYear},
+			</if>
+			<if test="executiveBonus != null and executiveBonus != ''">
+				EXECUTIVE_BONUS=#{executiveBonus},
+			</if>
+			<if test="confirmTime != null and confirmTime != ''">
+				CONFIRM_TIME=#{confirmTime},
+			</if>
+			<if test="performanceBonus != null and performanceBonus != ''">
+				PERFORMANCE_BONUS=#{performanceBonus},
+			</if>
+			<if test="predictPayment != null and predictPayment != ''">
+				PREDICT_PAYMENT=#{predictPayment},
+			</if>
+			<if test="hosingSubsidy != null and hosingSubsidy != ''">
+				HOSING_SUBSIDY=#{hosingSubsidy},
+			</if>
+			<if test="salaryGrade != null and salaryGrade != ''">
+				SALARY_GRADE_ID=#{salaryGrade.id},
+			</if>
+			<if test="protectSubsidy != null and protectSubsidy != ''">
+				PROTECT_SUBSIDY=#{protectSubsidy},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="computeTime != null and computeTime != ''">
+				COMPUTE_TIME=#{computeTime},
+			</if>
+			<if test="senioritySubsidy != null and senioritySubsidy != ''">
+				SENIORITY_SUBSIDY=#{senioritySubsidy},
+			</if>
+			<if test="predictSalary != null and predictSalary != ''">
+				PREDICT_SALARY=#{predictSalary},
+			</if>
+			<if test="riskBonus != null and riskBonus != ''">
+				RISK_BONUS=#{riskBonus},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="lunchSubsidy != null and lunchSubsidy != ''">
+				LUNCH_SUBSIDY=#{lunchSubsidy},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+		</set>
+		WHERE ID=#{id}
+	</update>
+</mapper>

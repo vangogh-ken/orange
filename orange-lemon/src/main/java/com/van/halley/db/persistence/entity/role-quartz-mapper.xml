@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rolequartz">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		MODIFY_TIME AS modifyTime,
+		CREATE_TIME AS createTime,
+		ROLE_ID AS roleId,
+		QUARTZ_TASK_ID AS quartzTaskId,
+		ID AS id,
+		DESCN AS descn,
+		DISP_INX AS displayIndex,
+		STATUS AS status
+	</sql>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultType="RoleQuartz">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_ROLE_QUARTZ
+		<where>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.roleId != null and t.roleId != ''">
+				and ROLE_ID = #{t.roleId}
+			</if>
+			<if test="t.quartzTaskId != null and t.quartzTaskId != ''">
+				and QUARTZ_TASK_ID = #{t.quartzTaskId}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="RoleQuartz" resultType="RoleQuartz">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_ROLE_QUARTZ
+		<where>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="roleId != null and roleId != ''">
+				and ROLE_ID = #{roleId}
+			</if>
+			<if test="quartzTaskId != null and quartzTaskId != ''">
+				and QUARTZ_TASK_ID = #{quartzTaskId}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="RoleQuartz">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_ROLE_QUARTZ
+	</select>
+
+	<select id="count" parameterType="RoleQuartz" resultType="int">
+		select count(0) from SYS_AUTH_ROLE_QUARTZ
+		<where>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="roleId != null and roleId != ''">
+				and ROLE_ID = #{roleId}
+			</if>
+			<if test="quartzTaskId != null and quartzTaskId != ''">
+				and QUARTZ_TASK_ID = #{quartzTaskId}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="RoleQuartz">
+		insert into SYS_AUTH_ROLE_QUARTZ( MODIFY_TIME, CREATE_TIME, ROLE_ID,
+		QUARTZ_TASK_ID, ID, DESCN, DISP_INX, STATUS )values ( #{modifyTime},
+		#{createTime}, #{roleId}, #{quartzTaskId},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{descn},
+		#{displayIndex},
+		#{status}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from SYS_AUTH_ROLE_QUARTZ where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="RoleQuartz">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_ROLE_QUARTZ where id=#{id}
+	</select>
+
+	<update id="update" parameterType="RoleQuartz">
+		update SYS_AUTH_ROLE_QUARTZ
+		<set>
+			MODIFY_TIME=SYSDATE(),
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="roleId != null and roleId != ''">
+				ROLE_ID=#{roleId},
+			</if>
+			<if test="quartzTaskId != null and quartzTaskId != ''">
+				QUARTZ_TASK_ID=#{quartzTaskId},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+		</set>
+		WHERE ID=#{id} AND MODIFY_TIME=#{modifyTime}
+	</update>
+</mapper>

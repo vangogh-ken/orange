@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freightstatement">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		ELIMINATE_COUNT_RMB AS eliminateCountRmb,
+		STATUS AS status,
+		CURRENCY_DOLLAR AS currencyDollar,
+		CURRENCY_RMB AS currencyRmb,
+		MONEY_COUNT_DOLLAR AS moneyCountDollar,
+		DESCN AS descn,
+		REMAIN_COUNT_DOLLAR AS remainCountDollar,
+		ID AS id,
+		REMAIN_COUNT_RMB AS remainCountRmb,
+		ELIMINATE_COUNT_DOLLAR AS eliminateCountDollar,
+		STATEMENT_NUMBER AS statementNumber,
+		MONEY_COUNT_RMB AS moneyCountRmb,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		EXCHANGE_RATE_RMB AS exchangeRateRmb,
+		INCOME_OR_EXPENSE AS incomeOrExpense,
+		EXCHANGE_RATE_DOLLAR AS exchangeRateDollar,
+		
+		FRE_PART_ID,
+		FAS_INVOICE_TYPE_ID,
+		USER_ID,
+		ORG_ENTITY_ID
+	</sql>
+	
+	<resultMap id="freightStatementMap" type="com.van.halley.db.persistence.entity.FreightStatement" >
+        <id property="id" column="ID" />
+        <result property="statementNumber" column="STATEMENT_NUMBER" />
+        <result property="incomeOrExpense" column="INCOME_OR_EXPENSE" />
+        
+        <result property="currencyRmb" column="CURRENCY_RMB" />
+        <result property="exchangeRateRmb" column="EXCHANGE_RATE_RMB" />
+        <result property="moneyCountRmb" column="MONEY_COUNT_RMB" />
+        <result property="eliminateCountRmb" column="ELIMINATE_COUNT_RMB" />
+        <result property="remainCountRmb" column="REMAIN_COUNT_RMB" />
+        
+        <result property="currencyDollar" column="CURRENCY_DOLLAR" />
+        <result property="exchangeRateDollar" column="EXCHANGE_RATE_DOLLAR" />
+        <result property="moneyCountDollar" column="MONEY_COUNT_DOLLAR" />
+        <result property="eliminateCountDollar" column="ELIMINATE_COUNT_DOLLAR" />
+        <result property="remainCountDollar" column="REMAIN_COUNT_DOLLAR" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="fasInvoiceType" column="FAS_INVOICE_TYPE_ID" select="fasinvoicetype.getById" ></association>
+        <association property="freightPart" column="FRE_PART_ID" select="freightpart.getById" ></association>
+        <association property="creator" column="USER_ID" select="user.getById" ></association>
+        <association property="orgEntity" column="ORG_ENTITY_ID" select="orgentity.getById" ></association>
+        
+        <collection property="freightExpenses" column="ID" select="freightexpense.getByFreightStatementId"></collection>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" resultMap="freightStatementMap" useCache="false">
+		select
+		<include refid="selectId" />
+		from FRE_STATEMENT
+		<where>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.eliminateCountRmb != null and t.eliminateCountRmb != ''">
+				and ELIMINATE_COUNT_RMB = #{t.eliminateCountRmb}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.orgEntity != null and t.orgEntity != ''">
+				and ORG_ENTITY_ID = #{t.orgEntity.id}
+			</if>
+			<if test="t.currencyDollar != null and t.currencyDollar != ''">
+				and CURRENCY_DOLLAR = #{t.currencyDollar}
+			</if>
+			<if test="t.freightPart != null and t.freightPart != ''">
+				and FRE_PART_ID = #{t.freightPart.id}
+			</if>
+			<if test="t.currencyRmb != null and t.currencyRmb != ''">
+				and CURRENCY_RMB = #{t.currencyRmb}
+			</if>
+			<if test="t.moneyCountDollar != null and t.moneyCountDollar != ''">
+				and MONEY_COUNT_DOLLAR = #{t.moneyCountDollar}
+			</if>
+			<if test="t.creator != null and t.creator != ''">
+				and USER_ID = #{t.creator.id}
+			</if>
+			<if test="t.fasInvoiceType != null and t.fasInvoiceType != ''">
+				and FAS_INVOICE_TYPE_ID = #{t.fasInvoiceType.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.remainCountDollar != null and t.remainCountDollar != ''">
+				and REMAIN_COUNT_DOLLAR = #{t.remainCountDollar}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.remainCountRmb != null and t.remainCountRmb != ''">
+				and REMAIN_COUNT_RMB = #{t.remainCountRmb}
+			</if>
+			<if test="t.eliminateCountDollar != null and t.eliminateCountDollar != ''">
+				and ELIMINATE_COUNT_DOLLAR = #{t.eliminateCountDollar}
+			</if>
+			<if test="t.statementNumber != null and t.statementNumber != ''">
+				and STATEMENT_NUMBER = #{t.statementNumber}
+			</if>
+			<if test="t.moneyCountRmb != null and t.moneyCountRmb != ''">
+				and MONEY_COUNT_RMB = #{t.moneyCountRmb}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.exchangeRateRmb != null and t.exchangeRateRmb != ''">
+				and EXCHANGE_RATE_RMB = #{t.exchangeRateRmb}
+			</if>
+			<if test="t.incomeOrExpense != null and t.incomeOrExpense != ''">
+				and INCOME_OR_EXPENSE = #{t.incomeOrExpense}
+			</if>
+			<if test="t.exchangeRateDollar != null and t.exchangeRateDollar != ''">
+				and EXCHANGE_RATE_DOLLAR = #{t.exchangeRateDollar}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FreightStatement"
+		resultMap="freightStatementMap">
+		select
+		<include refid="selectId" />
+		from FRE_STATEMENT
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="eliminateCountRmb != null and eliminateCountRmb != ''">
+				and ELIMINATE_COUNT_RMB = #{eliminateCountRmb}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				and ORG_ENTITY_ID = #{orgEntity.id}
+			</if>
+			<if test="currencyDollar != null and currencyDollar != ''">
+				and CURRENCY_DOLLAR = #{currencyDollar}
+			</if>
+			<if test="freightPart != null and freightPart != ''">
+				and FRE_PART_ID = #{freightPart.id}
+			</if>
+			<if test="currencyRmb != null and currencyRmb != ''">
+				and CURRENCY_RMB = #{currencyRmb}
+			</if>
+			<if test="moneyCountDollar != null and moneyCountDollar != ''">
+				and MONEY_COUNT_DOLLAR = #{moneyCountDollar}
+			</if>
+			<if test="creator != null and creator != ''">
+				and USER_ID = #{creator.id}
+			</if>
+			<if test="fasInvoiceType != null and fasInvoiceType != ''">
+				and FAS_INVOICE_TYPE_ID = #{fasInvoiceType.id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="remainCountDollar != null and remainCountDollar != ''">
+				and REMAIN_COUNT_DOLLAR = #{remainCountDollar}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="remainCountRmb != null and remainCountRmb != ''">
+				and REMAIN_COUNT_RMB = #{remainCountRmb}
+			</if>
+			<if test="eliminateCountDollar != null and eliminateCountDollar != ''">
+				and ELIMINATE_COUNT_DOLLAR = #{eliminateCountDollar}
+			</if>
+			<if test="statementNumber != null and statementNumber != ''">
+				and STATEMENT_NUMBER = #{statementNumber}
+			</if>
+			<if test="moneyCountRmb != null and moneyCountRmb != ''">
+				and MONEY_COUNT_RMB = #{moneyCountRmb}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="exchangeRateRmb != null and exchangeRateRmb != ''">
+				and EXCHANGE_RATE_RMB = #{exchangeRateRmb}
+			</if>
+			<if test="incomeOrExpense != null and incomeOrExpense != ''">
+				and INCOME_OR_EXPENSE = #{incomeOrExpense}
+			</if>
+			<if test="exchangeRateDollar != null and exchangeRateDollar != ''">
+				and EXCHANGE_RATE_DOLLAR = #{exchangeRateDollar}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="freightStatementMap">
+		select
+		<include refid="selectId" />
+		from FRE_STATEMENT
+	</select>
+
+	<select id="count" parameterType="FreightStatement" resultType="int">
+		select count(0) from FRE_STATEMENT
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="eliminateCountRmb != null and eliminateCountRmb != ''">
+				and ELIMINATE_COUNT_RMB = #{eliminateCountRmb}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				and ORG_ENTITY_ID = #{orgEntity.id}
+			</if>
+			<if test="currencyDollar != null and currencyDollar != ''">
+				and CURRENCY_DOLLAR = #{currencyDollar}
+			</if>
+			<if test="freightPart != null and freightPart != ''">
+				and FRE_PART_ID = #{freightPart.id}
+			</if>
+			<if test="currencyRmb != null and currencyRmb != ''">
+				and CURRENCY_RMB = #{currencyRmb}
+			</if>
+			<if test="moneyCountDollar != null and moneyCountDollar != ''">
+				and MONEY_COUNT_DOLLAR = #{moneyCountDollar}
+			</if>
+			<if test="creator != null and creator != ''">
+				and USER_ID = #{creator.id}
+			</if>
+			<if test="fasInvoiceType != null and fasInvoiceType != ''">
+				and FAS_INVOICE_TYPE_ID = #{fasInvoiceType.id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="remainCountDollar != null and remainCountDollar != ''">
+				and REMAIN_COUNT_DOLLAR = #{remainCountDollar}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="remainCountRmb != null and remainCountRmb != ''">
+				and REMAIN_COUNT_RMB = #{remainCountRmb}
+			</if>
+			<if test="eliminateCountDollar != null and eliminateCountDollar != ''">
+				and ELIMINATE_COUNT_DOLLAR = #{eliminateCountDollar}
+			</if>
+			<if test="statementNumber != null and statementNumber != ''">
+				and STATEMENT_NUMBER = #{statementNumber}
+			</if>
+			<if test="moneyCountRmb != null and moneyCountRmb != ''">
+				and MONEY_COUNT_RMB = #{moneyCountRmb}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="exchangeRateRmb != null and exchangeRateRmb != ''">
+				and EXCHANGE_RATE_RMB = #{exchangeRateRmb}
+			</if>
+			<if test="incomeOrExpense != null and incomeOrExpense != ''">
+				and INCOME_OR_EXPENSE = #{incomeOrExpense}
+			</if>
+			<if test="exchangeRateDollar != null and exchangeRateDollar != ''">
+				and EXCHANGE_RATE_DOLLAR = #{exchangeRateDollar}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FreightStatement">
+		insert into FRE_STATEMENT( CREATE_TIME,
+		ELIMINATE_COUNT_RMB, STATUS, ORG_ENTITY_ID, CURRENCY_DOLLAR,
+		FRE_PART_ID, CURRENCY_RMB, MONEY_COUNT_DOLLAR, USER_ID,
+		FAS_INVOICE_TYPE_ID, DESCN, REMAIN_COUNT_DOLLAR, ID, REMAIN_COUNT_RMB,
+		ELIMINATE_COUNT_DOLLAR, STATEMENT_NUMBER, MONEY_COUNT_RMB,
+		MODIFY_TIME, DISP_INX, EXCHANGE_RATE_RMB, INCOME_OR_EXPENSE,
+		EXCHANGE_RATE_DOLLAR )values ( #{createTime}, 
+		#{eliminateCountRmb}, #{status}, #{orgEntity.id}, #{currencyDollar},
+		#{freightPart.id}, #{currencyRmb}, #{moneyCountDollar}, #{creator.id},
+		#{fasInvoiceType.id}, #{descn}, #{remainCountDollar},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{remainCountRmb},
+		#{eliminateCountDollar},
+		#{statementNumber},
+		#{moneyCountRmb},
+		#{modifyTime},
+		#{displayIndex},
+		#{exchangeRateRmb},
+		#{incomeOrExpense},
+		#{exchangeRateDollar}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FRE_STATEMENT where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="freightStatementMap">
+		select
+		<include refid="selectId" />
+		from FRE_STATEMENT where id=#{id}
+	</select>
+	
+	<select id="getHasOffsetStatement" parameterType="String" resultMap="freightStatementMap">
+		select
+		<include refid="selectId" />
+		from FRE_STATEMENT where ID IN(SELECT FRE_STATEMENT_ID_B FROM FRE_STATEMENT_OFFSET 
+		WHERE FRE_STATEMENT_ID_A=#{freightStatementId})
+	</select>
+
+	<update id="update" parameterType="FreightStatement">
+		update FRE_STATEMENT
+		<set>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				ORG_ENTITY_ID=#{orgEntity.id},
+			</if>
+			<if test="currencyDollar != null and currencyDollar != ''">
+				CURRENCY_DOLLAR=#{currencyDollar},
+			</if>
+			<if test="freightPart != null and freightPart != ''">
+				FRE_PART_ID=#{freightPart.id},
+			</if>
+			<if test="currencyRmb != null and currencyRmb != ''">
+				CURRENCY_RMB=#{currencyRmb},
+			</if>
+			<if test="creator != null and creator != ''">
+				USER_ID=#{creator.id},
+			</if>
+			<if test="fasInvoiceType != null and fasInvoiceType != ''">
+				FAS_INVOICE_TYPE_ID=#{fasInvoiceType.id},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			
+			<!--  金额为0时,不能正确插入数据,因此判断取消-->
+			<!--  
+			<if test="eliminateCountDollar != null and eliminateCountDollar != ''">
+				ELIMINATE_COUNT_DOLLAR=#{eliminateCountDollar},
+			</if>
+			<if test="remainCountDollar != null and remainCountDollar != ''">
+				REMAIN_COUNT_DOLLAR=#{remainCountDollar},
+			</if>
+			<if test="moneyCountDollar != null and moneyCountDollar != ''">
+				MONEY_COUNT_DOLLAR=#{moneyCountDollar},
+			</if>
+			
+			<if test="moneyCountRmb != null and moneyCountRmb != ''">
+				MONEY_COUNT_RMB=#{moneyCountRmb},
+			</if>
+			<if test="eliminateCountRmb != null and eliminateCountRmb != ''">
+				ELIMINATE_COUNT_RMB=#{eliminateCountRmb},
+			</if>
+			<if test="remainCountRmb != null and remainCountRmb != ''">
+				REMAIN_COUNT_RMB=#{remainCountRmb},
+			</if>
+			-->
+				MONEY_COUNT_RMB=#{moneyCountRmb},
+				ELIMINATE_COUNT_RMB=#{eliminateCountRmb},
+				REMAIN_COUNT_RMB=#{remainCountRmb},
+				
+				MONEY_COUNT_DOLLAR=#{moneyCountDollar},
+				ELIMINATE_COUNT_DOLLAR=#{eliminateCountDollar},
+				REMAIN_COUNT_DOLLAR=#{remainCountDollar},
+				
+			
+			<if test="statementNumber != null and statementNumber != ''">
+				STATEMENT_NUMBER=#{statementNumber},
+			</if>
+			
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="exchangeRateRmb != null and exchangeRateRmb != ''">
+				EXCHANGE_RATE_RMB=#{exchangeRateRmb},
+			</if>
+			<if test="incomeOrExpense != null and incomeOrExpense != ''">
+				INCOME_OR_EXPENSE=#{incomeOrExpense},
+			</if>
+			<if test="exchangeRateDollar != null and exchangeRateDollar != ''">
+				EXCHANGE_RATE_DOLLAR=#{exchangeRateDollar},
+			</if>
+			<!--  
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			 AND MODIFY_TIME=#{modifyTime}
+			-->
+				MODIFY_TIME=SYSDATE(),
+		</set>
+		where ID=#{id}
+	</update>
+</mapper>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="role">
+	<sql id="selectId">
+		DESCN AS descn,
+		ID AS id,
+		CREATE_TIME AS createTime,
+		ROLE_KEY AS roleKey,
+		STATUS AS status,
+		ROLE_NAME AS roleName,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex
+	</sql>
+
+	<select id="query" parameterType="java.util.HashMap" resultType="Role">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_ROLE
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.roleKey != null and t.roleKey != ''">
+				and ROLE_KEY = #{t.roleKey}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.roleName != null and t.roleName != ''">
+				and ROLE_NAME = #{t.roleName}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="Role" resultType="Role">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_ROLE
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="roleKey != null and roleKey != ''">
+				and ROLE_KEY = #{roleKey}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="roleName != null and roleName != ''">
+				and ROLE_NAME = #{roleName}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="Role">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_ROLE ORDER BY CONVERT( ROLE_NAME USING gbk ) COLLATE gbk_chinese_ci 
+	</select>
+
+	<select id="count" parameterType="Role" resultType="int">
+		select count(0) from SYS_AUTH_ROLE
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.roleKey != null and t.roleKey != ''">
+				and ROLE_KEY = #{t.roleKey}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.roleName != null and t.roleName != ''">
+				and ROLE_NAME = #{t.roleName}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="Role">
+		insert into SYS_AUTH_ROLE( DESCN, ID, CREATE_TIME, ROLE_KEY, STATUS,
+		ROLE_NAME, MODIFY_TIME, DISP_INX )values ( #{descn},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{createTime},
+		#{roleKey},
+		#{status},
+		#{roleName},
+		#{modifyTime},
+		#{displayIndex}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from SYS_AUTH_ROLE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="Role">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_ROLE where id=#{id}
+	</select>
+	
+	<!-- 获取流程节点权限 -->
+	<select id="getByBpmConfigNodeId" parameterType="String" resultType="Role" flushCache="true">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_ROLE where id in (SELECT AUTH_ID FROM BPM_CONF_AUTH where AUTH_TYPE='R' AND BPM_NODE_ID=#{bpmConfigNodeId})
+		ORDER BY ROLE_NAME ASC
+	</select>
+
+	<update id="update" parameterType="Role">
+		update SYS_AUTH_ROLE
+		<set>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="roleKey != null and roleKey != ''">
+				ROLE_KEY=#{roleKey},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="roleName != null and roleName != ''">
+				ROLE_NAME=#{roleName},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<!-- 职位与角色之间的关联-->
+	<select id="getRoleByPositionId" parameterType="String" resultType="Role">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_ROLE where id in (SELECT ROLE_ID FROM  SYS_AUTH_POSITION_ROLE where POSITION_ID=#{positionId})
+	</select>
+	<insert id="addPositionRole" parameterType="PositionRole">
+		insert into  SYS_AUTH_POSITION_ROLE(ID, POSITION_ID, ROLE_ID) values (UUID(), #{positionId}, #{roleId})
+	</insert>
+	<delete id="deletePositionRole" parameterType="String">
+		delete from  SYS_AUTH_POSITION_ROLE where POSITION_ID=#{positionId}
+	</delete>
+	
+	<!-- 用户与角色之间的关联 -->
+	<select id="getRoleByUserId" parameterType="String" resultType="Role">
+		select
+		<include refid="selectId" />
+		from SYS_AUTH_ROLE where id in (SELECT role_id FROM SYS_AUTH_USER_ROLE where user_id=#{userId})
+	</select>
+	<insert id="addUserRole" parameterType="UserRole">
+		insert into SYS_AUTH_USER_ROLE(USER_ID, ROLE_ID) values (#{userId},#{roleId})
+	</insert>
+	
+	<delete id="deleteUserRole" parameterType="String">
+		delete from SYS_AUTH_USER_ROLE where USER_ID=#{userId}
+	</delete>
+</mapper>

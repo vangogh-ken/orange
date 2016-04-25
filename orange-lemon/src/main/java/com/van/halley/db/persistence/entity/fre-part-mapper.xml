@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freightpart">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		PART_CONTACT AS partContact,
+		PART_ADDRESS AS partAddress,
+		ID AS id,
+		SALE_MAN AS saleMan,
+		PART_EXP_ADDRESS AS partExpAddress,
+		ENGAGE_SCOPE AS engageScope,
+		PART_MAIL AS partMail,
+		INTERNAL AS internal,
+		MODIFY_TIME AS modifyTime,
+		DELEGATE_STATUS AS delegateStatus,
+		DISP_INX AS displayIndex,
+		BANK_NAME_DOLLAR AS bankNameDollar,
+		PART_TYPE AS partType,
+		BANK_ACCOUNT_RMB AS bankAccountRmb,
+		BANK_ACCOUNT_DOLLAR AS bankAccountDollar,
+		STATUS AS status,
+		PART_NAME AS partName,
+		PART_FAX AS partFax,
+		PART_CHARGER AS partCharger,
+		BANK_NAME_RMB AS bankNameRmb,
+		PUBLIC_STATUS AS publicStatus,
+		DESCN AS descn,
+		PART_REG_ADDRESS AS partRegAddress,
+		
+		ORG_ENTITY_ID
+	</sql>
+	
+	<resultMap id="freightPartMap" type="com.van.halley.db.persistence.entity.FreightPart">
+        <id property="id" column="ID" />
+        <result property="partName" column="PART_NAME" />
+        <result property="partType" column="PART_TYPE" />
+        <result property="internal" column="INTERNAL" />
+        <result property="partAddress" column="PART_ADDRESS" />
+        <result property="partCharger" column="PART_CHARGER" />
+        <result property="partContact" column="PART_CONTACT" />
+        <result property="partRegAddress" column="PART_REG_ADDRESS" />
+        <result property="partExpAddress" column="PART_EXP_ADDRESS" />
+        <result property="partFax" column="PART_FAX" />
+        <result property="partMail" column="PART_MAIL" />
+        <result property="engageScope" column="ENGAGE_SCOPE" />
+        <result property="saleMan" column="SALE_MAN" />
+        <result property="delegateStatus" column="DELEGATE_STATUS" />
+        <result property="publicStatus" column="PUBLIC_STATUS" />
+        
+        <result property="bankNameRmb" column="BANK_NAME_RMB" />
+        <result property="bankAccountRmb" column="BANK_ACCOUNT_RMB" />
+        <result property="bankNameDollar" column="BANK_NAME_DOLLAR" />
+        <result property="bankAccountDollar" column="BANK_ACCOUNT_DOLLAR" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="orgEntity" column="ORG_ENTITY_ID" select="orgentity.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" resultMap="freightPartMap" useCache="false">
+		select
+		<include refid="selectId" />
+		from FRE_PART
+		<where>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.partContact != null and t.partContact != ''">
+				and PART_CONTACT = #{t.partContact}
+			</if>
+			<if test="t.partAddress != null and t.partAddress != ''">
+				and PART_ADDRESS = #{t.partAddress}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.saleMan != null and t.saleMan != ''">
+				and SALE_MAN = #{t.saleMan}
+			</if>
+			<if test="t.partExpAddress != null and t.partExpAddress != ''">
+				and PART_EXP_ADDRESS = #{t.partExpAddress}
+			</if>
+			<if test="t.engageScope != null and t.engageScope != ''">
+				and ENGAGE_SCOPE = #{t.engageScope}
+			</if>
+			<if test="t.partMail != null and t.partMail != ''">
+				and PART_MAIL = #{t.partMail}
+			</if>
+			<if test="t.internal != null and t.internal != ''">
+				and INTERNAL = #{t.internal}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.delegateStatus != null and t.delegateStatus != ''">
+				and DELEGATE_STATUS = #{t.delegateStatus}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.bankNameDollar != null and t.bankNameDollar != ''">
+				and BANK_NAME_DOLLAR = #{t.bankNameDollar}
+			</if>
+			<if test="t.partType != null and t.partType != ''">
+				and PART_TYPE = #{t.partType}
+			</if>
+			<if test="t.bankAccountRmb != null and t.bankAccountRmb != ''">
+				and BANK_ACCOUNT_RMB = #{t.bankAccountRmb}
+			</if>
+			<if test="t.bankAccountDollar != null and t.bankAccountDollar != ''">
+				and BANK_ACCOUNT_DOLLAR = #{t.bankAccountDollar}
+			</if>
+			<if test="t.orgEntity != null and t.orgEntity != ''">
+				and ORG_ENTITY_ID = #{t.orgEntity.id}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.partName != null and t.partName != ''">
+				and PART_NAME = #{t.partName}
+			</if>
+			<if test="t.partFax != null and t.partFax != ''">
+				and PART_FAX = #{t.partFax}
+			</if>
+			<if test="t.partCharger != null and t.partCharger != ''">
+				and PART_CHARGER = #{t.partCharger}
+			</if>
+			<if test="t.bankNameRmb != null and t.bankNameRmb != ''">
+				and BANK_NAME_RMB = #{t.bankNameRmb}
+			</if>
+			<if test="t.publicStatus != null and t.publicStatus != ''">
+				and PUBLIC_STATUS = #{t.publicStatus}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.partRegAddress != null and t.partRegAddress != ''">
+				and PART_REG_ADDRESS = #{t.partRegAddress}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FreightPart"
+		resultMap="freightPartMap">
+		select
+		<include refid="selectId" />
+		from FRE_PART
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="partContact != null and partContact != ''">
+				and PART_CONTACT = #{partContact}
+			</if>
+			<if test="partAddress != null and partAddress != ''">
+				and PART_ADDRESS = #{partAddress}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="saleMan != null and saleMan != ''">
+				and SALE_MAN = #{saleMan}
+			</if>
+			<if test="partExpAddress != null and partExpAddress != ''">
+				and PART_EXP_ADDRESS = #{partExpAddress}
+			</if>
+			<if test="engageScope != null and engageScope != ''">
+				and ENGAGE_SCOPE = #{engageScope}
+			</if>
+			<if test="partMail != null and partMail != ''">
+				and PART_MAIL = #{partMail}
+			</if>
+			<if test="internal != null and internal != ''">
+				and INTERNAL = #{internal}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="delegateStatus != null and delegateStatus != ''">
+				and DELEGATE_STATUS = #{delegateStatus}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="bankNameDollar != null and bankNameDollar != ''">
+				and BANK_NAME_DOLLAR = #{bankNameDollar}
+			</if>
+			<if test="partType != null and partType != ''">
+				and PART_TYPE = #{partType}
+			</if>
+			<if test="bankAccountRmb != null and bankAccountRmb != ''">
+				and BANK_ACCOUNT_RMB = #{bankAccountRmb}
+			</if>
+			<if test="bankAccountDollar != null and bankAccountDollar != ''">
+				and BANK_ACCOUNT_DOLLAR = #{bankAccountDollar}
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				and ORG_ENTITY_ID = #{orgEntity.id}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="partName != null and partName != ''">
+				and PART_NAME = #{partName}
+			</if>
+			<if test="partFax != null and partFax != ''">
+				and PART_FAX = #{partFax}
+			</if>
+			<if test="partCharger != null and partCharger != ''">
+				and PART_CHARGER = #{partCharger}
+			</if>
+			<if test="bankNameRmb != null and bankNameRmb != ''">
+				and BANK_NAME_RMB = #{bankNameRmb}
+			</if>
+			<if test="publicStatus != null and publicStatus != ''">
+				and PUBLIC_STATUS = #{publicStatus}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="partRegAddress != null and partRegAddress != ''">
+				and PART_REG_ADDRESS = #{partRegAddress}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="freightPartMap">
+		select
+		<include refid="selectId" />
+		from FRE_PART WHERE STATUS='T'
+	</select>
+
+	<select id="count" parameterType="FreightPart" resultType="int">
+		select count(0) from FRE_PART
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="partContact != null and partContact != ''">
+				and PART_CONTACT = #{partContact}
+			</if>
+			<if test="partAddress != null and partAddress != ''">
+				and PART_ADDRESS = #{partAddress}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="saleMan != null and saleMan != ''">
+				and SALE_MAN = #{saleMan}
+			</if>
+			<if test="partExpAddress != null and partExpAddress != ''">
+				and PART_EXP_ADDRESS = #{partExpAddress}
+			</if>
+			<if test="engageScope != null and engageScope != ''">
+				and ENGAGE_SCOPE = #{engageScope}
+			</if>
+			<if test="partMail != null and partMail != ''">
+				and PART_MAIL = #{partMail}
+			</if>
+			<if test="internal != null and internal != ''">
+				and INTERNAL = #{internal}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="delegateStatus != null and delegateStatus != ''">
+				and DELEGATE_STATUS = #{delegateStatus}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="bankNameDollar != null and bankNameDollar != ''">
+				and BANK_NAME_DOLLAR = #{bankNameDollar}
+			</if>
+			<if test="partType != null and partType != ''">
+				and PART_TYPE = #{partType}
+			</if>
+			<if test="bankAccountRmb != null and bankAccountRmb != ''">
+				and BANK_ACCOUNT_RMB = #{bankAccountRmb}
+			</if>
+			<if test="bankAccountDollar != null and bankAccountDollar != ''">
+				and BANK_ACCOUNT_DOLLAR = #{bankAccountDollar}
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				and ORG_ENTITY_ID = #{orgEntity.id}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="partName != null and partName != ''">
+				and PART_NAME = #{partName}
+			</if>
+			<if test="partFax != null and partFax != ''">
+				and PART_FAX = #{partFax}
+			</if>
+			<if test="partCharger != null and partCharger != ''">
+				and PART_CHARGER = #{partCharger}
+			</if>
+			<if test="bankNameRmb != null and bankNameRmb != ''">
+				and BANK_NAME_RMB = #{bankNameRmb}
+			</if>
+			<if test="publicStatus != null and publicStatus != ''">
+				and PUBLIC_STATUS = #{publicStatus}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="partRegAddress != null and partRegAddress != ''">
+				and PART_REG_ADDRESS = #{partRegAddress}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FreightPart">
+		insert into FRE_PART( CREATE_TIME, PART_CONTACT, PART_ADDRESS, ID,
+		SALE_MAN, PART_EXP_ADDRESS, ENGAGE_SCOPE, PART_MAIL, INTERNAL,
+		MODIFY_TIME, DELEGATE_STATUS, DISP_INX, BANK_NAME_DOLLAR, PART_TYPE,
+		BANK_ACCOUNT_RMB, BANK_ACCOUNT_DOLLAR, ORG_ENTITY_ID, STATUS,
+		PART_NAME, PART_FAX, PART_CHARGER, BANK_NAME_RMB, PUBLIC_STATUS,
+		DESCN, PART_REG_ADDRESS )values ( #{createTime}, #{partContact},
+		#{partAddress},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{saleMan},
+		#{partExpAddress},
+		#{engageScope},
+		#{partMail},
+		#{internal},
+		#{modifyTime},
+		#{delegateStatus},
+		#{displayIndex},
+		#{bankNameDollar},
+		#{partType},
+		#{bankAccountRmb},
+		#{bankAccountDollar},
+		#{orgEntity.id},
+		#{status},
+		#{partName},
+		#{partFax},
+		#{partCharger},
+		#{bankNameRmb},
+		#{publicStatus},
+		#{descn},
+		#{partRegAddress}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FRE_PART where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="freightPartMap">
+		select
+		<include refid="selectId" />
+		from FRE_PART where id=#{id}
+	</select>
+	
+	<select id="getByOrgEntityId" parameterType="String" resultMap="freightPartMap">
+		select
+		<include refid="selectId" />
+		from FRE_PART where ORG_ENTITY_ID=#{orgEntityId}
+	</select>
+
+	<update id="update" parameterType="FreightPart">
+		update FRE_PART
+		<set>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="partContact != null and partContact != ''">
+				PART_CONTACT=#{partContact},
+			</if>
+			<if test="partAddress != null and partAddress != ''">
+				PART_ADDRESS=#{partAddress},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="saleMan != null and saleMan != ''">
+				SALE_MAN=#{saleMan},
+			</if>
+			<if test="partExpAddress != null and partExpAddress != ''">
+				PART_EXP_ADDRESS=#{partExpAddress},
+			</if>
+			<if test="engageScope != null and engageScope != ''">
+				ENGAGE_SCOPE=#{engageScope},
+			</if>
+			<if test="partMail != null and partMail != ''">
+				PART_MAIL=#{partMail},
+			</if>
+			<if test="internal != null and internal != ''">
+				INTERNAL=#{internal},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="delegateStatus != null and delegateStatus != ''">
+				DELEGATE_STATUS=#{delegateStatus},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="bankNameDollar != null and bankNameDollar != ''">
+				BANK_NAME_DOLLAR=#{bankNameDollar},
+			</if>
+			<if test="partType != null and partType != ''">
+				PART_TYPE=#{partType},
+			</if>
+			<if test="bankAccountRmb != null and bankAccountRmb != ''">
+				BANK_ACCOUNT_RMB=#{bankAccountRmb},
+			</if>
+			<if test="bankAccountDollar != null and bankAccountDollar != ''">
+				BANK_ACCOUNT_DOLLAR=#{bankAccountDollar},
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				ORG_ENTITY_ID=#{orgEntity.id},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="partName != null and partName != ''">
+				PART_NAME=#{partName},
+			</if>
+			<if test="partFax != null and partFax != ''">
+				PART_FAX=#{partFax},
+			</if>
+			<if test="partCharger != null and partCharger != ''">
+				PART_CHARGER=#{partCharger},
+			</if>
+			<if test="bankNameRmb != null and bankNameRmb != ''">
+				BANK_NAME_RMB=#{bankNameRmb},
+			</if>
+			<if test="publicStatus != null and publicStatus != ''">
+				PUBLIC_STATUS=#{publicStatus},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="partRegAddress != null and partRegAddress != ''">
+				PART_REG_ADDRESS=#{partRegAddress},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

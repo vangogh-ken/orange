@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fasaccount">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		DESCN AS descn,
+		ID AS id,
+		CREATE_TIME AS createTime,
+		ACCOUNT_NUMBER AS accountNumber,
+		STATUS AS status,
+		MONEY_COUNT AS moneyCount,
+		BANK_ADDRESS AS bankAdress,
+		BANK_NAME AS bankName,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		CURRENCY AS currency,
+		
+		FRE_PART_ID
+	</sql>
+	
+	<resultMap id="fasAccountMap" type="com.van.halley.db.persistence.entity.FasAccount">
+        <id property="id" column="ID" />
+        <result property="accountNumber" column="ACCOUNT_NUMBER" />
+        <result property="moneyCount" column="MONEY_COUNT" />
+        <result property="bankName" column="BANK_NAME" />
+        <result property="bankAdress" column="BANK_ADDRESS" />
+        <result property="currency" column="CURRENCY" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="freightPart" column="FRE_PART_ID" select="freightpart.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="fasAccountMap">
+		select
+		<include refid="selectId" />
+		from FAS_ACCOUNT
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.accountNumber != null and t.accountNumber != ''">
+				and ACCOUNT_NUMBER = #{t.accountNumber}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.moneyCount != null and t.moneyCount != ''">
+				and MONEY_COUNT = #{t.moneyCount}
+			</if>
+			<if test="t.bankAdress != null and t.bankAdress != ''">
+				and BANK_ADDRESS = #{t.bankAdress}
+			</if>
+			<if test="t.bankName != null and t.bankName != ''">
+				and BANK_NAME = #{t.bankName}
+			</if>
+			<if test="t.freightPart != null and t.freightPart != ''">
+				and FRE_PART_ID = #{t.freightPart.id}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.currency != null and t.currency != ''">
+				and CURRENCY = #{t.currency}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FasAccount" resultMap="fasAccountMap">
+		select
+		<include refid="selectId" />
+		from FAS_ACCOUNT
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="accountNumber != null and accountNumber != ''">
+				and ACCOUNT_NUMBER = #{accountNumber}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				and MONEY_COUNT = #{moneyCount}
+			</if>
+			<if test="bankAdress != null and bankAdress != ''">
+				and BANK_ADDRESS = #{bankAdress}
+			</if>
+			<if test="bankName != null and bankName != ''">
+				and BANK_NAME = #{bankName}
+			</if>
+			<if test="freightPart != null and freightPart != ''">
+				and FRE_PART_ID = #{freightPart.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="currency != null and currency != ''">
+				and CURRENCY = #{currency}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="fasAccountMap">
+		select
+		<include refid="selectId" />
+		from FAS_ACCOUNT
+	</select>
+
+	<select id="count" parameterType="FasAccount" resultType="int">
+		select count(0) from FAS_ACCOUNT
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="accountNumber != null and accountNumber != ''">
+				and ACCOUNT_NUMBER = #{accountNumber}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				and MONEY_COUNT = #{moneyCount}
+			</if>
+			<if test="bankAdress != null and bankAdress != ''">
+				and BANK_ADDRESS = #{bankAdress}
+			</if>
+			<if test="bankName != null and bankName != ''">
+				and BANK_NAME = #{bankName}
+			</if>
+			<if test="freightPart != null and freightPart != ''">
+				and FRE_PART_ID = #{freightPart.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="currency != null and currency != ''">
+				and CURRENCY = #{currency}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FasAccount">
+		insert into FAS_ACCOUNT( DESCN, ID, CREATE_TIME, ACCOUNT_NUMBER,
+		STATUS, MONEY_COUNT, BANK_ADDRESS, BANK_NAME, FRE_PART_ID,
+		MODIFY_TIME, DISP_INX, CURRENCY )values ( #{descn},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{createTime},
+		#{accountNumber},
+		#{status},
+		#{moneyCount},
+		#{bankAdress},
+		#{bankName},
+		#{freightPart.id},
+		#{modifyTime},
+		#{displayIndex},
+		#{currency}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FAS_ACCOUNT where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="fasAccountMap">
+		select
+		<include refid="selectId" />
+		from FAS_ACCOUNT where id=#{id}
+	</select>
+	
+	<select id="getByFreightPartId" parameterType="String" resultMap="fasAccountMap">
+		select
+		<include refid="selectId" />
+		from FAS_ACCOUNT where FRE_PART_ID=#{freightPartId}
+	</select>
+
+	<update id="update" parameterType="FasAccount">
+		update FAS_ACCOUNT
+		<set>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="accountNumber != null and accountNumber != ''">
+				ACCOUNT_NUMBER=#{accountNumber},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="moneyCount != null and moneyCount != ''">
+				MONEY_COUNT=#{moneyCount},
+			</if>
+			<if test="bankAdress != null and bankAdress != ''">
+				BANK_ADDRESS=#{bankAdress},
+			</if>
+			<if test="bankName != null and bankName != ''">
+				BANK_NAME=#{bankName},
+			</if>
+			<if test="freightPart != null and freightPart != ''">
+				FRE_PART_ID=#{freightPart.id},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="currency != null and currency != ''">
+				CURRENCY=#{currency},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

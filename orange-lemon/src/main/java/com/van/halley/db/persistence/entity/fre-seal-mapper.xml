@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freightseal">
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		DESCN AS descn,
+		ID AS id,
+		CREATE_TIME AS createTime,
+		SEAL_TYPE AS sealType,
+		STATUS AS status,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		SEAL_BELONG AS sealBelong,
+		SEAL_NUMBER AS
+		sealNumber
+	</sql>
+
+	<select id="query" parameterType="java.util.HashMap" resultType="FreightSeal" useCache="false">
+		select
+		<include refid="selectId" />
+		from FRE_SEAL
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.sealType != null and t.sealType != ''">
+				and SEAL_TYPE = #{t.sealType}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.sealBelong != null and t.sealBelong != ''">
+				and SEAL_BELONG = #{t.sealBelong}
+			</if>
+			<if test="t.sealNumber != null and t.sealNumber != ''">
+				and SEAL_NUMBER = #{t.sealNumber}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FreightSeal"
+		resultType="FreightSeal">
+		select
+		<include refid="selectId" />
+		from FRE_SEAL
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="sealType != null and sealType != ''">
+				and SEAL_TYPE = #{sealType}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="sealBelong != null and sealBelong != ''">
+				and SEAL_BELONG = #{sealBelong}
+			</if>
+			<if test="sealNumber != null and sealNumber != ''">
+				and SEAL_NUMBER = #{sealNumber}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="FreightSeal">
+		select
+		<include refid="selectId" />
+		from FRE_SEAL
+	</select>
+
+	<select id="count" parameterType="FreightSeal" resultType="int">
+		select count(0) from FRE_SEAL
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="sealType != null and sealType != ''">
+				and SEAL_TYPE = #{sealType}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="sealBelong != null and sealBelong != ''">
+				and SEAL_BELONG = #{sealBelong}
+			</if>
+			<if test="sealNumber != null and sealNumber != ''">
+				and SEAL_NUMBER = #{sealNumber}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FreightSeal">
+		insert into FRE_SEAL( DESCN, ID, CREATE_TIME, SEAL_TYPE, STATUS,
+		MODIFY_TIME, DISP_INX, SEAL_BELONG, SEAL_NUMBER )values ( #{descn},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{createTime},
+		#{sealType},
+		#{status},
+		#{modifyTime},
+		#{displayIndex},
+		#{sealBelong},
+		#{sealNumber}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FRE_SEAL where
+		id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="FreightSeal">
+		select
+		<include refid="selectId" />
+		from FRE_SEAL where id=#{id}
+	</select>
+	<!-- 获取最小编号的封号 -->
+	<select id="getFreightSealProximate" resultType="FreightSeal"
+		parameterType="FreightSeal">
+		select
+		<include refid="selectId" />
+		from FRE_SEAL
+		<where>
+			<if test="sealType != null and sealType != ''"> and SEAL_TYPE = #{sealType} </if>
+			<if test="sealBelong != null and sealBelong != ''"> and SEAL_BELONG = #{sealBelong} </if>
+			<if test="status != null and status != ''"> and STATUS = #{status} </if>
+		</where>
+		ORDER BY SEAL_NUMBER ASC LIMIT 1
+	</select>
+	
+	<update id="update" parameterType="FreightSeal">
+		update FRE_SEAL
+		<set>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="sealType != null and sealType != ''">
+				SEAL_TYPE=#{sealType},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="sealBelong != null and sealBelong != ''">
+				SEAL_BELONG=#{sealBelong},
+			</if>
+			<if test="sealNumber != null and sealNumber != ''">
+				SEAL_NUMBER=#{sealNumber},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

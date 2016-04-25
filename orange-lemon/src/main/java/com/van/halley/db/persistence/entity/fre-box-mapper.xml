@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="freightbox">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CREATE_TIME AS createTime,
+		PUT_STATUS AS putStatus,
+		BOX_SOURCE AS boxSource,
+		BOX_NUMBER AS boxNumber,
+		BOX_TYPE AS boxType,
+		STATUS AS status,
+		BOX_CONDITION AS boxCondition,
+		BOX_BELONG AS boxBelong,
+		INOUT_STATUS AS inoutStatus,
+		EMPTY_STATUS AS emptyStatus,
+		ID AS id,
+		DESCN AS descn,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		EVENT_STATUS AS eventStatus
+	</sql>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultType="FreightBox">
+		select
+		<include refid="selectId" />
+		from FRE_BOX
+		<where>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.putStatus != null and t.putStatus != ''">
+				and PUT_STATUS = #{t.putStatus}
+			</if>
+			<if test="t.boxSource != null and t.boxSource != ''">
+				and BOX_SOURCE = #{t.boxSource}
+			</if>
+			<if test="t.boxNumber != null and t.boxNumber != ''">
+				and BOX_NUMBER = #{t.boxNumber}
+			</if>
+			<if test="t.boxType != null and t.boxType != ''">
+				and BOX_TYPE = #{t.boxType}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.boxCondition != null and t.boxCondition != ''">
+				and BOX_CONDITION = #{t.boxCondition}
+			</if>
+			<if test="t.boxBelong != null and t.boxBelong != ''">
+				and BOX_BELONG = #{t.boxBelong}
+			</if>
+			<if test="t.inoutStatus != null and t.inoutStatus != ''">
+				and INOUT_STATUS = #{t.inoutStatus}
+			</if>
+			<if test="t.emptyStatus != null and t.emptyStatus != ''">
+				and EMPTY_STATUS = #{t.emptyStatus}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.eventStatus != null and t.eventStatus != ''">
+				and EVENT_STATUS = #{t.eventStatus}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="FreightBox" resultType="FreightBox">
+		select
+		<include refid="selectId" />
+		from FRE_BOX
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="putStatus != null and putStatus != ''">
+				and PUT_STATUS = #{putStatus}
+			</if>
+			<if test="boxSource != null and boxSource != ''">
+				and BOX_SOURCE = #{boxSource}
+			</if>
+			<if test="boxNumber != null and boxNumber != ''">
+				and BOX_NUMBER = #{boxNumber}
+			</if>
+			<if test="boxType != null and boxType != ''">
+				and BOX_TYPE = #{boxType}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="boxCondition != null and boxCondition != ''">
+				and BOX_CONDITION = #{boxCondition}
+			</if>
+			<if test="boxBelong != null and boxBelong != ''">
+				and BOX_BELONG = #{boxBelong}
+			</if>
+			<if test="inoutStatus != null and inoutStatus != ''">
+				and INOUT_STATUS = #{inoutStatus}
+			</if>
+			<if test="emptyStatus != null and emptyStatus != ''">
+				and EMPTY_STATUS = #{emptyStatus}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="eventStatus != null and eventStatus != ''">
+				and EVENT_STATUS = #{eventStatus}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="FreightBox">
+		select
+		<include refid="selectId" />
+		from FRE_BOX
+	</select>
+
+	<select id="count" parameterType="FreightBox" resultType="int">
+		select count(0) from FRE_BOX
+		<where>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="putStatus != null and putStatus != ''">
+				and PUT_STATUS = #{putStatus}
+			</if>
+			<if test="boxSource != null and boxSource != ''">
+				and BOX_SOURCE = #{boxSource}
+			</if>
+			<if test="boxNumber != null and boxNumber != ''">
+				and BOX_NUMBER = #{boxNumber}
+			</if>
+			<if test="boxType != null and boxType != ''">
+				and BOX_TYPE = #{boxType}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="boxCondition != null and boxCondition != ''">
+				and BOX_CONDITION = #{boxCondition}
+			</if>
+			<if test="boxBelong != null and boxBelong != ''">
+				and BOX_BELONG = #{boxBelong}
+			</if>
+			<if test="inoutStatus != null and inoutStatus != ''">
+				and INOUT_STATUS = #{inoutStatus}
+			</if>
+			<if test="emptyStatus != null and emptyStatus != ''">
+				and EMPTY_STATUS = #{emptyStatus}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="eventStatus != null and eventStatus != ''">
+				and EVENT_STATUS = #{eventStatus}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="FreightBox">
+		insert into FRE_BOX( CREATE_TIME, PUT_STATUS, BOX_SOURCE, BOX_NUMBER,
+		BOX_TYPE, STATUS, BOX_CONDITION, BOX_BELONG, INOUT_STATUS,
+		EMPTY_STATUS, ID, DESCN, MODIFY_TIME, DISP_INX, EVENT_STATUS )values (
+		#{createTime}, #{putStatus}, #{boxSource}, #{boxNumber}, #{boxType},
+		#{status}, #{boxCondition}, #{boxBelong}, #{inoutStatus},
+		#{emptyStatus},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{descn},
+		#{modifyTime},
+		#{displayIndex},
+		#{eventStatus}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from FRE_BOX where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="FreightBox">
+		select
+		<include refid="selectId" />
+		from FRE_BOX where id=#{id}
+	</select>
+
+	<update id="update" parameterType="FreightBox">
+		update FRE_BOX
+		<set>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="putStatus != null and putStatus != ''">
+				PUT_STATUS=#{putStatus},
+			</if>
+			<if test="boxSource != null and boxSource != ''">
+				BOX_SOURCE=#{boxSource},
+			</if>
+			<if test="boxNumber != null and boxNumber != ''">
+				BOX_NUMBER=#{boxNumber},
+			</if>
+			<if test="boxType != null and boxType != ''">
+				BOX_TYPE=#{boxType},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="boxCondition != null and boxCondition != ''">
+				BOX_CONDITION=#{boxCondition},
+			</if>
+			<if test="boxBelong != null and boxBelong != ''">
+				BOX_BELONG=#{boxBelong},
+			</if>
+			<if test="inoutStatus != null and inoutStatus != ''">
+				INOUT_STATUS=#{inoutStatus},
+			</if>
+			<if test="emptyStatus != null and emptyStatus != ''">
+				EMPTY_STATUS=#{emptyStatus},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="eventStatus != null and eventStatus != ''">
+				EVENT_STATUS=#{eventStatus},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="outmsginfo">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		DESCN AS descn,
+		CONTENT AS content,
+		ID AS id,
+		CREATE_TIME AS createTime,
+		TITILE AS title,
+		STATUS AS status,
+		MSG_TYPE AS msgType,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		HANDLED AS handled,
+		
+		SEND_USER_ID,
+		RECEIVE_USER_ID
+	</sql>
+	
+	<resultMap id="outMsgInfoMap" type="com.van.halley.db.persistence.entity.OutMsgInfo">
+        <id property="id" column="ID" />
+        <result property="msgType" column="MSG_TYPE" />
+        <result property="title" column="TITILE" />
+        <result property="content" column="CONTENT" />
+        <result property="handled" column="HANDLED" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="sender" column="SEND_USER_ID" select="user.getById" ></association>
+        <association property="receiver" column="RECEIVE_USER_ID" select="user.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false" resultMap="outMsgInfoMap">
+		select
+		<include refid="selectId" />
+		from OUT_MSG_INFO
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.sender != null and t.sender != ''">
+				and SEND_USER_ID = #{t.sender.id}
+			</if>
+			<if test="t.content != null and t.content != ''">
+				and CONTENT = #{t.content}
+			</if>
+			
+			<if test="t.handled != null and t.handled != ''">
+				and HANDLED = #{t.handled}
+			</if>
+			
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.title != null and t.title != ''">
+				and TITILE = #{t.title}
+			</if>
+			<if test="t.receiver != null and t.receiver != ''">
+				and RECEIVE_USER_ID = #{t.receiver.id}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.msgType != null and t.msgType != ''">
+				and MSG_TYPE = #{t.msgType}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="OutMsgInfo" resultMap="outMsgInfoMap">
+		select
+		<include refid="selectId" />
+		from OUT_MSG_INFO
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="sender != null and sender != ''">
+				and SEND_USER_ID = #{sender.id}
+			</if>
+			<if test="content != null and content != ''">
+				and CONTENT = #{content}
+			</if>
+			<if test="handled != null and handled != ''">
+				and HANDLED = #{handled}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="title != null and title != ''">
+				and TITILE = #{title}
+			</if>
+			<if test="receiver != null and receiver != ''">
+				and RECEIVE_USER_ID = #{receiver.id}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="msgType != null and msgType != ''">
+				and MSG_TYPE = #{msgType}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="outMsgInfoMap">
+		select
+		<include refid="selectId" />
+		from OUT_MSG_INFO
+	</select>
+
+	<select id="count" parameterType="OutMsgInfo" resultType="int">
+		select count(0) from OUT_MSG_INFO
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="sender != null and sender != ''">
+				and SEND_USER_ID = #{sender.id}
+			</if>
+			<if test="content != null and content != ''">
+				and CONTENT = #{content}
+			</if>
+			<if test="handled != null and handled != ''">
+				and HANDLED = #{handled}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="title != null and title != ''">
+				and TITILE = #{title}
+			</if>
+			<if test="receiver != null and receiver != ''">
+				and RECEIVE_USER_ID = #{receiver.id}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="msgType != null and msgType != ''">
+				and MSG_TYPE = #{msgType}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="OutMsgInfo">
+		insert into OUT_MSG_INFO( DESCN, SEND_USER_ID, CONTENT, HANDLED, ID,
+		CREATE_TIME, TITILE, RECEIVE_USER_ID, STATUS, MSG_TYPE, MODIFY_TIME,
+		DISP_INX )values ( #{descn}, #{sender.id}, #{content}, #{handled},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{createTime},
+		#{title},
+		#{receiver.id},
+		#{status},
+		#{msgType},
+		#{modifyTime},
+		#{displayIndex}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from OUT_MSG_INFO where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="outMsgInfoMap">
+		select
+		<include refid="selectId" />
+		from OUT_MSG_INFO where id=#{id}
+	</select>
+
+	<update id="update" parameterType="OutMsgInfo">
+		update OUT_MSG_INFO
+		<set>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="sender != null and sender != ''">
+				SEND_USER_ID=#{sender.id},
+			</if>
+			<if test="content != null and content != ''">
+				CONTENT=#{content},
+			</if>
+			<if test="handled != null and handled != ''">
+				HANDLED = #{handled},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="title != null and title != ''">
+				TITILE=#{title},
+			</if>
+			<if test="receiver != null and receiver != ''">
+				RECEIVE_USER_ID=#{receiver.id},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="msgType != null and msgType != ''">
+				MSG_TYPE=#{msgType},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

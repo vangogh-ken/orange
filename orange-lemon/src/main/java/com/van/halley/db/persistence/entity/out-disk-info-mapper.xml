@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="diskinfo">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		FILE_NAME AS fileName,
+		FILE_SUFFIX AS fileSuffix,
+		DESCN AS descn,
+		MODIFY_TIME AS modifyTime,
+		FILE_SIZE AS fileSize,
+		CREATE_TIME AS createTime,
+		FILE_DIR AS fileDir,
+		ID AS id,
+		FILE_VERSION AS fileVersion,
+		FILE_REF AS fileRef,
+		DISP_INX AS displayIndex,
+		STATUS AS status,
+		
+		CREATOR_ID,
+		MODIFIER_ID
+	</sql>
+	
+	<resultMap id="diskInfoMap" type="com.van.halley.db.persistence.entity.DiskInfo">
+        <id property="id" column="ID" />
+        <result property="fileName" column="FILE_NAME" />
+        <result property="fileSuffix" column="FILE_SUFFIX" />
+        <result property="fileRef" column="FILE_REF" />
+        <result property="fileVersion" column="FILE_VERSION" />
+        <result property="fileDir" column="FILE_DIR" />
+        <result property="fileSize" column="FILE_SIZE" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="creator" column="CREATOR_ID" select="user.getById" ></association>
+        <association property="modifier" column="MODIFIER_ID" select="user.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="diskInfoMap">
+		select
+		<include refid="selectId" />
+		from OUT_DISK_INFO
+		<where>
+			<if test="t.fileName != null and t.fileName != ''">
+				and FILE_NAME = #{t.fileName}
+			</if>
+			<if test="t.creator != null and t.creator != ''">
+				and CREATOR_ID = #{t.creator.id}
+			</if>
+			<if test="t.fileSuffix != null and t.fileSuffix != ''">
+				and FILE_SUFFIX = #{t.fileSuffix}
+			</if>
+			<if test="t.modifier != null and t.modifier != ''">
+				and MODIFIER_ID = #{t.modifier.id}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.fileSize != null and t.fileSize != ''">
+				and FILE_SIZE = #{t.fileSize}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<!--  
+			<if test="t.fileDir != null and t.fileDir != ''">
+			</if>
+			-->
+				and FILE_DIR = #{t.fileDir}
+			
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.fileVersion != null and t.fileVersion != ''">
+				and FILE_VERSION = #{t.fileVersion}
+			</if>
+			<if test="t.fileRef != null and t.fileRef != ''">
+				and FILE_REF = #{t.fileRef}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="DiskInfo" resultMap="diskInfoMap">
+		select
+		<include refid="selectId" />
+		from OUT_DISK_INFO
+		<where>
+			<if test="fileName != null and fileName != ''">
+				and FILE_NAME = #{fileName}
+			</if>
+			<if test="creator != null and creator != ''">
+				and CREATOR_ID = #{creator.id}
+			</if>
+			<if test="fileSuffix != null and fileSuffix != ''">
+				and FILE_SUFFIX = #{fileSuffix}
+			</if>
+			<if test="modifier != null and modifier != ''">
+				and MODIFIER_ID = #{modifier.id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="fileSize != null and fileSize != ''">
+				and FILE_SIZE = #{fileSize}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="fileDir != null and fileDir != ''">
+				and FILE_DIR = #{fileDir}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="fileVersion != null and fileVersion != ''">
+				and FILE_VERSION = #{fileVersion}
+			</if>
+			<if test="fileRef != null and fileRef != ''">
+				and FILE_REF = #{fileRef}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="diskInfoMap">
+		select
+		<include refid="selectId" />
+		from OUT_DISK_INFO
+	</select>
+
+	<select id="count" parameterType="DiskInfo" resultType="int">
+		select count(0) from OUT_DISK_INFO
+		<where>
+			<if test="fileName != null and fileName != ''">
+				and FILE_NAME = #{fileName}
+			</if>
+			<if test="creator != null and creator != ''">
+				and CREATOR_ID = #{creator.id}
+			</if>
+			<if test="fileSuffix != null and fileSuffix != ''">
+				and FILE_SUFFIX = #{fileSuffix}
+			</if>
+			<if test="modifier != null and modifier != ''">
+				and MODIFIER_ID = #{modifier.id}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="fileSize != null and fileSize != ''">
+				and FILE_SIZE = #{fileSize}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="fileDir != null and fileDir != ''">
+				and FILE_DIR = #{fileDir}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="fileVersion != null and fileVersion != ''">
+				and FILE_VERSION = #{fileVersion}
+			</if>
+			<if test="fileRef != null and fileRef != ''">
+				and FILE_REF = #{fileRef}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="DiskInfo">
+		insert into OUT_DISK_INFO( FILE_NAME, CREATOR_ID, FILE_SUFFIX,
+		MODIFIER_ID, DESCN, MODIFY_TIME, FILE_SIZE, CREATE_TIME, FILE_DIR, ID,
+		FILE_VERSION, FILE_REF, DISP_INX, STATUS )values ( #{fileName},
+		#{creator.id}, #{fileSuffix}, #{modifier.id}, #{descn}, #{modifyTime},
+		#{fileSize}, #{createTime}, #{fileDir},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{fileVersion},
+		#{fileRef},
+		#{displayIndex},
+		#{status}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from OUT_DISK_INFO where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="diskInfoMap">
+		select
+		<include refid="selectId" />
+		from OUT_DISK_INFO where id=#{id}
+	</select>
+
+	<update id="update" parameterType="DiskInfo">
+		update OUT_DISK_INFO
+		<set>
+			<if test="fileName != null and fileName != ''">
+				FILE_NAME=#{fileName},
+			</if>
+			<if test="creator != null and creator != ''">
+				CREATOR_ID=#{creator.id},
+			</if>
+			<if test="fileSuffix != null and fileSuffix != ''">
+				FILE_SUFFIX=#{fileSuffix},
+			</if>
+			<if test="modifier != null and modifier != ''">
+				MODIFIER_ID=#{modifier.id},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			MODIFY_TIME=SYSDATE(),
+			<if test="fileSize != null and fileSize != ''">
+				FILE_SIZE=#{fileSize},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="fileDir != null and fileDir != ''">
+				FILE_DIR=#{fileDir},
+			</if>
+			<if test="fileVersion != null and fileVersion != ''">
+				FILE_VERSION=#{fileVersion},
+			</if>
+			<if test="fileRef != null and fileRef != ''">
+				FILE_REF=#{fileRef},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+		</set>
+		WHERE ID=#{id}
+	</update>
+
+	<delete id="deleteBatch" parameterType="java.util.List">
+		delete from OUT_DISK_INFO where ID IN
+		<foreach collection="list" item="t" index="index" open="("
+			separator="," close=")">
+			#{t.id}
+		</foreach>
+	</delete>
+
+	<update id="updateBatch" parameterType="java.util.List">
+		<foreach collection="list" item="t" index="index" open=""
+			close="" separator=";">
+			update OUT_DISK_INFO
+			<set>
+				<if test="fileName != null and fileName != ''">
+					FILE_NAME=#{fileName},
+				</if>
+				<if test="creator != null and creator != ''">
+					CREATOR_ID=#{creator.id},
+				</if>
+				<if test="fileSuffix != null and fileSuffix != ''">
+					FILE_SUFFIX=#{fileSuffix},
+				</if>
+				<if test="modifier != null and modifier != ''">
+					MODIFIER_ID=#{modifier.id},
+				</if>
+				<if test="descn != null and descn != ''">
+					DESCN=#{descn},
+				</if>
+				MODIFY_TIME=SYSDATE(),
+				<if test="fileSize != null and fileSize != ''">
+					FILE_SIZE=#{fileSize},
+				</if>
+				<if test="createTime != null and createTime != ''">
+					CREATE_TIME=#{createTime},
+				</if>
+				<if test="fileDir != null and fileDir != ''">
+					FILE_DIR=#{fileDir},
+				</if>
+				<if test="fileVersion != null and fileVersion != ''">
+					FILE_VERSION=#{fileVersion},
+				</if>
+				<if test="fileRef != null and fileRef != ''">
+					FILE_REF=#{fileRef},
+				</if>
+				<if test="displayIndex != null and displayIndex != ''">
+					DISP_INX=#{displayIndex},
+				</if>
+				<if test="status != null and status != ''">
+					STATUS=#{status},
+				</if>
+			</set>
+			WHERE ID=#{id} AND MODIFY_TIME=#{modifyTime}
+		</foreach>
+	</update>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into OUT_DISK_INFO( FILE_NAME, CREATOR_ID, FILE_SUFFIX,
+		MODIFIER_ID, DESCN, MODIFY_TIME, FILE_SIZE, CREATE_TIME, FILE_DIR, ID,
+		FILE_VERSION, FILE_REF, DISP_INX, STATUS )values 
+		<foreach collection="list" item="t" index="index" separator=",">
+			(#{t.fileName},
+			#{t.creator.id},
+			#{t.fileSuffix},
+			#{t.modifier.id},
+			#{t.descn},
+			#{t.modifyTime},
+			#{t.fileSize},
+			#{t.createTime},
+			#{t.fileDir},
+			<if test="t.id != null and t.id != '' ">
+				#{t.id},
+			</if>
+			<if test="t.id == null or t.id == '' ">
+				UUID(),
+			</if>
+			#{t.fileVersion},
+			#{t.fileRef},
+			#{t.displayIndex},
+			#{t.status}
+			)
+		</foreach>
+	</insert>
+</mapper>

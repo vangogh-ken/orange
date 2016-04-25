@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="valuedictionary">
+	<sql id="selectId">
+		ID AS id,
+		VALUE_CONTENT AS valueContent,
+		VATTR_ID,
+		DESCN AS descn,
+		STATUS AS status,
+		CREATE_TIME AS createTime,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex
+	</sql>
+	
+	<resultMap id="valueDictionaryResult" type="com.van.halley.db.persistence.entity.ValueDictionary">
+        <id property="id" column="ID" />
+        <result property="valueContent" column="VALUE_CONTENT" />
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="valueAttribute" column="VATTR_ID" select="valueattribute.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" resultMap="valueDictionaryResult">
+		select
+		<include refid="selectId" />
+		from SYS_DIC_VALUE_DICTIONARY
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.valueAttribute != null and t.valueAttribute != ''">
+				and VATTR_ID = #{t.valueAttribute.id}
+			</if>
+			<if test="t.valueContent != null and t.valueContent != ''">
+				and VALUE_CONTENT = #{t.valueContent}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="ValueDictionary"
+		resultMap="valueDictionaryResult">
+		select
+		<include refid="selectId" />
+		from SYS_DIC_VALUE_DICTIONARY
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="valueAttribute != null and valueAttribute != ''">
+				and VATTR_ID = #{valueAttribute.id}
+			</if>
+			<if test="valueContent != null and valueContent != ''">
+				and VALUE_CONTENT = #{valueContent}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+		
+		ORDER BY DISP_INX ASC
+	</select>
+
+	<select id="getAll" resultMap="valueDictionaryResult">
+		select
+		<include refid="selectId" />
+		from SYS_DIC_VALUE_DICTIONARY ORDER BY DISP_INX ASC
+	</select>
+
+	<select id="count" parameterType="ValueDictionary" resultType="int">
+		select count(0) from SYS_DIC_VALUE_DICTIONARY
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.valueAttribute != null and t.valueAttribute != ''">
+				and VATTR_ID = #{t.valueAttribute.id}
+			</if>
+			<if test="t.valueContent != null and t.valueContent != ''">
+				and VALUE_CONTENT = #{t.valueContent}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="ValueDictionary"> insert into
+		SYS_DIC_VALUE_DICTIONARY( DESCN, ID, CREATE_TIME, STATUS, VATTR_ID,
+		VALUE_CONTENT, MODIFY_TIME, DISP_INX )values ( #{descn}, UUID(),
+		#{createTime}, #{status}, #{valueAttribute.id}, #{valueContent},
+		#{modifyTime}, #{displayIndex} )
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from SYS_DIC_VALUE_DICTIONARY where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="valueDictionaryResult">
+		select
+		<include refid="selectId" />
+		from SYS_DIC_VALUE_DICTIONARY where id=#{id}
+	</select>
+
+	<update id="update" parameterType="ValueDictionary">
+		update SYS_DIC_VALUE_DICTIONARY
+		<set>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="valueAttribute != null and valueAttribute != ''">
+				VATTR_ID=#{valueAttribute.id},
+			</if>
+			<if test="valueContent != null and valueContent != ''">
+				VALUE_CONTENT=#{valueContent},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

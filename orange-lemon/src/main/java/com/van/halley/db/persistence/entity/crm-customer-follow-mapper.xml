@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="crmcustomerfollow">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		CHANCE_PLAN AS chancePlan,
+		CONTACT_POSITION AS contactPosition,
+		CONTACT_PERSON AS contactPerson,
+		CURRENT_FOLLOW_TIME AS currentFollowTime,
+		DESCN AS descn,
+		LAST_FOLLOW_TIME AS lastFollowTime,
+		FOLLOW_CONTENT AS followContent,
+		CHANCE_SUGGEST AS chanceSuggest,
+		MODIFY_TIME AS modifyTime,
+		NEXT_FOLLOW_TIME AS nextFollowTime,
+		CREATE_TIME AS createTime,
+		ID AS id,
+		CONTACT_PHONE AS contactPhone,
+		DISP_INX AS displayIndex,
+		STATUS AS status,
+		
+		USER_ID,
+		ORG_ENTITY_ID,
+		CRM_CUSTOMER_ID
+	</sql>
+	
+	<resultMap id="crmCustomerFollowMap" type="com.van.halley.db.persistence.entity.CrmCustomerFollow">
+        <id property="id" column="ID" />
+        <result property="contactPerson" column="CONTACT_PERSON" />
+        <result property="contactPosition" column="CONTACT_POSITION" />
+        <result property="contactPhone" column="CONTACT_PHONE" />
+        
+        <result property="lastFollowTime" column="LAST_FOLLOW_TIME" />
+        <result property="nextFollowTime" column="NEXT_FOLLOW_TIME" />
+        <result property="currentFollowTime" column="CURRENT_FOLLOW_TIME" />
+        <result property="followContent" column="FOLLOW_CONTENT" />
+        <result property="chancePlan" column="CHANCE_PLAN" />
+        <result property="chanceSuggest" column="CHANCE_SUGGEST" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="crmCustomer" column="CRM_CUSTOMER_ID" select="crmcustomer.getById" ></association>
+        <association property="orgEntity" column="ORG_ENTITY_ID" select="orgentity.getById" ></association>
+        <association property="follower" column="USER_ID" select="user.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="crmCustomerFollowMap">
+		select
+		<include refid="selectId" />
+		from CRM_CUSTOMER_FOLLOW
+		<where>
+			<if test="t.follower != null and t.follower != ''">
+				and USER_ID = #{t.follower.id}
+			</if>
+			<if test="t.chancePlan != null and t.chancePlan != ''">
+				and CHANCE_PLAN = #{t.chancePlan}
+			</if>
+			<if test="t.contactPosition != null and t.contactPosition != ''">
+				and CONTACT_POSITION = #{t.contactPosition}
+			</if>
+			<if test="t.contactPerson != null and t.contactPerson != ''">
+				and CONTACT_PERSON = #{t.contactPerson}
+			</if>
+			<if test="t.currentFollowTime != null and t.currentFollowTime != ''">
+				and CURRENT_FOLLOW_TIME = #{t.currentFollowTime}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.lastFollowTime != null and t.lastFollowTime != ''">
+				and LAST_FOLLOW_TIME = #{t.lastFollowTime}
+			</if>
+			<if test="t.orgEntity != null and t.orgEntity != ''">
+				and ORG_ENTITY_ID = #{t.orgEntity.id}
+			</if>
+			<if test="t.followContent != null and t.followContent != ''">
+				and FOLLOW_CONTENT = #{t.followContent}
+			</if>
+			<if test="t.chanceSuggest != null and t.chanceSuggest != ''">
+				and CHANCE_SUGGEST = #{t.chanceSuggest}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.nextFollowTime != null and t.nextFollowTime != ''">
+				and NEXT_FOLLOW_TIME = #{t.nextFollowTime}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.crmCustomer != null and t.crmCustomer != ''">
+				and CRM_CUSTOMER_ID = #{t.crmCustomer.id}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.contactPhone != null and t.contactPhone != ''">
+				and CONTACT_PHONE = #{t.contactPhone}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="CrmCustomerFollow"
+		resultMap="crmCustomerFollowMap">
+		select
+		<include refid="selectId" />
+		from CRM_CUSTOMER_FOLLOW
+		<where>
+			<if test="follower != null and follower != ''">
+				and USER_ID = #{follower.id}
+			</if>
+			<if test="chancePlan != null and chancePlan != ''">
+				and CHANCE_PLAN = #{chancePlan}
+			</if>
+			<if test="contactPosition != null and contactPosition != ''">
+				and CONTACT_POSITION = #{contactPosition}
+			</if>
+			<if test="contactPerson != null and contactPerson != ''">
+				and CONTACT_PERSON = #{contactPerson}
+			</if>
+			<if test="currentFollowTime != null and currentFollowTime != ''">
+				and CURRENT_FOLLOW_TIME = #{currentFollowTime}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="lastFollowTime != null and lastFollowTime != ''">
+				and LAST_FOLLOW_TIME = #{lastFollowTime}
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				and ORG_ENTITY_ID = #{orgEntity.id}
+			</if>
+			<if test="followContent != null and followContent != ''">
+				and FOLLOW_CONTENT = #{followContent}
+			</if>
+			<if test="chanceSuggest != null and chanceSuggest != ''">
+				and CHANCE_SUGGEST = #{chanceSuggest}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="nextFollowTime != null and nextFollowTime != ''">
+				and NEXT_FOLLOW_TIME = #{nextFollowTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="crmCustomer != null and crmCustomer != ''">
+				and CRM_CUSTOMER_ID = #{crmCustomer.id}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="contactPhone != null and contactPhone != ''">
+				and CONTACT_PHONE = #{contactPhone}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+			ORDER BY CURRENT_FOLLOW_TIME DESC
+	</select>
+
+	<select id="getAll" resultMap="crmCustomerFollowMap">
+		select
+		<include refid="selectId" />
+		from CRM_CUSTOMER_FOLLOW
+	</select>
+
+	<select id="count" parameterType="CrmCustomerFollow" resultType="int">
+		select count(0) from CRM_CUSTOMER_FOLLOW
+		<where>
+			<if test="follower != null and follower != ''">
+				and USER_ID = #{follower.id}
+			</if>
+			<if test="chancePlan != null and chancePlan != ''">
+				and CHANCE_PLAN = #{chancePlan}
+			</if>
+			<if test="contactPosition != null and contactPosition != ''">
+				and CONTACT_POSITION = #{contactPosition}
+			</if>
+			<if test="contactPerson != null and contactPerson != ''">
+				and CONTACT_PERSON = #{contactPerson}
+			</if>
+			<if test="currentFollowTime != null and currentFollowTime != ''">
+				and CURRENT_FOLLOW_TIME = #{currentFollowTime}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="lastFollowTime != null and lastFollowTime != ''">
+				and LAST_FOLLOW_TIME = #{lastFollowTime}
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				and ORG_ENTITY_ID = #{orgEntity.id}
+			</if>
+			<if test="followContent != null and followContent != ''">
+				and FOLLOW_CONTENT = #{followContent}
+			</if>
+			<if test="chanceSuggest != null and chanceSuggest != ''">
+				and CHANCE_SUGGEST = #{chanceSuggest}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="nextFollowTime != null and nextFollowTime != ''">
+				and NEXT_FOLLOW_TIME = #{nextFollowTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="crmCustomer != null and crmCustomer != ''">
+				and CRM_CUSTOMER_ID = #{crmCustomer.id}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="contactPhone != null and contactPhone != ''">
+				and CONTACT_PHONE = #{contactPhone}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="CrmCustomerFollow">
+		insert into CRM_CUSTOMER_FOLLOW( USER_ID, CHANCE_PLAN,
+		CONTACT_POSITION, CONTACT_PERSON, CURRENT_FOLLOW_TIME, DESCN,
+		LAST_FOLLOW_TIME, ORG_ENTITY_ID, FOLLOW_CONTENT, CHANCE_SUGGEST,
+		MODIFY_TIME, NEXT_FOLLOW_TIME, CREATE_TIME, CRM_CUSTOMER_ID, ID,
+		CONTACT_PHONE, DISP_INX, STATUS )values ( #{follower.id}, #{chancePlan},
+		#{contactPosition}, #{contactPerson}, #{currentFollowTime}, #{descn},
+		#{lastFollowTime}, #{orgEntity.id}, #{followContent}, #{chanceSuggest},
+		#{modifyTime}, #{nextFollowTime}, #{createTime}, #{crmCustomer.id},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{contactPhone},
+		#{displayIndex},
+		#{status}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from CRM_CUSTOMER_FOLLOW where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="crmCustomerFollowMap">
+		select
+		<include refid="selectId" />
+		from CRM_CUSTOMER_FOLLOW where id=#{id}
+	</select>
+	
+	<select id="getLastByCrmCusotmerId" parameterType="java.util.HashMap" resultMap="crmCustomerFollowMap">
+		select
+		<include refid="selectId" />
+		from CRM_CUSTOMER_FOLLOW where CRM_CUSTOMER_ID=#{crmCustomerId} 
+		<if test="follwerId != null and follwerId != ''">
+			AND USER_ID=#{follwerId}
+		</if>
+		
+		ORDER BY CURRENT_FOLLOW_TIME DESC LIMIT 1
+	</select>
+
+	<update id="update" parameterType="CrmCustomerFollow">
+		update CRM_CUSTOMER_FOLLOW
+		<set>
+			<if test="follower != null and follower != ''">
+				USER_ID=#{follower.id},
+			</if>
+			<if test="chancePlan != null and chancePlan != ''">
+				CHANCE_PLAN=#{chancePlan},
+			</if>
+			<if test="contactPosition != null and contactPosition != ''">
+				CONTACT_POSITION=#{contactPosition},
+			</if>
+			<if test="contactPerson != null and contactPerson != ''">
+				CONTACT_PERSON=#{contactPerson},
+			</if>
+			<if test="currentFollowTime != null and currentFollowTime != ''">
+				CURRENT_FOLLOW_TIME=#{currentFollowTime},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="lastFollowTime != null and lastFollowTime != ''">
+				LAST_FOLLOW_TIME=#{lastFollowTime},
+			</if>
+			<if test="orgEntity != null and orgEntity != ''">
+				ORG_ENTITY_ID=#{orgEntity.id},
+			</if>
+			<if test="followContent != null and followContent != ''">
+				FOLLOW_CONTENT=#{followContent},
+			</if>
+			<if test="chanceSuggest != null and chanceSuggest != ''">
+				CHANCE_SUGGEST=#{chanceSuggest},
+			</if>
+			MODIFY_TIME=SYSDATE(),
+			<if test="nextFollowTime != null and nextFollowTime != ''">
+				NEXT_FOLLOW_TIME=#{nextFollowTime},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="crmCustomer != null and crmCustomer != ''">
+				CRM_CUSTOMER_ID=#{crmCustomer.id},
+			</if>
+			<if test="contactPhone != null and contactPhone != ''">
+				CONTACT_PHONE=#{contactPhone},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+		</set>
+		WHERE ID=#{id}
+	</update>
+</mapper>

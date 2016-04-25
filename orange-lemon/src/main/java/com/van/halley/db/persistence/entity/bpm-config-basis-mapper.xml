@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bpmconfigbasis">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		DESCN AS descn,
+		ID AS id,
+		CREATE_TIME AS createTime,
+		CONF_MANAGE_URL AS configManageUrl,
+		CONF_PRIME_URL AS configPrimeUrl,
+		STATUS AS status,
+		BPM_KEY AS bpmKey,
+		MODIFY_TIME AS modifyTime,
+		DISP_INX AS displayIndex,
+		
+		BPM_CONF_CATEGORY_ID,
+		BASIS_APPLICATION_ID,
+		BASIS_SUBSTANCE_TYPE_ID
+	</sql>
+	
+	<resultMap id="bpmConfigBasisMap" type="com.van.halley.db.persistence.entity.BpmConfigBasis">
+        <id property="id" column="ID" />
+        <result property="bpmKey" column="BPM_KEY" />
+        <result property="configPrimeUrl" column="CONF_PRIME_URL" />
+        <result property="configManageUrl" column="CONF_MANAGE_URL" />
+        
+        <result property="descn" column="DESCN" />
+        <result property="status" column="STATUS" />
+        <result property="createTime" column="CREATE_TIME" />
+        <result property="modifyTime" column="MODIFY_TIME" />
+        <result property="displayIndex" column="DISP_INX" />
+        
+        <association property="basisSubstanceType" column="BASIS_SUBSTANCE_TYPE_ID" select="basissubstancetype.getById" ></association>
+        <association property="basisApplication" column="BASIS_APPLICATION_ID" select="basisapplication.getById" ></association>
+        <association property="bpmConfigCategory" column="BPM_CONF_CATEGORY_ID" select="bpmconfigcategory.getById" ></association>
+    </resultMap>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultMap="bpmConfigBasisMap">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_BASIS
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.configManageUrl != null and t.configManageUrl != ''">
+				and CONF_MANAGE_URL = #{t.configManageUrl}
+			</if>
+			<if test="t.configPrimeUrl != null and t.configPrimeUrl != ''">
+				and CONF_PRIME_URL = #{t.configPrimeUrl}
+			</if>
+			<if test="t.bpmConfigCategory != null and t.bpmConfigCategory != ''">
+				and BPM_CONF_CATEGORY_ID = #{t.bpmConfigCategory.id}
+			</if>
+			<if test="t.basisApplication != null and t.basisApplication != ''">
+				and BASIS_APPLICATION_ID = #{t.basisApplication.id}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.bpmKey != null and t.bpmKey != ''">
+				and BPM_KEY = #{t.bpmKey}
+			</if>
+			<if test="t.basisSubstanceType != null and t.basisSubstanceType != ''">
+				and BASIS_SUBSTANCE_TYPE_ID = #{t.basisSubstanceType.id}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="BpmConfigBasis"
+		resultMap="bpmConfigBasisMap">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_BASIS
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="configManageUrl != null and configManageUrl != ''">
+				and CONF_MANAGE_URL = #{configManageUrl}
+			</if>
+			<if test="configPrimeUrl != null and configPrimeUrl != ''">
+				and CONF_PRIME_URL = #{configPrimeUrl}
+			</if>
+			<if test="bpmConfigCategory != null and bpmConfigCategory != ''">
+				and BPM_CONF_CATEGORY_ID = #{bpmConfigCategory.id}
+			</if>
+			<if test="basisApplication != null and basisApplication != ''">
+				and BASIS_APPLICATION_ID = #{basisApplication.id}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="bpmKey != null and bpmKey != ''">
+				and BPM_KEY = #{bpmKey}
+			</if>
+			<if test="basisSubstanceType != null and basisSubstanceType != ''">
+				and BASIS_SUBSTANCE_TYPE_ID = #{basisSubstanceType.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultMap="bpmConfigBasisMap">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_BASIS
+	</select>
+
+	<select id="count" parameterType="BpmConfigBasis" resultType="int">
+		select count(0) from BPM_CONF_BASIS
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="configManageUrl != null and configManageUrl != ''">
+				and CONF_MANAGE_URL = #{configManageUrl}
+			</if>
+			<if test="configPrimeUrl != null and configPrimeUrl != ''">
+				and CONF_PRIME_URL = #{configPrimeUrl}
+			</if>
+			<if test="bpmConfigCategory != null and bpmConfigCategory != ''">
+				and BPM_CONF_CATEGORY_ID = #{bpmConfigCategory.id}
+			</if>
+			<if test="basisApplication != null and basisApplication != ''">
+				and BASIS_APPLICATION_ID = #{basisApplication.id}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="bpmKey != null and bpmKey != ''">
+				and BPM_KEY = #{bpmKey}
+			</if>
+			<if test="basisSubstanceType != null and basisSubstanceType != ''">
+				and BASIS_SUBSTANCE_TYPE_ID = #{basisSubstanceType.id}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="BpmConfigBasis">
+		insert into BPM_CONF_BASIS( DESCN, ID, CREATE_TIME, CONF_MANAGE_URL,
+		CONF_PRIME_URL, BPM_CONF_CATEGORY_ID, BASIS_APPLICATION_ID, STATUS,
+		BPM_KEY, BASIS_SUBSTANCE_TYPE_ID, MODIFY_TIME, DISP_INX )values (
+		#{descn},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{createTime},
+		#{configManageUrl},
+		#{configPrimeUrl},
+		#{bpmConfigCategory.id},
+		#{basisApplication.id},
+		#{status},
+		#{bpmKey},
+		#{basisSubstanceType.id},
+		#{modifyTime},
+		#{displayIndex}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from BPM_CONF_BASIS where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultMap="bpmConfigBasisMap">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_BASIS where id=#{id}
+	</select>
+
+	<update id="update" parameterType="BpmConfigBasis">
+		update BPM_CONF_BASIS
+		<set>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="configManageUrl != null and configManageUrl != ''">
+				CONF_MANAGE_URL=#{configManageUrl},
+			</if>
+			<if test="configPrimeUrl != null and configPrimeUrl != ''">
+				CONF_PRIME_URL=#{configPrimeUrl},
+			</if>
+			<if test="bpmConfigCategory != null and bpmConfigCategory != ''">
+				BPM_CONF_CATEGORY_ID=#{bpmConfigCategory.id},
+			</if>
+			<if test="basisApplication != null and basisApplication != ''">
+				BASIS_APPLICATION_ID=#{basisApplication.id},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="bpmKey != null and bpmKey != ''">
+				BPM_KEY=#{bpmKey},
+			</if>
+			<if test="basisSubstanceType != null and basisSubstanceType != ''">
+				BASIS_SUBSTANCE_TYPE_ID=#{basisSubstanceType.id},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<!-- 获取该用户的流程信息-->
+	<select id="getByUserId" parameterType="String" resultMap="bpmConfigBasisMap">
+		SELECT 
+		<include refid="selectId" />
+		FROM BPM_CONF_BASIS WHERE ID IN(SELECT BPM_ID FROM
+		SYS_AUTH_ROLE_BPM WHERE ROLE_ID IN( 
+		SELECT ROLE_ID FROM SYS_AUTH_POSITION_ROLE WHERE POSITION_ID=(
+		SELECT POSITION_ID FROM SYS_AUTH_USER WHERE ID=#{userId}))) ORDER BY BPM_CONF_CATEGORY_ID ASC
+	</select>
+	
+	<!-- 获取该角色的流程信息-->
+	<select id="getByRoleId" parameterType="String" resultMap="bpmConfigBasisMap">
+		SELECT 
+		<include refid="selectId" />
+		FROM BPM_CONF_BASIS WHERE ID IN (SELECT BPM_ID FROM SYS_AUTH_ROLE_BPM WHERE ROLE_ID = #{roleId}) ORDER BY BPM_CONF_CATEGORY_ID ASC
+	</select>
+	
+	<!-- 增加角色和流程信息 -->
+	<insert id="addRoleBpm" parameterType="RoleBpm">
+		INSERT INTO SYS_AUTH_ROLE_BPM(ROLE_ID, BPM_ID) values (#{roleId}, #{bpmId})
+	</insert>
+	
+	<!-- 删除角色的流程信息 -->
+	<delete id="deleteRoleBpm" parameterType="String">
+		delete from SYS_AUTH_ROLE_BPM where role_id=#{roleId}
+	</delete>
+	
+	<select id="getByBpmKey" parameterType="String" resultMap="bpmConfigBasisMap">
+		select
+		<include refid="selectId" />
+		from BPM_CONF_BASIS where BPM_KEY=#{bpmKey}
+	</select>
+</mapper>

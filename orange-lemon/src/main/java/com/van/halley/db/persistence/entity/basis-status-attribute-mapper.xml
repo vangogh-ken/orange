@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="basisstatusattribute">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		DESCN AS descn,
+		ID AS id,
+		CREATE_TIME AS createTime,
+		STATUS AS status,
+		BASIS_ATTR_ID AS basisAttributeId,
+		MODIFY_TIME AS modifyTime,
+		READONLY AS readonly,
+		DISP_INX AS displayIndex,
+		BASIS_STATUS_ID AS basisStatusId
+	</sql>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultType="BasisStatusAttribute">
+		select
+		<include refid="selectId" />
+		from BASIS_STATUS_ATTR
+		<where>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="t.basisAttributeId != null and t.basisAttributeId != ''">
+				and BASIS_ATTR_ID = #{t.basisAttributeId}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.readonly != null and t.readonly != ''">
+				and READONLY = #{t.readonly}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.basisStatusId != null and t.basisStatusId != ''">
+				and BASIS_STATUS_ID = #{t.basisStatusId}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="BasisStatusAttribute"
+		resultType="BasisStatusAttribute">
+		select
+		<include refid="selectId" />
+		from BASIS_STATUS_ATTR
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="basisAttributeId != null and basisAttributeId != ''">
+				and BASIS_ATTR_ID = #{basisAttributeId}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="readonly != null and readonly != ''">
+				and READONLY = #{readonly}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="basisStatusId != null and basisStatusId != ''">
+				and BASIS_STATUS_ID = #{basisStatusId}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="BasisStatusAttribute">
+		select
+		<include refid="selectId" />
+		from BASIS_STATUS_ATTR
+	</select>
+
+	<select id="count" parameterType="BasisStatusAttribute"
+		resultType="int">
+		select count(0) from BASIS_STATUS_ATTR
+		<where>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+			<if test="basisAttributeId != null and basisAttributeId != ''">
+				and BASIS_ATTR_ID = #{basisAttributeId}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="readonly != null and readonly != ''">
+				and READONLY = #{readonly}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="basisStatusId != null and basisStatusId != ''">
+				and BASIS_STATUS_ID = #{basisStatusId}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="BasisStatusAttribute">
+		insert into BASIS_STATUS_ATTR( DESCN, ID, CREATE_TIME, STATUS,
+		BASIS_ATTR_ID, MODIFY_TIME, READONLY, DISP_INX, BASIS_STATUS_ID
+		)values ( #{descn},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{createTime},
+		#{status},
+		#{basisAttributeId},
+		#{modifyTime},
+		#{readonly},
+		#{displayIndex},
+		#{basisStatusId}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from BASIS_STATUS_ATTR where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="BasisStatusAttribute">
+		select
+		<include refid="selectId" />
+		from BASIS_STATUS_ATTR where id=#{id}
+	</select>
+
+	<update id="update" parameterType="BasisStatusAttribute">
+		update BASIS_STATUS_ATTR
+		<set>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="id != null and id != ''">
+				ID=#{id},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+			<if test="basisAttributeId != null and basisAttributeId != ''">
+				BASIS_ATTR_ID=#{basisAttributeId},
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				MODIFY_TIME=#{modifyTime},
+			</if>
+			<if test="readonly != null and readonly != ''">
+				READONLY=#{readonly},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="basisStatusId != null and basisStatusId != ''">
+				BASIS_STATUS_ID=#{basisStatusId},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>
