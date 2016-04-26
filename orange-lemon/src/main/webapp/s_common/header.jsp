@@ -48,7 +48,7 @@
     <!-- BEGIN HEADER -->
     <div class="header">
       <div class="container">
-        <a class="site-logo" href="shop-index.html"><img src="../../assets/frontend/layout/img/logos/logo-shop-red.png" alt="Metronic Shop UI"></a>
+        <a class="site-logo" href="shop-index.html"><img src="${ctx}/s_/assets/frontend/layout/img/logos/logo-shop-red.png" alt="Metronic Shop UI"></a>
 
         <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars"></i></a>
 
@@ -64,56 +64,56 @@
             <div class="top-cart-content">
               <ul class="scroller" style="height: 250px;">
                 <li>
-                  <a href="shop-item.html"><img src="../../assets/frontend/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
+                  <a href="shop-item.html"><img src="${ctx}/s_/assets/frontend/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
                   <span class="cart-content-count">x 1</span>
                   <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
                   <em>$1230</em>
                   <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
                 </li>
                 <li>
-                  <a href="shop-item.html"><img src="../../assets/frontend/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
+                  <a href="shop-item.html"><img src="${ctx}/s_/assets/frontend/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
                   <span class="cart-content-count">x 1</span>
                   <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
                   <em>$1230</em>
                   <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
                 </li>
                 <li>
-                  <a href="shop-item.html"><img src="../../assets/frontend/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
+                  <a href="shop-item.html"><img src="${ctx}/s_/assets/frontend/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
                   <span class="cart-content-count">x 1</span>
                   <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
                   <em>$1230</em>
                   <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
                 </li>
                 <li>
-                  <a href="shop-item.html"><img src="../../assets/frontend/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
+                  <a href="shop-item.html"><img src="${ctx}/s_/assets/frontend/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
                   <span class="cart-content-count">x 1</span>
                   <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
                   <em>$1230</em>
                   <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
                 </li>
                 <li>
-                  <a href="shop-item.html"><img src="../../assets/frontend/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
+                  <a href="shop-item.html"><img src="${ctx}/s_/assets/frontend/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
                   <span class="cart-content-count">x 1</span>
                   <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
                   <em>$1230</em>
                   <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
                 </li>
                 <li>
-                  <a href="shop-item.html"><img src="../../assets/frontend/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
+                  <a href="shop-item.html"><img src="${ctx}/s_/assets/frontend/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
                   <span class="cart-content-count">x 1</span>
                   <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
                   <em>$1230</em>
                   <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
                 </li>
                 <li>
-                  <a href="shop-item.html"><img src="../../assets/frontend/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
+                  <a href="shop-item.html"><img src="${ctx}/s_/assets/frontend/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
                   <span class="cart-content-count">x 1</span>
                   <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
                   <em>$1230</em>
                   <a href="javascript:void(0);" class="del-goods">&nbsp;</a>
                 </li>
                 <li>
-                  <a href="shop-item.html"><img src="../../assets/frontend/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
+                  <a href="shop-item.html"><img src="${ctx}/s_/assets/frontend/pages/img/cart-img.jpg" alt="Rolex Classic Watch" width="37" height="34"></a>
                   <span class="cart-content-count">x 1</span>
                   <strong><a href="shop-item.html">Rolex Classic Watch</a></strong>
                   <em>$1230</em>
@@ -214,11 +214,11 @@
                       </div>
                       <div class="col-md-12 nav-brands">
                         <ul>
-                          <li><a href="shop-product-list.html"><img title="esprit" alt="esprit" src="../../assets/frontend/pages/img/brands/esprit.jpg"></a></li>
-                          <li><a href="shop-product-list.html"><img title="gap" alt="gap" src="../../assets/frontend/pages/img/brands/gap.jpg"></a></li>
-                          <li><a href="shop-product-list.html"><img title="next" alt="next" src="../../assets/frontend/pages/img/brands/next.jpg"></a></li>
-                          <li><a href="shop-product-list.html"><img title="puma" alt="puma" src="../../assets/frontend/pages/img/brands/puma.jpg"></a></li>
-                          <li><a href="shop-product-list.html"><img title="zara" alt="zara" src="../../assets/frontend/pages/img/brands/zara.jpg"></a></li>
+                          <li><a href="shop-product-list.html"><img title="esprit" alt="esprit" src="${ctx}/s_/assets/frontend/pages/img/brands/esprit.jpg"></a></li>
+                          <li><a href="shop-product-list.html"><img title="gap" alt="gap" src="${ctx}/s_/assets/frontend/pages/img/brands/gap.jpg"></a></li>
+                          <li><a href="shop-product-list.html"><img title="next" alt="next" src="${ctx}/s_/assets/frontend/pages/img/brands/next.jpg"></a></li>
+                          <li><a href="shop-product-list.html"><img title="puma" alt="puma" src="${ctx}/s_/assets/frontend/pages/img/brands/puma.jpg"></a></li>
+                          <li><a href="shop-product-list.html"><img title="zara" alt="zara" src="${ctx}/s_/assets/frontend/pages/img/brands/zara.jpg"></a></li>
                         </ul>
                       </div>
                     </div>
@@ -239,7 +239,7 @@
                       <div class="col-md-3 col-sm-4 col-xs-6">
                         <div class="product-item">
                           <div class="pi-img-wrapper">
-                            <a href="shop-item.html"><img src="../../assets/frontend/pages/img/products/model4.jpg" class="img-responsive" alt="Berry Lace Dress"></a>
+                            <a href="shop-item.html"><img src="${ctx}/s_/assets/frontend/pages/img/products/model4.jpg" class="img-responsive" alt="Berry Lace Dress"></a>
                           </div>
                           <h3><a href="shop-item.html">Berry Lace Dress</a></h3>
                           <div class="pi-price">$29.00</div>
@@ -249,7 +249,7 @@
                       <div class="col-md-3 col-sm-4 col-xs-6">
                         <div class="product-item">
                           <div class="pi-img-wrapper">
-                            <a href="shop-item.html"><img src="../../assets/frontend/pages/img/products/model3.jpg" class="img-responsive" alt="Berry Lace Dress"></a>
+                            <a href="shop-item.html"><img src="${ctx}/s_/assets/frontend/pages/img/products/model3.jpg" class="img-responsive" alt="Berry Lace Dress"></a>
                           </div>
                           <h3><a href="shop-item.html">Berry Lace Dress</a></h3>
                           <div class="pi-price">$29.00</div>
@@ -259,7 +259,7 @@
                       <div class="col-md-3 col-sm-4 col-xs-6">
                         <div class="product-item">
                           <div class="pi-img-wrapper">
-                            <a href="shop-item.html"><img src="../../assets/frontend/pages/img/products/model7.jpg" class="img-responsive" alt="Berry Lace Dress"></a>
+                            <a href="shop-item.html"><img src="${ctx}/s_/assets/frontend/pages/img/products/model7.jpg" class="img-responsive" alt="Berry Lace Dress"></a>
                           </div>
                           <h3><a href="shop-item.html">Berry Lace Dress</a></h3>
                           <div class="pi-price">$29.00</div>
@@ -269,7 +269,7 @@
                       <div class="col-md-3 col-sm-4 col-xs-6">
                         <div class="product-item">
                           <div class="pi-img-wrapper">
-                            <a href="shop-item.html"><img src="../../assets/frontend/pages/img/products/model4.jpg" class="img-responsive" alt="Berry Lace Dress"></a>
+                            <a href="shop-item.html"><img src="${ctx}/s_/assets/frontend/pages/img/products/model4.jpg" class="img-responsive" alt="Berry Lace Dress"></a>
                           </div>
                           <h3><a href="shop-item.html">Berry Lace Dress</a></h3>
                           <div class="pi-price">$29.00</div>

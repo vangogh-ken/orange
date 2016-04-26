@@ -1,8 +1,13 @@
 <%@page language="java" pageEncoding="UTF-8" %>
 
 <!-- Fonts START -->
+  
   <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|PT+Sans+Narrow|Source+Sans+Pro:200,300,400,600,700,900&amp;subset=all" rel="stylesheet" type="text/css">
-  <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900&amp;subset=all" rel="stylesheet" type="text/css"><!--- fonts for slider on the index page -->  
+  <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900&amp;subset=all" rel="stylesheet" type="text/css">
+   <!--
+  <link href="${ctx}/s_/assets/global/plugins/font/font-face1.css" rel="stylesheet">
+  <link href="${ctx}/s_/assets/global/plugins/font/font-face2.css" rel="stylesheet">
+  -->
   <!-- Fonts END -->
 
   <!-- Global styles START -->          
@@ -14,7 +19,10 @@
   <link href="${ctx}/s_/assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet">
   <link href="${ctx}/s_/assets/global/plugins/carousel-owl-carousel/owl-carousel/owl.carousel.css" rel="stylesheet">
   <link href="${ctx}/s_/assets/global/plugins/slider-layer-slider/css/layerslider.css" rel="stylesheet">
+  <link href="${ctx}/s_/assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css">
   <link href="${ctx}/s_/assets/global/plugins/slider-revolution-slider/rs-plugin/css/settings.css" rel="stylesheet">
+  <link href="${ctx}/s_/assets/global/plugins/smoothness/jquery-ui.css" rel="stylesheet" type="text/css"><!-- for slider-range -->
+  <link href="${ctx}/s_/assets/global/plugins/rateit/src/rateit.css" rel="stylesheet" type="text/css">
   <!-- Page level plugin styles END -->
 
   <!-- Theme styles START -->

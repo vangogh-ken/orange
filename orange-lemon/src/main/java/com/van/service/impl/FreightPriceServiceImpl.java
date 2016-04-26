@@ -42,7 +42,7 @@ public class FreightPriceServiceImpl implements FreightPriceService {
 	
 	@PostConstruct
 	public void init(){
-		refreshCache();
+		//refreshCache();
 	}
 	/**
 	 * 刷新缓存

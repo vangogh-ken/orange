@@ -107,6 +107,7 @@
 				<value>/wx/*</value>
 				<value>/public/*</value>
 				<value>*/websocket.do</value>
+				<value>/shop/*</value>
 			</list>
 		</property>
 	</bean>
