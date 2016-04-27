@@ -46,4 +46,49 @@ public class ItemController {
 	public String forgottonPassword(){
 		return "/s_content/shop/forgotton-password";
 	}
+	
+	@RequestMapping(value = "about")
+	public String about(){
+		return "/s_content/shop/about";
+	}
+	
+	@RequestMapping(value = "account")
+	public String account(){
+		return "/s_content/shop/account";
+	}
+	
+	@RequestMapping(value = "compare")
+	public String compare(){
+		return "/s_content/shop/compare";
+	}
+	
+	@RequestMapping(value = "contacts")
+	public String contacts(){
+		return "/s_content/shop/contacts";
+	}
+	
+	@RequestMapping(value = "faq")
+	public String faq(){
+		return "/s_content/shop/faq";
+	}
+	
+	@RequestMapping(value = "privacy-policy")
+	public String privacyPolicy(){
+		return "/s_content/shop/privacy-policy";
+	}
+	
+	@RequestMapping(value = "search-result")
+	public String searchResult(){
+		return "/s_content/shop/search-result";
+	}
+	
+	@RequestMapping(value = "terms-condition")
+	public String termsCondition(){
+		return "/s_content/shop/terms-condition";
+	}
+	
+	@RequestMapping(value = "wish-list")
+	public String wishList(){
+		return "/s_content/shop/wish-list";
+	}
 }

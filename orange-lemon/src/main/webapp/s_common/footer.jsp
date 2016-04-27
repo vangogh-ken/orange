@@ -16,11 +16,12 @@
     <script src="${ctx}/s_/assets/global/plugins/carousel-owl-carousel/owl-carousel/owl.carousel.min.js" type="text/javascript"></script><!-- slider for products -->
     <script src='${ctx}/s_/assets/global/plugins/zoom/jquery.zoom.min.js' type="text/javascript"></script><!-- product zoom -->
     <script src="${ctx}/s_/assets/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js" type="text/javascript"></script><!-- Quantity -->
-    
     <script src="${ctx}/s_/assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
     <script src="${ctx}/s_/assets/global/plugins/rateit/src/jquery.rateit.js" type="text/javascript"></script>
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script><!-- for slider-range -->
-
+    <script src="${ctx}/s_/assets/global/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+    <!--  
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script>
+-->
     <!-- BEGIN LayerSlider -->
     <script src="${ctx}/s_/assets/global/plugins/slider-layer-slider/js/greensock.js" type="text/javascript"></script><!-- External libraries: GreenSock -->
     <script src="${ctx}/s_/assets/global/plugins/slider-layer-slider/js/layerslider.transitions.js" type="text/javascript"></script><!-- LayerSlider script files -->

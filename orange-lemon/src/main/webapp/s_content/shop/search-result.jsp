@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/s_common/taglibs.jsp"%>
 <!DOCTYPE html>
+
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
@@ -9,77 +10,28 @@
 
 <head>
   <%@include file="/s_common/meta.jsp"%>
-  <title>list</title>
+  <title>enroll</title>
   <%@include file="/s_common/s.jsp"%>
 </head>
 
 <!-- Body BEGIN -->
 <body class="ecommerce">
-   <%@include file="/s_common/setting.jsp"%>
-   <%@include file="/s_common/header.jsp"%>
-    <div class="title-wrapper">
-      <div class="container"><div class="container-inner">
-        <h1><span>MEN</span> CATEGORY</h1>
-        <em>Over 4000 Items are available here</em>
-      </div></div>
-    </div>
+    <%@include file="/s_common/setting.jsp"%>
+    <%@include file="/s_common/header.jsp"%>
 
     <div class="main">
       <div class="container">
         <ul class="breadcrumb">
             <li><a href="index.html">Home</a></li>
             <li><a href="">Store</a></li>
-            <li class="active">Men category</li>
+            <li class="active">Search result</li>
         </ul>
         <!-- BEGIN SIDEBAR & CONTENT -->
         <div class="row margin-bottom-40">
           <!-- BEGIN SIDEBAR -->
           <div class="sidebar col-md-3 col-sm-5">
-            <ul class="list-group margin-bottom-25 sidebar-menu">
-              <li class="list-group-item clearfix"><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Ladies</a></li>
-              <li class="list-group-item clearfix dropdown active">
-                <a href="javascript:void(0);" class="collapsed">
-                  <i class="fa fa-angle-right"></i>
-                  Mens
-                  
-                </a>
-                <ul class="dropdown-menu" style="display:block;">
-                  <li class="list-group-item dropdown clearfix active">
-                    <a href="javascript:void(0);" class="collapsed"><i class="fa fa-angle-right"></i> Shoes </a>
-                      <ul class="dropdown-menu" style="display:block;">
-                        <li class="list-group-item dropdown clearfix">
-                          <a href="javascript:void(0);"><i class="fa fa-angle-right"></i> Classic </a>
-                          <ul class="dropdown-menu">
-                            <li><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Classic 1</a></li>
-                            <li><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Classic 2</a></li>
-                          </ul>
-                        </li>
-                        <li class="list-group-item dropdown clearfix active">
-                          <a href="javascript:void(0);" class="collapsed"><i class="fa fa-angle-right"></i> Sport  </a>
-                          <ul class="dropdown-menu" style="display:block;">
-                            <li class="active"><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Sport 1</a></li>
-                            <li><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Sport 2</a></li>
-                          </ul>
-                        </li>
-                      </ul>
-                  </li>
-                  <li><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Trainers</a></li>
-                  <li><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Jeans</a></li>
-                  <li><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Chinos</a></li>
-                  <li><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> T-Shirts</a></li>
-                </ul>
-              </li>
-              <li class="list-group-item clearfix"><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Kids</a></li>
-              <li class="list-group-item clearfix"><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Accessories</a></li>
-              <li class="list-group-item clearfix"><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Sports</a></li>
-              <li class="list-group-item clearfix"><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Brands</a></li>
-              <li class="list-group-item clearfix"><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Electronics</a></li>
-              <li class="list-group-item clearfix"><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Home & Garden</a></li>
-              <li class="list-group-item clearfix"><a href="shop-product-list.html"><i class="fa fa-angle-right"></i> Custom Link</a></li>
-            </ul>
-
             <div class="sidebar-filter margin-bottom-25">
-              <h2>Filter</h2>
+              <h2>Search categories</h2>
               <h3>Availability</h3>
               <div class="checkbox-list">
                 <label><input type="checkbox"> Not Available (3)</label>
@@ -116,6 +68,23 @@
           <!-- END SIDEBAR -->
           <!-- BEGIN CONTENT -->
           <div class="col-md-9 col-sm-7">
+            <div class="content-search margin-bottom-20">
+              <div class="row">
+                <div class="col-md-6">
+                  <h1>Search result for <em>shoes</em></h1>
+                </div>
+                <div class="col-md-6">
+                  <form action="#">
+                    <div class="input-group">
+                      <input type="text" placeholder="Search again" class="form-control">
+                      <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                      </span>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
             <div class="row list-view-sorting clearfix">
               <div class="col-md-2 col-sm-2 list-view">
                 <a href="javascript:;"><i class="fa fa-th-large"></i></a>
@@ -160,7 +129,7 @@
                       <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
                     </div>
                   </div>
-                  <h3><a href="shop-item.html">Berry Lace Dress Berry Lace Dress</a></h3>
+                  <h3><a href="shop-item.html">Berry Lace Dress</a></h3>
                   <div class="pi-price">$29.00</div>
                   <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
                 </div>
@@ -196,7 +165,7 @@
                   <div class="pi-price">$29.00</div>
                   <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
                 </div>
-              </div>              
+              </div>
               <!-- PRODUCT ITEM END -->
             </div>
             <div class="row product-list">
@@ -210,7 +179,7 @@
                         <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
                     </div>
                   </div>
-                  <h3><a href="shop-item.html">Berry Lace Dress Berry Lace Dress</a></h3>
+                  <h3><a href="shop-item.html">Berry Lace Dress</a></h3>
                   <div class="pi-price">$29.00</div>
                   <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
                 </div>
@@ -247,7 +216,7 @@
                   <div class="pi-price">$29.00</div>
                   <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
                 </div>
-              </div>              
+              </div>
               <!-- PRODUCT ITEM END -->
             </div>
             <div class="row product-list">
@@ -345,7 +314,8 @@
         </div>
     </div>
     <!-- END BRANDS -->
-    <%@include file="/s_common/bottom.jsp"%>
+	<%@include file="/s_common/bottom.jsp"%>
 	<%@include file="/s_common/footer.jsp"%>
 </body>
+<!-- END BODY -->
 </html>

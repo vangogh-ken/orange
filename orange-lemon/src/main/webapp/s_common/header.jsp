@@ -9,20 +9,20 @@
                 <!-- BEGIN TOP BAR LEFT PART -->
                 <div class="col-md-6 col-sm-6 additional-shop-info">
                     <ul class="list-unstyled list-inline">
-                        <li><i class="fa fa-phone"></i><span>+1 456 6717</span></li>
+                        <li><i class="fa fa-phone"></i><span>400 111222</span></li>
                         <!-- BEGIN CURRENCIES -->
                         <li class="shop-currencies">
+                        	<!--  
                             <a href="javascript:void(0);">$</a>
+                            -->
                             <a href="javascript:void(0);" class="current">¥</a>
                         </li>
                         <!-- END CURRENCIES -->
                         <!-- BEGIN LANGS -->
                         <li class="langs-block">
-                            <a href="javascript:void(0);" class="current">English </a>
+                            <a href="javascript:void(0);" class="current">中文 </a>
                             <div class="langs-block-others-wrapper"><div class="langs-block-others">
-                              <a href="javascript:void(0);">French</a>
-                              <a href="javascript:void(0);">Germany</a>
-                              <a href="javascript:void(0);">Turkish</a>
+                              <a href="javascript:void(0);">Englist</a>
                             </div></div>
                         </li>
                         <!-- END LANGS -->
@@ -32,10 +32,10 @@
                 <!-- BEGIN TOP BAR MENU -->
                 <div class="col-md-6 col-sm-6 additional-nav">
                     <ul class="list-unstyled list-inline pull-right">
-                        <li><a href="shop-account.html">My Account</a></li>
-                        <li><a href="shop-wishlist.html">My Wishlist</a></li>
-                        <li><a href="shop-checkout.html">Checkout</a></li>
-                        <li><a href="page-login.html">Log In</a></li>
+                        <li><a href="account.do">我的达林</a></li>
+                        <li><a href="wish-list.do">愿望单</a></li>
+                        <li><a href="checkout.do">结算</a></li>
+                        <li><a href="login.do">登录</a></li>
                     </ul>
                 </div>
                 <!-- END TOP BAR MENU -->
@@ -47,15 +47,15 @@
     <!-- BEGIN HEADER -->
     <div class="header">
       <div class="container">
-        <a class="site-logo" href="shop-index.html"><img src="${ctx}/s_/assets/frontend/layout/img/logos/logo-shop-red.png" alt="Metronic Shop UI"></a>
+        <a class="site-logo" href="index.do"><img src="${ctx}/s_/assets/frontend/layout/img/logos/logo-shop-red.png" alt="Metronic Shop UI"></a>
 
         <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars"></i></a>
 
         <!-- BEGIN CART -->
         <div class="top-cart-block">
           <div class="top-cart-info">
-            <a href="javascript:void(0);" class="top-cart-info-count">3 items</a>
-            <a href="javascript:void(0);" class="top-cart-info-value">$1260</a>
+            <a href="javascript:void(0);" class="top-cart-info-count">3 件商品</a>
+            <a href="javascript:void(0);" class="top-cart-info-value">¥1260</a>
           </div>
           <i class="fa fa-shopping-cart"></i>
                         
@@ -120,8 +120,8 @@
                 </li>
               </ul>
               <div class="text-right">
-                <a href="shop-shopping-cart.html" class="btn btn-default">View Cart</a>
-                <a href="shop-checkout.html" class="btn btn-primary">Checkout</a>
+                <a href="cart.do" class="btn btn-default">去购物车</a>
+                <a href="checkout.do" class="btn btn-primary">去结算</a>
               </div>
             </div>
           </div>            
@@ -131,13 +131,11 @@
         <!-- BEGIN NAVIGATION -->
         <div class="header-navigation">
           <ul>
+            <!--  
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
                 Woman 
-                
               </a>
-                
-              <!-- BEGIN DROPDOWN MENU -->
               <ul class="dropdown-menu">
                 <li class="dropdown-submenu">
                   <a href="shop-product-list.html">Hi Tops <i class="fa fa-angle-right"></i></a>
@@ -160,11 +158,12 @@
                 <li><a href="shop-product-list.html">Running Shoes</a></li>
                 <li><a href="shop-product-list.html">Jackets and Coats</a></li>
               </ul>
-              <!-- END DROPDOWN MENU -->
             </li>
+            -->
+            <li><a href="index.do">主页</a></li>
             <li class="dropdown dropdown-megamenu">
               <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
-                Man
+                                                      客厅类
               </a>
               <ul class="dropdown-menu">
                 <li>
@@ -177,10 +176,6 @@
                           <li><a href="shop-product-list.html">Basketball Shoes</a></li>
                           <li><a href="shop-product-list.html">Boots</a></li>
                           <li><a href="shop-product-list.html">Canvas Shoes</a></li>
-                          <li><a href="shop-product-list.html">Football Boots</a></li>
-                          <li><a href="shop-product-list.html">Golf Shoes</a></li>
-                          <li><a href="shop-product-list.html">Hi Tops</a></li>
-                          <li><a href="shop-product-list.html">Indoor and Court Trainers</a></li>
                         </ul>
                       </div>
                       <div class="col-md-4 header-navigation-col">
@@ -190,10 +185,6 @@
                           <li><a href="shop-product-list.html">Character</a></li>
                           <li><a href="shop-product-list.html">Chinos</a></li>
                           <li><a href="shop-product-list.html">Combats</a></li>
-                          <li><a href="shop-product-list.html">Cricket Clothing</a></li>
-                          <li><a href="shop-product-list.html">Fleeces</a></li>
-                          <li><a href="shop-product-list.html">Gilets</a></li>
-                          <li><a href="shop-product-list.html">Golf Tops</a></li>
                         </ul>
                       </div>
                       <div class="col-md-4 header-navigation-col">
@@ -224,11 +215,124 @@
                 </li>
               </ul>
             </li>
+            
+            <li class="dropdown dropdown-megamenu">
+              <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+                                                      卧室类
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="header-navigation-content">
+                    <div class="row">
+                      <div class="col-md-4 header-navigation-col">
+                        <h4>Footwear</h4>
+                        <ul>
+                          <li><a href="shop-product-list.html">Astro Trainers</a></li>
+                          <li><a href="shop-product-list.html">Basketball Shoes</a></li>
+                          <li><a href="shop-product-list.html">Boots</a></li>
+                          <li><a href="shop-product-list.html">Canvas Shoes</a></li>
+                        </ul>
+                      </div>
+                      <div class="col-md-4 header-navigation-col">
+                        <h4>Clothing</h4>
+                        <ul>
+                          <li><a href="shop-product-list.html">Base Layer</a></li>
+                          <li><a href="shop-product-list.html">Character</a></li>
+                          <li><a href="shop-product-list.html">Chinos</a></li>
+                          <li><a href="shop-product-list.html">Combats</a></li>
+                        </ul>
+                      </div>
+                      <div class="col-md-4 header-navigation-col">
+                        <h4>Accessories</h4>
+                        <ul>
+                          <li><a href="shop-product-list.html">Belts</a></li>
+                          <li><a href="shop-product-list.html">Caps</a></li>
+                          <li><a href="shop-product-list.html">Gloves, Hats and Scarves</a></li>
+                        </ul>
+
+                        <h4>Clearance</h4>
+                        <ul>
+                          <li><a href="shop-product-list.html">Jackets</a></li>
+                          <li><a href="shop-product-list.html">Bottoms</a></li>
+                        </ul>
+                      </div>
+                      <div class="col-md-12 nav-brands">
+                        <ul>
+                          <li><a href="shop-product-list.html"><img title="esprit" alt="esprit" src="${ctx}/s_/assets/frontend/pages/img/brands/esprit.jpg"></a></li>
+                          <li><a href="shop-product-list.html"><img title="gap" alt="gap" src="${ctx}/s_/assets/frontend/pages/img/brands/gap.jpg"></a></li>
+                          <li><a href="shop-product-list.html"><img title="next" alt="next" src="${ctx}/s_/assets/frontend/pages/img/brands/next.jpg"></a></li>
+                          <li><a href="shop-product-list.html"><img title="puma" alt="puma" src="${ctx}/s_/assets/frontend/pages/img/brands/puma.jpg"></a></li>
+                          <li><a href="shop-product-list.html"><img title="zara" alt="zara" src="${ctx}/s_/assets/frontend/pages/img/brands/zara.jpg"></a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </li>
+            
+            <li class="dropdown dropdown-megamenu">
+              <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+                                                     书房类
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="header-navigation-content">
+                    <div class="row">
+                      <div class="col-md-4 header-navigation-col">
+                        <h4>Footwear</h4>
+                        <ul>
+                          <li><a href="shop-product-list.html">Astro Trainers</a></li>
+                          <li><a href="shop-product-list.html">Basketball Shoes</a></li>
+                          <li><a href="shop-product-list.html">Boots</a></li>
+                          <li><a href="shop-product-list.html">Canvas Shoes</a></li>
+                        </ul>
+                      </div>
+                      <div class="col-md-4 header-navigation-col">
+                        <h4>Clothing</h4>
+                        <ul>
+                          <li><a href="shop-product-list.html">Base Layer</a></li>
+                          <li><a href="shop-product-list.html">Character</a></li>
+                          <li><a href="shop-product-list.html">Chinos</a></li>
+                          <li><a href="shop-product-list.html">Combats</a></li>
+                        </ul>
+                      </div>
+                      <div class="col-md-4 header-navigation-col">
+                        <h4>Accessories</h4>
+                        <ul>
+                          <li><a href="shop-product-list.html">Belts</a></li>
+                          <li><a href="shop-product-list.html">Caps</a></li>
+                          <li><a href="shop-product-list.html">Gloves, Hats and Scarves</a></li>
+                        </ul>
+
+                        <h4>Clearance</h4>
+                        <ul>
+                          <li><a href="shop-product-list.html">Jackets</a></li>
+                          <li><a href="shop-product-list.html">Bottoms</a></li>
+                        </ul>
+                      </div>
+                      <div class="col-md-12 nav-brands">
+                        <ul>
+                          <li><a href="shop-product-list.html"><img title="esprit" alt="esprit" src="${ctx}/s_/assets/frontend/pages/img/brands/esprit.jpg"></a></li>
+                          <li><a href="shop-product-list.html"><img title="gap" alt="gap" src="${ctx}/s_/assets/frontend/pages/img/brands/gap.jpg"></a></li>
+                          <li><a href="shop-product-list.html"><img title="next" alt="next" src="${ctx}/s_/assets/frontend/pages/img/brands/next.jpg"></a></li>
+                          <li><a href="shop-product-list.html"><img title="puma" alt="puma" src="${ctx}/s_/assets/frontend/pages/img/brands/puma.jpg"></a></li>
+                          <li><a href="shop-product-list.html"><img title="zara" alt="zara" src="${ctx}/s_/assets/frontend/pages/img/brands/zara.jpg"></a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </li>
+            
+            <li><a href="shop-item.html">特惠购</a></li>
+            <li><a href="shop-item.html">我定制</a></li>
+            <!--  
             <li><a href="shop-item.html">Kids</a></li>
             <li class="dropdown dropdown100 nav-catalogue">
               <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
                 New
-                
               </a>
               <ul class="dropdown-menu">
                 <li>
@@ -309,7 +413,7 @@
             <li><a href="index.html" target="_blank">Corporate</a></li>
             <li><a href="onepage-index.html" target="_blank">One Page</a></li>
             <li><a href="http://www.keenthemes.com/preview/metronic/theme/templates/admin/ecommerce_index.html" target="_blank">Admin theme</a></li>
-
+			-->
             <!-- BEGIN TOP SEARCH -->
             <li class="menu-search">
               <span class="sep"></span>

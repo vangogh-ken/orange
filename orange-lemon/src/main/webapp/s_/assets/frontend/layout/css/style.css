@@ -708,7 +708,7 @@ body.page-header-fixed {
 	cursor: pointer;
 	position: relative;
 	top: -6px;
-	/*background: url(../img/icons/top-search-icon.png) no-repeat;*/
+	background: url(../img/icons/top-search-icon.png) no-repeat;
 	width: 15px;
 	height: 15px;
 	opacity: 0.6;

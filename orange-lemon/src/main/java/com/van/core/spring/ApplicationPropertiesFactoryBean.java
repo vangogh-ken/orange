@@ -30,6 +30,7 @@ public class ApplicationPropertiesFactoryBean extends PropertiesLoaderSupport
         return true;
     }
     
+    
     public void afterPropertiesSet() throws IOException {
         this.readProperties();// 判断加载哪些properties
         this.setIgnoreResourceNotFound(true);// 默认设置找不到资源也不会报错
