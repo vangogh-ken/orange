@@ -1,13 +1,13 @@
 <%@page language="java" pageEncoding="UTF-8" %>
 
 <!-- Fonts START -->
-  
+  <!--
   <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|PT+Sans+Narrow|Source+Sans+Pro:200,300,400,600,700,900&amp;subset=all" rel="stylesheet" type="text/css">
   <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900&amp;subset=all" rel="stylesheet" type="text/css">
-   <!--
+   -->
   <link href="${ctx}/s_/assets/global/plugins/font/font-face1.css" rel="stylesheet">
   <link href="${ctx}/s_/assets/global/plugins/font/font-face2.css" rel="stylesheet">
-  -->
+  
   <!-- Fonts END -->
 
   <!-- Global styles START -->          

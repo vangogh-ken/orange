@@ -12,9 +12,8 @@
                         <li><i class="fa fa-phone"></i><span>+1 456 6717</span></li>
                         <!-- BEGIN CURRENCIES -->
                         <li class="shop-currencies">
-                            <a href="javascript:void(0);">€</a>
-                            <a href="javascript:void(0);">£</a>
-                            <a href="javascript:void(0);" class="current">$</a>
+                            <a href="javascript:void(0);">$</a>
+                            <a href="javascript:void(0);" class="current">¥</a>
                         </li>
                         <!-- END CURRENCIES -->
                         <!-- BEGIN LANGS -->
@@ -166,7 +165,6 @@
             <li class="dropdown dropdown-megamenu">
               <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
                 Man
-                
               </a>
               <ul class="dropdown-menu">
                 <li>

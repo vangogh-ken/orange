@@ -16,6 +16,10 @@
     <script src="${ctx}/s_/assets/global/plugins/carousel-owl-carousel/owl-carousel/owl.carousel.min.js" type="text/javascript"></script><!-- slider for products -->
     <script src='${ctx}/s_/assets/global/plugins/zoom/jquery.zoom.min.js' type="text/javascript"></script><!-- product zoom -->
     <script src="${ctx}/s_/assets/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js" type="text/javascript"></script><!-- Quantity -->
+    
+    <script src="${ctx}/s_/assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="${ctx}/s_/assets/global/plugins/rateit/src/jquery.rateit.js" type="text/javascript"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script><!-- for slider-range -->
 
     <!-- BEGIN LayerSlider -->
     <script src="${ctx}/s_/assets/global/plugins/slider-layer-slider/js/greensock.js" type="text/javascript"></script><!-- External libraries: GreenSock -->
@@ -33,6 +37,10 @@
             Layout.initImageZoom();
             Layout.initTouchspin();
             Layout.initTwitter();
+            
+            //item-list
+            Layout.initUniform();
+            Layout.initSliderRange();
             
             Layout.initFixHeaderWithPreHeader();
             Layout.initNavScrolling();
