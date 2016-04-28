@@ -21,9 +21,9 @@
     <div class="main">
       <div class="container">
         <ul class="breadcrumb">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="">Store</a></li>
-            <li class="active">My Wish List</li>
+            <li><a href="index.html">主页</a></li>
+            <li><a href="">商店</a></li>
+            <li class="active">心愿单</li>
         </ul>
         <!-- BEGIN SIDEBAR & CONTENT -->
         <div class="row margin-bottom-40">
@@ -44,14 +44,14 @@
 
           <!-- BEGIN CONTENT -->
           <div class="col-md-9 col-sm-7">
-            <h1>Product Comparison</h1>
+            <h1>商品比对</h1>
             <div class="goods-page">
               <div class="goods-data compare-goods clearfix">
                 <div class="table-wrapper-responsive">                
                   <table summary="Product Details">                  
                     <tr>
                       <td class="compare-info">
-                        <p>There are 2 goods in the list.</p>
+                        <p> 2  件商品</p>
                       </td>
                       <td class="compare-item">
                         <a href="javascript:;"><img src="${ctx}/s_/assets/frontend/pages/img/products/model3.jpg" alt="Berry Lace Dress"></a>
@@ -67,7 +67,7 @@
 
                     <tr>
                       <th colspan="3">
-                        <h2>Product Details</h2>
+                        <h2>商品参数</h2>
                       </th>
                     </tr>
                     <tr>
@@ -106,7 +106,7 @@
 
                     <tr>
                       <th colspan="3">
-                        <h2>Features</h2>
+                        <h2>特点</h2>
                       </th>
                     </tr>
                     <tr>
@@ -134,12 +134,12 @@
                     <tr>
                       <td class="compare-info">&nbsp;</td>
                       <td class="compare-item">
-                        <a class="btn btn-primary" href="javascript:;">Add to cart</a><br>
-                        <a class="btn btn-default" href="javascript:;">Delete</a>
+                        <a class="btn btn-primary" href="javascript:;">加入购物车</a><br>
+                        <a class="btn btn-default" href="javascript:;">删除</a>
                       </td>
                       <td class="compare-item">
-                        <a class="btn btn-primary" href="javascript:;">Add to cart</a><br>
-                        <a class="btn btn-default" href="javascript:;">Delete</a>
+                        <a class="btn btn-primary" href="javascript:;">加入购物车</a><br>
+                        <a class="btn btn-default" href="javascript:;">删除</a>
                       </td>
                     </tr>
                   </table>

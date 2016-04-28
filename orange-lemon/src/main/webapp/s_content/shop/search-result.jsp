@@ -10,7 +10,7 @@
 
 <head>
   <%@include file="/s_common/meta.jsp"%>
-  <title>enroll</title>
+  <title>search-result</title>
   <%@include file="/s_common/s.jsp"%>
 </head>
 
@@ -22,32 +22,32 @@
     <div class="main">
       <div class="container">
         <ul class="breadcrumb">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="">Store</a></li>
-            <li class="active">Search result</li>
+            <li><a href="index.html">主页</a></li>
+            <li><a href="">商店</a></li>
+            <li class="active">搜索结果</li>
         </ul>
         <!-- BEGIN SIDEBAR & CONTENT -->
         <div class="row margin-bottom-40">
           <!-- BEGIN SIDEBAR -->
           <div class="sidebar col-md-3 col-sm-5">
             <div class="sidebar-filter margin-bottom-25">
-              <h2>Search categories</h2>
-              <h3>Availability</h3>
+              <h2>分类</h2>
+              <h3>库存</h3>
               <div class="checkbox-list">
-                <label><input type="checkbox"> Not Available (3)</label>
-                <label><input type="checkbox"> In Stock (26)</label>
+                <label><input type="checkbox">缺货 (3)</label>
+                <label><input type="checkbox">有货 (26)</label>
               </div>
 
-              <h3>Price</h3>
+              <h3>价格</h3>
               <p>
-                <label for="amount">Range:</label>
+                <label for="amount">范围:</label>
                 <input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;">
               </p>
               <div id="slider-range"></div>
             </div>
 
             <div class="sidebar-products clearfix">
-              <h2>Bestsellers</h2>
+              <h2>最多销量</h2>
               <div class="item">
                 <a href="shop-item.html"><img src="${ctx}/s_/assets/frontend/pages/img/products/k1.jpg" alt="Some Shoes in Animal with Cut Out"></a>
                 <h3><a href="shop-item.html">Some Shoes in Animal with Cut Out</a></h3>
@@ -71,14 +71,14 @@
             <div class="content-search margin-bottom-20">
               <div class="row">
                 <div class="col-md-6">
-                  <h1>Search result for <em>shoes</em></h1>
+                  <h1>搜索结果 <em>shoes</em></h1>
                 </div>
                 <div class="col-md-6">
                   <form action="#">
                     <div class="input-group">
-                      <input type="text" placeholder="Search again" class="form-control">
+                      <input type="text" placeholder="重新搜索" class="form-control">
                       <span class="input-group-btn">
-                        <button class="btn btn-primary" type="submit">Search</button>
+                        <button class="btn btn-primary" type="submit">搜索</button>
                       </span>
                     </div>
                   </form>
@@ -92,7 +92,7 @@
               </div>
               <div class="col-md-10 col-sm-10">
                 <div class="pull-right">
-                  <label class="control-label">Show:</label>
+                  <label class="control-label">过滤:</label>
                   <select class="form-control input-sm">
                     <option value="#?limit=24" selected="selected">24</option>
                     <option value="#?limit=25">25</option>
@@ -102,7 +102,7 @@
                   </select>
                 </div>
                 <div class="pull-right">
-                  <label class="control-label">Sort&nbsp;By:</label>
+                  <label class="control-label">排序:</label>
                   <select class="form-control input-sm">
                     <option value="#?sort=p.sort_order&amp;order=ASC" selected="selected">Default</option>
                     <option value="#?sort=pd.name&amp;order=ASC">Name (A - Z)</option>

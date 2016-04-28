@@ -20,9 +20,9 @@
     <div class="main">
       <div class="container">
         <ul class="breadcrumb">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="">Store</a></li>
-            <li class="active">Frequently Asked Questions</li>
+            <li><a href="index.html">主页</a></li>
+            <li><a href="">商店</a></li>
+            <li class="active">问&答</li>
         </ul>
         <!-- BEGIN SIDEBAR & CONTENT -->
         <div class="row margin-bottom-40">
@@ -42,7 +42,7 @@
 
           <!-- BEGIN CONTENT -->
           <div class="col-md-9 col-sm-9">
-            <h1>Frequently Asked Questions</h1>
+            <h1>问&答</h1>
             <div class="faq-page">
                             <div class="panel panel-default">
                                <div class="panel-heading">

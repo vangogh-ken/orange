@@ -24,18 +24,18 @@
         <div class="row margin-bottom-40">
           <!-- BEGIN CONTENT -->
           <div class="col-md-12 col-sm-12">
-            <h1>Shopping cart</h1>
+            <h1>购物车</h1>
             <div class="goods-page">
               <div class="goods-data clearfix">
                 <div class="table-wrapper-responsive">
                 <table summary="Shopping cart">
                   <tr>
-                    <th class="goods-page-image">Image</th>
-                    <th class="goods-page-description">Description</th>
-                    <th class="goods-page-ref-no">Ref No</th>
-                    <th class="goods-page-quantity">Quantity</th>
-                    <th class="goods-page-price">Unit price</th>
-                    <th class="goods-page-total" colspan="2">Total</th>
+                    <th class="goods-page-image">物品</th>
+                    <th class="goods-page-description">描述</th>
+                    <th class="goods-page-ref-no">型号</th>
+                    <th class="goods-page-quantity">数量</th>
+                    <th class="goods-page-price">单价</th>
+                    <th class="goods-page-total" colspan="2">小计</th>
                   </tr>
                   <tr>
                     <td class="goods-page-image">
@@ -97,22 +97,22 @@
                 <div class="shopping-total">
                   <ul>
                     <li>
-                      <em>Sub total</em>
+                      <em>价格</em>
                       <strong class="price"><span>$</span>47.00</strong>
                     </li>
                     <li>
-                      <em>Shipping cost</em>
+                      <em>运费</em>
                       <strong class="price"><span>$</span>3.00</strong>
                     </li>
                     <li class="shopping-total-price">
-                      <em>Total</em>
+                      <em>总计</em>
                       <strong class="price"><span>$</span>50.00</strong>
                     </li>
                   </ul>
                 </div>
               </div>
-              <button class="btn btn-default" type="submit">Continue shopping <i class="fa fa-shopping-cart"></i></button>
-              <button class="btn btn-primary" type="submit">Checkout <i class="fa fa-check"></i></button>
+              <button class="btn btn-default" type="submit">继续购物<i class="fa fa-shopping-cart"></i></button>
+              <button class="btn btn-primary" type="submit">去结算<i class="fa fa-check"></i></button>
             </div>
           </div>
           <!-- END CONTENT -->
@@ -122,7 +122,7 @@
         <!-- BEGIN SIMILAR PRODUCTS -->
         <div class="row margin-bottom-40">
           <div class="col-md-12 col-sm-12">
-            <h2>Most popular products</h2>
+            <h2>推荐商品</h2>
             <div class="owl-carousel owl-carousel4">
               <div>
                 <div class="product-item">

@@ -21,9 +21,9 @@
     <div class="main">
       <div class="container">
         <ul class="breadcrumb">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="">Pages</a></li>
-            <li class="active">Contact</li>
+            <li><a href="index.html">主页</a></li>
+            <li><a href="">商店</a></li>
+            <li class="active">联系方式</li>
         </ul>
         <!-- BEGIN SIDEBAR & CONTENT -->
         <div class="row margin-bottom-40">
@@ -39,16 +39,16 @@
               <li class="list-group-item clearfix"><a href="javascript:;"><i class="fa fa-angle-right"></i> Newsletter</a></li>
             </ul>
 
-            <h2>Our Contacts</h2>
+            <h2>联系方式</h2>
             <address>
               35, Lorem Lis Street, Park Ave<br>
               California, US<br>
               <abbr title="Phone">P:</abbr> 300 323 3456<br>
             </address>
             <address>
-              <strong>Email</strong><br>
-              <a href="mailto:info@metronic.com">info@metronic.com</a><br>
-              <a href="mailto:support@metronic.com">support@metronic.com</a>
+              <strong>邮箱</strong><br>
+              <a href="mailto:info@metronic.com">info@darlin.com</a><br>
+              <a href="mailto:support@metronic.com">support@darlin.com</a>
             </address>
             <ul class="social-icons margin-bottom-10">
               <li><a href="javascript:;" data-original-title="facebook" class="facebook"></a></li>
@@ -72,19 +72,19 @@
               <!-- BEGIN FORM-->
               <form action="#" class="default-form" role="form">
                 <div class="form-group">
-                  <label for="name">Name</label>
+                  <label for="name">姓名</label>
                   <input type="text" class="form-control" id="name">
                 </div>
                 <div class="form-group">
-                  <label for="email">Email <span class="require">*</span></label>
+                  <label for="email">邮箱 <span class="require">*</span></label>
                   <input type="text" class="form-control" id="email">
                 </div>
                 <div class="form-group">
-                  <label for="message">Message</label>
+                  <label for="message">内容</label>
                   <textarea class="form-control" rows="8" id="message"></textarea>
                 </div>
                 <div class="padding-top-20">                  
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" class="btn btn-primary">发送</button>
                 </div>
               </form>
               <!-- END FORM-->          

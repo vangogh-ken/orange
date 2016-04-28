@@ -21,46 +21,45 @@
     <div class="main">
       <div class="container">
         <ul class="breadcrumb">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="">Store</a></li>
-            <li class="active">My Account Page</li>
+            <li><a href="index.html">主页</a></li>
+            <li><a href="">商店</a></li>
+            <li class="active">我的达林</li>
         </ul>
         <!-- BEGIN SIDEBAR & CONTENT -->
         <div class="row margin-bottom-40">
           <!-- BEGIN SIDEBAR -->
           <div class="sidebar col-md-3 col-sm-3">
             <ul class="list-group margin-bottom-25 sidebar-menu">
-              <li class="list-group-item clearfix"><a href="javascript:;"><i class="fa fa-angle-right"></i> Login/Register</a></li>
-              <li class="list-group-item clearfix"><a href="javascript:;"><i class="fa fa-angle-right"></i> Restore Password</a></li>
-              <li class="list-group-item clearfix"><a href="javascript:;"><i class="fa fa-angle-right"></i> My account</a></li>
-              <li class="list-group-item clearfix"><a href="javascript:;"><i class="fa fa-angle-right"></i> Address book</a></li>
-              <li class="list-group-item clearfix"><a href="javascript:;"><i class="fa fa-angle-right"></i> Wish list</a></li>
-              <li class="list-group-item clearfix"><a href="javascript:;"><i class="fa fa-angle-right"></i> Returns</a></li>
-              <li class="list-group-item clearfix"><a href="javascript:;"><i class="fa fa-angle-right"></i> Newsletter</a></li>
+              <li class="list-group-item clearfix"><a href="javascript:;"><i class="fa fa-angle-right"></i>注册账户</a></li>
+              <li class="list-group-item clearfix"><a href="javascript:;"><i class="fa fa-angle-right"></i>重置密码</a></li>
+              <li class="list-group-item clearfix"><a href="javascript:;"><i class="fa fa-angle-right"></i>我的账户</a></li>
+              <li class="list-group-item clearfix"><a href="javascript:;"><i class="fa fa-angle-right"></i>收货地址</a></li>
+              <li class="list-group-item clearfix"><a href="javascript:;"><i class="fa fa-angle-right"></i>心愿单</a></li>
+              <li class="list-group-item clearfix"><a href="javascript:;"><i class="fa fa-angle-right"></i>退换货</a></li>
+              <li class="list-group-item clearfix"><a href="javascript:;"><i class="fa fa-angle-right"></i>促销订阅</a></li>
             </ul>
           </div>
           <!-- END SIDEBAR -->
 
           <!-- BEGIN CONTENT -->
           <div class="col-md-9 col-sm-7">
-            <h1>My Account Page</h1>
+            <h1>我的达林</h1>
             <div class="content-page">
-              <h3>My Account</h3>
+              <h3>账户</h3>
               <ul>
-                <li><a href="javascript:;">Edit your account information</a></li>
-                <li><a href="javascript:;">Change your password</a></li>
-                <li><a href="javascript:;">Modify your address book entries</a></li>
-                <li><a href="javascript:;">Modify your wish list</a></li>
+                <li><a href="javascript:;">更新个人信息</a></li>
+                <li><a href="javascript:;">修改密码</a></li>
+                <li><a href="javascript:;">收货地址</a></li>
+                <li><a href="javascript:;">心愿单</a></li>
               </ul>
               <hr>
 
-              <h3>My Orders</h3>
+              <h3>订单</h3>
               <ul>
-                <li><a href="javascript:;">View your order history</a></li>
-                <li><a href="javascript:;">Downloads</a></li>
-                <li><a href="javascript:;">Your Reward Points</a></li>
-                <li><a href="javascript:;">View your return requests</a></li>
-                <li><a href="javascript:;">Your Transactions</a></li>
+                <li><a href="javascript:;">查看订单</a></li>
+                <li><a href="javascript:;">优惠券</a></li>
+                <li><a href="javascript:;">退换货</a></li>
+                <li><a href="javascript:;">货物跟踪</a></li>
               </ul>
             </div>
           </div>

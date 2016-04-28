@@ -48,7 +48,7 @@
                   <div class="panel-body row">
                     <div class="col-md-6 col-sm-6">
                       <h3>没有账户</h3>
-                      <p>Checkout Options:</p>
+                      <p>结算前先:</p>
                       <div class="radio-list">
                         <label>
                           <input type="radio" name="account"  value="register">注册账户
@@ -57,7 +57,7 @@
                           <input type="radio" name="account"  value="guest">游客结算
                         </label> 
                       </div>
-                      <p>By creating an account you will be able to shop faster, be up to date on an order's status, and keep track of the orders you have previously made.</p>
+                      <p>注册账户拥有更多服务和及时跟踪订单实时情况。</p>
                       <button class="btn btn-primary" type="submit" data-toggle="collapse" data-parent="#checkout-page" data-target="#payment-address-content">继续</button>
                     </div>
                     <div class="col-md-6 col-sm-6">
@@ -77,6 +77,7 @@
                           <button class="btn btn-primary" type="submit">登录</button>
                         </div>
                         <hr>
+                        <!--  
                         <div class="login-socio">
                           <p class="text-muted">or login using:</p>
                           <ul class="social-icons">
@@ -86,6 +87,7 @@
                             <li><a href="javascript:;" data-original-title="Linkedin" class="linkedin" title="LinkedIn"></a></li>
                           </ul>
                         </div>
+                        -->
                       </form>
                     </div>
                   </div>

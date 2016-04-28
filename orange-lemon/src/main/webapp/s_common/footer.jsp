@@ -37,7 +37,7 @@
             LayersliderInit.initLayerSlider();
             Layout.initImageZoom();
             Layout.initTouchspin();
-            Layout.initTwitter();
+            //Layout.initTwitter();
             
             //item-list
             Layout.initUniform();

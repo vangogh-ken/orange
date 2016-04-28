@@ -415,15 +415,16 @@
             <li><a href="http://www.keenthemes.com/preview/metronic/theme/templates/admin/ecommerce_index.html" target="_blank">Admin theme</a></li>
 			-->
             <!-- BEGIN TOP SEARCH -->
+            
             <li class="menu-search">
               <span class="sep"></span>
               <i class="fa fa-search search-btn"></i>
               <div class="search-box">
                 <form action="#">
                   <div class="input-group">
-                    <input type="text" placeholder="Search" class="form-control">
+                    <input type="text" placeholder="关键词" class="form-control">
                     <span class="input-group-btn">
-                      <button class="btn btn-primary" type="submit">Search</button>
+                      <button class="btn btn-primary" type="submit">搜索</button>
                     </span>
                   </div>
                 </form>

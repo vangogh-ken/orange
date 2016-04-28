@@ -43,7 +43,7 @@
 
           <!-- BEGIN CONTENT -->
           <div class="col-md-9 col-sm-9">
-            <h1>About us</h1>
+            <h1>关于达林</h1>
             <div class="content-page">
               <p><img src="${ctx}/s_/assets/frontend/pages/img/img1.jpg" alt="About us" class="img-responsive"></p> 
 

@@ -19,6 +19,9 @@
   <link href="${ctx}/s_/assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet">
   <link href="${ctx}/s_/assets/global/plugins/carousel-owl-carousel/owl-carousel/owl.carousel.css" rel="stylesheet">
   <link href="${ctx}/s_/assets/global/plugins/slider-layer-slider/css/layerslider.css" rel="stylesheet">
+  <!--  
+  <link href="${ctx}/s_/assets/global/plugins/slider-layer-slider/skins/fullwidth/skin.css" rel="stylesheet">
+  -->
   <link href="${ctx}/s_/assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css">
   <link href="${ctx}/s_/assets/global/plugins/slider-revolution-slider/rs-plugin/css/settings.css" rel="stylesheet">
   <link href="${ctx}/s_/assets/global/plugins/smoothness/jquery-ui.css" rel="stylesheet" type="text/css"><!-- for slider-range -->

@@ -8,7 +8,7 @@
 <!--<![endif]-->
 <head>
   <%@include file="/s_common/meta.jsp"%>
-  <title>enroll</title>
+  <title>wish-list</title>
   <%@include file="/s_common/s.jsp"%>
 </head>
 
@@ -20,9 +20,9 @@
     <div class="main">
       <div class="container">
         <ul class="breadcrumb">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="">Store</a></li>
-            <li class="active">My Wish List</li>
+            <li><a href="index.html">主页</a></li>
+            <li><a href="">商店</a></li>
+            <li class="active">我的心愿单</li>
         </ul>
         <!-- BEGIN SIDEBAR & CONTENT -->
         <div class="row margin-bottom-40">
@@ -43,16 +43,16 @@
 
           <!-- BEGIN CONTENT -->
           <div class="col-md-9 col-sm-7">
-            <h1>My Wish List</h1>
+            <h1>我的心愿单</h1>
             <div class="goods-page">
               <div class="goods-data clearfix">
                 <div class="table-wrapper-responsive">
                 <table summary="Shopping cart">
                   <tr>
-                    <th class="goods-page-image">Image</th>
-                    <th class="goods-page-description">Description</th>
-                    <th class="goods-page-stock">Stock</th>
-                    <th class="goods-page-price" colspan="2">Unit price</th>
+                    <th class="goods-page-image">物品</th>
+                    <th class="goods-page-description">描述</th>
+                    <th class="goods-page-stock">库存</th>
+                    <th class="goods-page-price" colspan="2">单价</th>
                   </tr>
                   <tr>
                     <td class="goods-page-image">
@@ -64,10 +64,10 @@
                       <em>More info is here</em>
                     </td>
                     <td class="goods-page-stock">
-                      In Stock
+                      	有货
                     </td>
                     <td class="goods-page-price">
-                      <strong><span>$</span>47.00</strong>
+                      <strong><span>¥</span>47.00</strong>
                     </td>
                     <td class="del-goods-col">
                       <a class="del-goods" href="javascript:;">&nbsp;</a>
@@ -84,10 +84,10 @@
                       <em>More info is here</em>
                     </td>
                     <td class="goods-page-stock">
-                      In Stock
+                      	有货
                     </td>
                     <td class="goods-page-price">
-                      <strong><span>$</span>47.00</strong>
+                      <strong><span>¥</span>47.00</strong>
                     </td>
                     <td class="del-goods-col">
                       <a class="del-goods" href="javascript:;">&nbsp;</a>
