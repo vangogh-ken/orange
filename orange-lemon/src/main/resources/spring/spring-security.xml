@@ -9,6 +9,7 @@
 
     <!-- 开发环境可以放置 <debug/> 配置，会输出详细Security处理日志，正式环境建议屏蔽 <debug/> 配置 <debug />-->
     <http security="none" pattern="/s2/**"/>
+    <http security="none" pattern="/s_/**"/>
 	<http security="none" pattern="/favicon.ico"/>
 	<http security="none" pattern="/**/*.js"/>
 	<http security="none" pattern="/**/*.css"/>
