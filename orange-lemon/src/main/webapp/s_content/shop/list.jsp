@@ -6,21 +6,19 @@
 <!--[if !IE]><!-->
 <html lang="en">
 <!--<![endif]-->
-
 <head>
   <%@include file="/s_common/meta.jsp"%>
   <title>list</title>
   <%@include file="/s_common/s.jsp"%>
 </head>
-
 <!-- Body BEGIN -->
 <body class="ecommerce">
    <%@include file="/s_common/setting.jsp"%>
    <%@include file="/s_common/header.jsp"%>
     <div class="title-wrapper">
       <div class="container"><div class="container-inner">
-        <h1><span>MEN</span> CATEGORY</h1>
-        <em>Over 4000 Items are available here</em>
+        <h1><span>客厅</span> 类</h1>
+        <em>超过100款商品随时订购</em>
       </div></div>
     </div>
 
@@ -41,7 +39,6 @@
                 <a href="javascript:void(0);" class="collapsed">
                   <i class="fa fa-angle-right"></i>
                   Mens
-                  
                 </a>
                 <ul class="dropdown-menu" style="display:block;">
                   <li class="list-group-item dropdown clearfix active">
@@ -97,18 +94,18 @@
             <div class="sidebar-products clearfix">
               <h2>Bestsellers</h2>
               <div class="item">
-                <a href="shop-item.html"><img src="${ctx}/s_/assets/frontend/pages/img/products/k1.jpg" alt="Some Shoes in Animal with Cut Out"></a>
-                <h3><a href="shop-item.html">Some Shoes in Animal with Cut Out</a></h3>
+                <a href="item.do"><img src="${ctx}/s_/assets/frontend/pages/img/products/k1.jpg" alt="Some Shoes in Animal with Cut Out"></a>
+                <h3><a href="item.do">Some Shoes in Animal with Cut Out</a></h3>
                 <div class="price">$31.00</div>
               </div>
               <div class="item">
-                <a href="shop-item.html"><img src="${ctx}/s_/assets/frontend/pages/img/products/k4.jpg" alt="Some Shoes in Animal with Cut Out"></a>
-                <h3><a href="shop-item.html">Some Shoes in Animal with Cut Out</a></h3>
+                <a href="item.do"><img src="${ctx}/s_/assets/frontend/pages/img/products/k4.jpg" alt="Some Shoes in Animal with Cut Out"></a>
+                <h3><a href="item.do">Some Shoes in Animal with Cut Out</a></h3>
                 <div class="price">$23.00</div>
               </div>
               <div class="item">
-                <a href="shop-item.html"><img src="${ctx}/s_/assets/frontend/pages/img/products/k3.jpg" alt="Some Shoes in Animal with Cut Out"></a>
-                <h3><a href="shop-item.html">Some Shoes in Animal with Cut Out</a></h3>
+                <a href="item.do"><img src="${ctx}/s_/assets/frontend/pages/img/products/k3.jpg" alt="Some Shoes in Animal with Cut Out"></a>
+                <h3><a href="item.do">Some Shoes in Animal with Cut Out</a></h3>
                 <div class="price">$86.00</div>
               </div>
             </div>
@@ -160,9 +157,9 @@
                       <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
                     </div>
                   </div>
-                  <h3><a href="shop-item.html">Berry Lace Dress Berry Lace Dress</a></h3>
+                  <h3><a href="item.do">Berry Lace Dress Berry</a></h3>
                   <div class="pi-price">$29.00</div>
-                  <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                  <a href="javascript:;" class="btn btn-default add2cart">加入购物车</a>
                 </div>
               </div>
               <!-- PRODUCT ITEM END -->
@@ -176,9 +173,9 @@
                       <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
                     </div>
                   </div>
-                  <h3><a href="shop-item.html">Berry Lace Dress</a></h3>
+                  <h3><a href="item.do">Berry Lace Dress</a></h3>
                   <div class="pi-price">$29.00</div>
-                  <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                  <a href="javascript:;" class="btn btn-default add2cart">加入购物车</a>
                 </div>
               </div>
               <!-- PRODUCT ITEM END -->
@@ -192,9 +189,9 @@
                       <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
                     </div>
                   </div>
-                  <h3><a href="shop-item.html">Berry Lace Dress 2</a></h3>
+                  <h3><a href="item.do">Berry Lace Dress 2</a></h3>
                   <div class="pi-price">$29.00</div>
-                  <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                  <a href="javascript:;" class="btn btn-default add2cart">加入购物车</a>
                 </div>
               </div>              
               <!-- PRODUCT ITEM END -->
@@ -210,9 +207,9 @@
                         <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
                     </div>
                   </div>
-                  <h3><a href="shop-item.html">Berry Lace Dress Berry Lace Dress</a></h3>
+                  <h3><a href="item.do">Berry Lace Dress Berry Lace Dress</a></h3>
                   <div class="pi-price">$29.00</div>
-                  <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                  <a href="javascript:;" class="btn btn-default add2cart">加入购物车</a>
                 </div>
               </div>
               <!-- PRODUCT ITEM END -->
@@ -226,9 +223,9 @@
                         <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
                     </div>
                   </div>
-                  <h3><a href="shop-item.html">Berry Lace Dress</a></h3>
+                  <h3><a href="item.do">Berry Lace Dress</a></h3>
                   <div class="pi-price">$29.00</div>
-                  <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                  <a href="javascript:;" class="btn btn-default add2cart">加入购物车</a>
                   <div class="sticker sticker-new"></div>
                 </div>
               </div>
@@ -243,9 +240,9 @@
                         <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
                     </div>
                   </div>
-                  <h3><a href="shop-item.html">Berry Lace Dress</a></h3>
+                  <h3><a href="item.do">Berry Lace Dress</a></h3>
                   <div class="pi-price">$29.00</div>
-                  <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                  <a href="javascript:;" class="btn btn-default add2cart">加入购物车</a>
                 </div>
               </div>              
               <!-- PRODUCT ITEM END -->
@@ -261,9 +258,9 @@
                         <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
                     </div>
                   </div>
-                  <h3><a href="shop-item.html">Berry Lace Dress</a></h3>
+                  <h3><a href="item.do">Berry Lace Dress</a></h3>
                   <div class="pi-price">$29.00</div>
-                  <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                  <a href="javascript:;" class="btn btn-default add2cart">加入购物车</a>
                 </div>
               </div>
               <!-- PRODUCT ITEM END -->
@@ -277,9 +274,9 @@
                         <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
                     </div>
                   </div>
-                  <h3><a href="shop-item.html">Berry Lace Dress</a></h3>
+                  <h3><a href="item.do">Berry Lace Dress</a></h3>
                   <div class="pi-price">$29.00</div>
-                  <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                  <a href="javascript:;" class="btn btn-default add2cart">加入购物车</a>
                 </div>
               </div>
               <!-- PRODUCT ITEM END -->
@@ -293,9 +290,9 @@
                         <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
                     </div>
                   </div>
-                  <h3><a href="shop-item.html">Berry Lace Dress</a></h3>
+                  <h3><a href="item.do">Berry Lace Dress</a></h3>
                   <div class="pi-price">$29.00</div>
-                  <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                  <a href="javascript:;" class="btn btn-default add2cart">加入购物车</a>
                   <div class="sticker sticker-sale"></div>
                 </div>
               </div>

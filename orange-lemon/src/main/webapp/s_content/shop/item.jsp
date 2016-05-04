@@ -75,18 +75,18 @@
             <div class="sidebar-products clearfix">
               <h2>Bestsellers</h2>
               <div class="item">
-                <a href="shop-item.html"><img src="${ctx}/s_/assets/frontend/pages/img/products/k1.jpg" alt="Some Shoes in Animal with Cut Out"></a>
-                <h3><a href="shop-item.html">Some Shoes in Animal with Cut Out</a></h3>
+                <a href="item.do"><img src="${ctx}/s_/assets/frontend/pages/img/products/k1.jpg" alt="Some Shoes in Animal with Cut Out"></a>
+                <h3><a href="item.do">Some Shoes in Animal with Cut Out</a></h3>
                 <div class="price">$31.00</div>
               </div>
               <div class="item">
-                <a href="shop-item.html"><img src="${ctx}/s_/assets/frontend/pages/img/products/k4.jpg" alt="Some Shoes in Animal with Cut Out"></a>
-                <h3><a href="shop-item.html">Some Shoes in Animal with Cut Out</a></h3>
+                <a href="item.do"><img src="${ctx}/s_/assets/frontend/pages/img/products/k4.jpg" alt="Some Shoes in Animal with Cut Out"></a>
+                <h3><a href="item.do">Some Shoes in Animal with Cut Out</a></h3>
                 <div class="price">$23.00</div>
               </div>
               <div class="item">
-                <a href="shop-item.html"><img src="${ctx}/s_/assets/frontend/pages/img/products/k3.jpg" alt="Some Shoes in Animal with Cut Out"></a>
-                <h3><a href="shop-item.html">Some Shoes in Animal with Cut Out</a></h3>
+                <a href="item.do"><img src="${ctx}/s_/assets/frontend/pages/img/products/k3.jpg" alt="Some Shoes in Animal with Cut Out"></a>
+                <h3><a href="item.do">Some Shoes in Animal with Cut Out</a></h3>
                 <div class="price">$86.00</div>
               </div>
             </div>
@@ -115,7 +115,7 @@
                       <em>$<span>62.00</span></em>
                     </div>
                     <div class="availability">
-                      Availability: <strong>In Stock</strong>
+                      	库存: <strong>有货</strong>
                     </div>
                   </div>
                   <div class="description">
@@ -124,7 +124,7 @@ Nostrud duis molestie at dolore.</p>
                   </div>
                   <div class="product-page-options">
                     <div class="pull-left">
-                      <label class="control-label">Size:</label>
+                      <label class="control-label">尺寸:</label>
                       <select class="form-control input-sm">
                         <option>L</option>
                         <option>M</option>
@@ -132,7 +132,7 @@ Nostrud duis molestie at dolore.</p>
                       </select>
                     </div>
                     <div class="pull-left">
-                      <label class="control-label">Color:</label>
+                      <label class="control-label">颜色:</label>
                       <select class="form-control input-sm">
                         <option>Red</option>
                         <option>Blue</option>
@@ -144,28 +144,34 @@ Nostrud duis molestie at dolore.</p>
                     <div class="product-quantity">
                         <input id="product-quantity" type="text" value="1" readonly class="form-control input-sm">
                     </div>
-                    <button class="btn btn-primary" type="submit">Add to cart</button>
+                    <button class="btn btn-primary" type="submit">加入购物车</button>
                   </div>
                   <div class="review">
                     <input type="range" value="4" step="0.25" id="backing4">
                     <div class="rateit" data-rateit-backingfld="#backing4" data-rateit-resetable="false"  data-rateit-ispreset="true" data-rateit-min="0" data-rateit-max="5">
                     </div>
-                    <a href="javascript:;">7 reviews</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:;">Write a review</a>
+                    <a href="javascript:;">7个评价</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:;">发表评价</a>
                   </div>
                   <ul class="social-icons">
+                  	<i class="fa fa-heart" style="font-size:20px;line-height:20px;color:red;"></i>
+                  	<i class="fa fa-share-alt" style="font-size:25px;line-height:25px;"></i>
+                    <!--  
                     <li><a class="facebook" data-original-title="facebook" href="javascript:;"></a></li>
                     <li><a class="twitter" data-original-title="twitter" href="javascript:;"></a></li>
                     <li><a class="googleplus" data-original-title="googleplus" href="javascript:;"></a></li>
                     <li><a class="evernote" data-original-title="evernote" href="javascript:;"></a></li>
                     <li><a class="tumblr" data-original-title="tumblr" href="javascript:;"></a></li>
+                    -->
                   </ul>
                 </div>
 
                 <div class="product-page-content">
                   <ul id="myTab" class="nav nav-tabs">
-                    <li><a href="#Description" data-toggle="tab">Description</a></li>
-                    <li><a href="#Information" data-toggle="tab">Information</a></li>
-                    <li class="active"><a href="#Reviews" data-toggle="tab">Reviews (2)</a></li>
+                    <li><a href="#Description" data-toggle="tab">商品介绍</a></li>
+                    <li><a href="#Information" data-toggle="tab">规格参数</a></li>
+                    <li><a href="#Package" data-toggle="tab">包装清单</a></li>
+                    <li><a href="#Warranty" data-toggle="tab">售后服务</a></li>
+                    <li class="active"><a href="#Reviews" data-toggle="tab">评价反馈</a></li>
                   </ul>
                   <div id="myTabContent" class="tab-content">
                     <div class="tab-pane fade" id="Description">
@@ -223,27 +229,27 @@ Nostrud duis molestie at dolore.</p>
 
                       <!-- BEGIN FORM-->
                       <form action="#" class="reviews-form" role="form">
-                        <h2>Write a review</h2>
+                        <h2>发表评价</h2>
                         <div class="form-group">
-                          <label for="name">Name <span class="require">*</span></label>
+                          <label for="name">姓名<span class="require">*</span></label>
                           <input type="text" class="form-control" id="name">
                         </div>
                         <div class="form-group">
-                          <label for="email">Email</label>
+                          <label for="email">邮箱</label>
                           <input type="text" class="form-control" id="email">
                         </div>
                         <div class="form-group">
-                          <label for="review">Review <span class="require">*</span></label>
+                          <label for="review">内容<span class="require">*</span></label>
                           <textarea class="form-control" rows="8" id="review"></textarea>
                         </div>
                         <div class="form-group">
-                          <label for="email">Rating</label>
+                          <label for="email">打分</label>
                           <input type="range" value="4" step="0.25" id="backing5">
                           <div class="rateit" data-rateit-backingfld="#backing5" data-rateit-resetable="false"  data-rateit-ispreset="true" data-rateit-min="0" data-rateit-max="5">
                           </div>
                         </div>
                         <div class="padding-top-20">                  
-                          <button type="submit" class="btn btn-primary">Send</button>
+                          <button type="submit" class="btn btn-primary">发表</button>
                         </div>
                       </form>
                       <!-- END FORM--> 
@@ -262,7 +268,7 @@ Nostrud duis molestie at dolore.</p>
         <!-- BEGIN SIMILAR PRODUCTS -->
         <div class="row margin-bottom-40">
           <div class="col-md-12 col-sm-12">
-            <h2>Most popular products</h2>
+            <h2>猜你喜欢</h2>
             <div class="owl-carousel owl-carousel4">
               <div>
                 <div class="product-item">
@@ -273,9 +279,9 @@ Nostrud duis molestie at dolore.</p>
                       <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
                     </div>
                   </div>
-                  <h3><a href="shop-item.html">Berry Lace Dress</a></h3>
+                  <h3><a href="item.do">Berry Lace Dress</a></h3>
                   <div class="pi-price">$29.00</div>
-                  <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                  <a href="javascript:;" class="btn btn-default add2cart">加入购物车</a>
                   <div class="sticker sticker-new"></div>
                 </div>
               </div>
@@ -288,9 +294,9 @@ Nostrud duis molestie at dolore.</p>
                       <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
                     </div>
                   </div>
-                  <h3><a href="shop-item.html">Berry Lace Dress2</a></h3>
+                  <h3><a href="item.do">Berry Lace Dress2</a></h3>
                   <div class="pi-price">$29.00</div>
-                  <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                  <a href="javascript:;" class="btn btn-default add2cart">加入购物车</a>
                 </div>
               </div>
               <div>
@@ -302,9 +308,9 @@ Nostrud duis molestie at dolore.</p>
                       <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
                     </div>
                   </div>
-                  <h3><a href="shop-item.html">Berry Lace Dress3</a></h3>
+                  <h3><a href="item.do">Berry Lace Dress3</a></h3>
                   <div class="pi-price">$29.00</div>
-                  <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                  <a href="javascript:;" class="btn btn-default add2cart">加入购物车</a>
                 </div>
               </div>
               <div>
@@ -316,9 +322,9 @@ Nostrud duis molestie at dolore.</p>
                       <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
                     </div>
                   </div>
-                  <h3><a href="shop-item.html">Berry Lace Dress4</a></h3>
+                  <h3><a href="item.do">Berry Lace Dress4</a></h3>
                   <div class="pi-price">$29.00</div>
-                  <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                  <a href="javascript:;" class="btn btn-default add2cart">加入购物车</a>
                   <div class="sticker sticker-sale"></div>
                 </div>
               </div>
@@ -331,9 +337,9 @@ Nostrud duis molestie at dolore.</p>
                       <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
                     </div>
                   </div>
-                  <h3><a href="shop-item.html">Berry Lace Dress5</a></h3>
+                  <h3><a href="item.do">Berry Lace Dress5</a></h3>
                   <div class="pi-price">$29.00</div>
-                  <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                  <a href="javascript:;" class="btn btn-default add2cart">加入购物车</a>
                 </div>
               </div>
               <div>
@@ -345,9 +351,9 @@ Nostrud duis molestie at dolore.</p>
                       <a href="#product-pop-up" class="btn btn-default fancybox-fast-view">View</a>
                     </div>
                   </div>
-                  <h3><a href="shop-item.html">Berry Lace Dress6</a></h3>
+                  <h3><a href="item.do">Berry Lace Dress6</a></h3>
                   <div class="pi-price">$29.00</div>
-                  <a href="javascript:;" class="btn btn-default add2cart">Add to cart</a>
+                  <a href="javascript:;" class="btn btn-default add2cart">加入购物车</a>
                 </div>
               </div>
             </div>

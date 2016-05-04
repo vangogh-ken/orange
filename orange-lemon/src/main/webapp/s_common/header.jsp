@@ -138,25 +138,25 @@
               </a>
               <ul class="dropdown-menu">
                 <li class="dropdown-submenu">
-                  <a href="shop-product-list.html">Hi Tops <i class="fa fa-angle-right"></i></a>
+                  <a href="list.do">Hi Tops <i class="fa fa-angle-right"></i></a>
                   <ul class="dropdown-menu" role="menu">
-                    <li><a href="shop-product-list.html">Second Level Link</a></li>
-                    <li><a href="shop-product-list.html">Second Level Link</a></li>
+                    <li><a href="list.do">Second Level Link</a></li>
+                    <li><a href="list.do">Second Level Link</a></li>
                     <li class="dropdown-submenu">
                       <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
                         Second Level Link 
                         <i class="fa fa-angle-right"></i>
                       </a>
                       <ul class="dropdown-menu">
-                        <li><a href="shop-product-list.html">Third Level Link</a></li>
-                        <li><a href="shop-product-list.html">Third Level Link</a></li>
-                        <li><a href="shop-product-list.html">Third Level Link</a></li>
+                        <li><a href="list.do">Third Level Link</a></li>
+                        <li><a href="list.do">Third Level Link</a></li>
+                        <li><a href="list.do">Third Level Link</a></li>
                       </ul>
                     </li>
                   </ul>
                 </li>
-                <li><a href="shop-product-list.html">Running Shoes</a></li>
-                <li><a href="shop-product-list.html">Jackets and Coats</a></li>
+                <li><a href="list.do">Running Shoes</a></li>
+                <li><a href="list.do">Jackets and Coats</a></li>
               </ul>
             </li>
             -->
@@ -170,44 +170,99 @@
                   <div class="header-navigation-content">
                     <div class="row">
                       <div class="col-md-4 header-navigation-col">
-                        <h4>Footwear</h4>
+                        <h4>沙发</h4>
                         <ul>
-                          <li><a href="shop-product-list.html">Astro Trainers</a></li>
-                          <li><a href="shop-product-list.html">Basketball Shoes</a></li>
-                          <li><a href="shop-product-list.html">Boots</a></li>
-                          <li><a href="shop-product-list.html">Canvas Shoes</a></li>
+                          <li><a href="list.do">Astro Trainers</a></li>
+                          <li><a href="list.do">Basketball Shoes</a></li>
+                          <li><a href="list.do">Boots</a></li>
+                          <li><a href="list.do">Canvas Shoes</a></li>
                         </ul>
                       </div>
                       <div class="col-md-4 header-navigation-col">
-                        <h4>Clothing</h4>
+                        <h4>电视柜</h4>
                         <ul>
-                          <li><a href="shop-product-list.html">Base Layer</a></li>
-                          <li><a href="shop-product-list.html">Character</a></li>
-                          <li><a href="shop-product-list.html">Chinos</a></li>
-                          <li><a href="shop-product-list.html">Combats</a></li>
+                          <li><a href="list.do">Base Layer</a></li>
+                          <li><a href="list.do">Character</a></li>
+                          <li><a href="list.do">Chinos</a></li>
+                          <li><a href="list.do">Combats</a></li>
                         </ul>
                       </div>
                       <div class="col-md-4 header-navigation-col">
-                        <h4>Accessories</h4>
+                        <h4>茶几</h4>
                         <ul>
-                          <li><a href="shop-product-list.html">Belts</a></li>
-                          <li><a href="shop-product-list.html">Caps</a></li>
-                          <li><a href="shop-product-list.html">Gloves, Hats and Scarves</a></li>
+                          <li><a href="list.do">Belts</a></li>
+                          <li><a href="list.do">Caps</a></li>
+                          <li><a href="list.do">Gloves, Hats and Scarves</a></li>
                         </ul>
 
                         <h4>Clearance</h4>
                         <ul>
-                          <li><a href="shop-product-list.html">Jackets</a></li>
-                          <li><a href="shop-product-list.html">Bottoms</a></li>
+                          <li><a href="list.do">Jackets</a></li>
+                          <li><a href="list.do">Bottoms</a></li>
                         </ul>
                       </div>
                       <div class="col-md-12 nav-brands">
                         <ul>
-                          <li><a href="shop-product-list.html"><img title="esprit" alt="esprit" src="${ctx}/s_/assets/frontend/pages/img/brands/esprit.jpg"></a></li>
-                          <li><a href="shop-product-list.html"><img title="gap" alt="gap" src="${ctx}/s_/assets/frontend/pages/img/brands/gap.jpg"></a></li>
-                          <li><a href="shop-product-list.html"><img title="next" alt="next" src="${ctx}/s_/assets/frontend/pages/img/brands/next.jpg"></a></li>
-                          <li><a href="shop-product-list.html"><img title="puma" alt="puma" src="${ctx}/s_/assets/frontend/pages/img/brands/puma.jpg"></a></li>
-                          <li><a href="shop-product-list.html"><img title="zara" alt="zara" src="${ctx}/s_/assets/frontend/pages/img/brands/zara.jpg"></a></li>
+                          <li><a href="list.do"><img title="esprit" alt="esprit" src="${ctx}/s_/assets/frontend/pages/img/brands/esprit.jpg"></a></li>
+                          <li><a href="list.do"><img title="gap" alt="gap" src="${ctx}/s_/assets/frontend/pages/img/brands/gap.jpg"></a></li>
+                          <li><a href="list.do"><img title="next" alt="next" src="${ctx}/s_/assets/frontend/pages/img/brands/next.jpg"></a></li>
+                          <li><a href="list.do"><img title="puma" alt="puma" src="${ctx}/s_/assets/frontend/pages/img/brands/puma.jpg"></a></li>
+                          <li><a href="list.do"><img title="zara" alt="zara" src="${ctx}/s_/assets/frontend/pages/img/brands/zara.jpg"></a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </li>
+            
+            <li class="dropdown dropdown-megamenu">
+              <a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="javascript:;">
+                                                      餐厅类
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="header-navigation-content">
+                    <div class="row">
+                      <div class="col-md-4 header-navigation-col">
+                        <h4>餐桌</h4>
+                        <ul>
+                          <li><a href="list.do">Astro Trainers</a></li>
+                          <li><a href="list.do">Basketball Shoes</a></li>
+                          <li><a href="list.do">Boots</a></li>
+                          <li><a href="list.do">Canvas Shoes</a></li>
+                        </ul>
+                      </div>
+                      <div class="col-md-4 header-navigation-col">
+                        <h4>椅子</h4>
+                        <ul>
+                          <li><a href="list.do">Base Layer</a></li>
+                          <li><a href="list.do">Character</a></li>
+                          <li><a href="list.do">Chinos</a></li>
+                          <li><a href="list.do">Combats</a></li>
+                        </ul>
+                      </div>
+                      <div class="col-md-4 header-navigation-col">
+                        <h4>储物架</h4>
+                        <ul>
+                          <li><a href="list.do">Belts</a></li>
+                          <li><a href="list.do">Caps</a></li>
+                          <li><a href="list.do">Gloves, Hats and Scarves</a></li>
+                        </ul>
+
+                        <h4>Clearance</h4>
+                        <ul>
+                          <li><a href="list.do">Jackets</a></li>
+                          <li><a href="list.do">Bottoms</a></li>
+                        </ul>
+                      </div>
+                      <div class="col-md-12 nav-brands">
+                        <ul>
+                          <li><a href="list.do"><img title="esprit" alt="esprit" src="${ctx}/s_/assets/frontend/pages/img/brands/esprit.jpg"></a></li>
+                          <li><a href="list.do"><img title="gap" alt="gap" src="${ctx}/s_/assets/frontend/pages/img/brands/gap.jpg"></a></li>
+                          <li><a href="list.do"><img title="next" alt="next" src="${ctx}/s_/assets/frontend/pages/img/brands/next.jpg"></a></li>
+                          <li><a href="list.do"><img title="puma" alt="puma" src="${ctx}/s_/assets/frontend/pages/img/brands/puma.jpg"></a></li>
+                          <li><a href="list.do"><img title="zara" alt="zara" src="${ctx}/s_/assets/frontend/pages/img/brands/zara.jpg"></a></li>
                         </ul>
                       </div>
                     </div>
@@ -225,44 +280,44 @@
                   <div class="header-navigation-content">
                     <div class="row">
                       <div class="col-md-4 header-navigation-col">
-                        <h4>Footwear</h4>
+                        <h4>床</h4>
                         <ul>
-                          <li><a href="shop-product-list.html">Astro Trainers</a></li>
-                          <li><a href="shop-product-list.html">Basketball Shoes</a></li>
-                          <li><a href="shop-product-list.html">Boots</a></li>
-                          <li><a href="shop-product-list.html">Canvas Shoes</a></li>
+                          <li><a href="list.do">Astro Trainers</a></li>
+                          <li><a href="list.do">Basketball Shoes</a></li>
+                          <li><a href="list.do">Boots</a></li>
+                          <li><a href="list.do">Canvas Shoes</a></li>
                         </ul>
                       </div>
                       <div class="col-md-4 header-navigation-col">
-                        <h4>Clothing</h4>
+                        <h4>床垫</h4>
                         <ul>
-                          <li><a href="shop-product-list.html">Base Layer</a></li>
-                          <li><a href="shop-product-list.html">Character</a></li>
-                          <li><a href="shop-product-list.html">Chinos</a></li>
-                          <li><a href="shop-product-list.html">Combats</a></li>
+                          <li><a href="list.do">Base Layer</a></li>
+                          <li><a href="list.do">Character</a></li>
+                          <li><a href="list.do">Chinos</a></li>
+                          <li><a href="list.do">Combats</a></li>
                         </ul>
                       </div>
                       <div class="col-md-4 header-navigation-col">
-                        <h4>Accessories</h4>
+                        <h4>床头柜</h4>
                         <ul>
-                          <li><a href="shop-product-list.html">Belts</a></li>
-                          <li><a href="shop-product-list.html">Caps</a></li>
-                          <li><a href="shop-product-list.html">Gloves, Hats and Scarves</a></li>
+                          <li><a href="list.do">Belts</a></li>
+                          <li><a href="list.do">Caps</a></li>
+                          <li><a href="list.do">Gloves, Hats and Scarves</a></li>
                         </ul>
 
-                        <h4>Clearance</h4>
+                        <h4>斗柜</h4>
                         <ul>
-                          <li><a href="shop-product-list.html">Jackets</a></li>
-                          <li><a href="shop-product-list.html">Bottoms</a></li>
+                          <li><a href="list.do">Jackets</a></li>
+                          <li><a href="list.do">Bottoms</a></li>
                         </ul>
                       </div>
                       <div class="col-md-12 nav-brands">
                         <ul>
-                          <li><a href="shop-product-list.html"><img title="esprit" alt="esprit" src="${ctx}/s_/assets/frontend/pages/img/brands/esprit.jpg"></a></li>
-                          <li><a href="shop-product-list.html"><img title="gap" alt="gap" src="${ctx}/s_/assets/frontend/pages/img/brands/gap.jpg"></a></li>
-                          <li><a href="shop-product-list.html"><img title="next" alt="next" src="${ctx}/s_/assets/frontend/pages/img/brands/next.jpg"></a></li>
-                          <li><a href="shop-product-list.html"><img title="puma" alt="puma" src="${ctx}/s_/assets/frontend/pages/img/brands/puma.jpg"></a></li>
-                          <li><a href="shop-product-list.html"><img title="zara" alt="zara" src="${ctx}/s_/assets/frontend/pages/img/brands/zara.jpg"></a></li>
+                          <li><a href="list.do"><img title="esprit" alt="esprit" src="${ctx}/s_/assets/frontend/pages/img/brands/esprit.jpg"></a></li>
+                          <li><a href="list.do"><img title="gap" alt="gap" src="${ctx}/s_/assets/frontend/pages/img/brands/gap.jpg"></a></li>
+                          <li><a href="list.do"><img title="next" alt="next" src="${ctx}/s_/assets/frontend/pages/img/brands/next.jpg"></a></li>
+                          <li><a href="list.do"><img title="puma" alt="puma" src="${ctx}/s_/assets/frontend/pages/img/brands/puma.jpg"></a></li>
+                          <li><a href="list.do"><img title="zara" alt="zara" src="${ctx}/s_/assets/frontend/pages/img/brands/zara.jpg"></a></li>
                         </ul>
                       </div>
                     </div>
@@ -282,42 +337,42 @@
                       <div class="col-md-4 header-navigation-col">
                         <h4>Footwear</h4>
                         <ul>
-                          <li><a href="shop-product-list.html">Astro Trainers</a></li>
-                          <li><a href="shop-product-list.html">Basketball Shoes</a></li>
-                          <li><a href="shop-product-list.html">Boots</a></li>
-                          <li><a href="shop-product-list.html">Canvas Shoes</a></li>
+                          <li><a href="list.do">Astro Trainers</a></li>
+                          <li><a href="list.do">Basketball Shoes</a></li>
+                          <li><a href="list.do">Boots</a></li>
+                          <li><a href="list.do">Canvas Shoes</a></li>
                         </ul>
                       </div>
                       <div class="col-md-4 header-navigation-col">
                         <h4>Clothing</h4>
                         <ul>
-                          <li><a href="shop-product-list.html">Base Layer</a></li>
-                          <li><a href="shop-product-list.html">Character</a></li>
-                          <li><a href="shop-product-list.html">Chinos</a></li>
-                          <li><a href="shop-product-list.html">Combats</a></li>
+                          <li><a href="list.do">Base Layer</a></li>
+                          <li><a href="list.do">Character</a></li>
+                          <li><a href="list.do">Chinos</a></li>
+                          <li><a href="list.do">Combats</a></li>
                         </ul>
                       </div>
                       <div class="col-md-4 header-navigation-col">
                         <h4>Accessories</h4>
                         <ul>
-                          <li><a href="shop-product-list.html">Belts</a></li>
-                          <li><a href="shop-product-list.html">Caps</a></li>
-                          <li><a href="shop-product-list.html">Gloves, Hats and Scarves</a></li>
+                          <li><a href="list.do">Belts</a></li>
+                          <li><a href="list.do">Caps</a></li>
+                          <li><a href="list.do">Gloves, Hats and Scarves</a></li>
                         </ul>
 
                         <h4>Clearance</h4>
                         <ul>
-                          <li><a href="shop-product-list.html">Jackets</a></li>
-                          <li><a href="shop-product-list.html">Bottoms</a></li>
+                          <li><a href="list.do">Jackets</a></li>
+                          <li><a href="list.do">Bottoms</a></li>
                         </ul>
                       </div>
                       <div class="col-md-12 nav-brands">
                         <ul>
-                          <li><a href="shop-product-list.html"><img title="esprit" alt="esprit" src="${ctx}/s_/assets/frontend/pages/img/brands/esprit.jpg"></a></li>
-                          <li><a href="shop-product-list.html"><img title="gap" alt="gap" src="${ctx}/s_/assets/frontend/pages/img/brands/gap.jpg"></a></li>
-                          <li><a href="shop-product-list.html"><img title="next" alt="next" src="${ctx}/s_/assets/frontend/pages/img/brands/next.jpg"></a></li>
-                          <li><a href="shop-product-list.html"><img title="puma" alt="puma" src="${ctx}/s_/assets/frontend/pages/img/brands/puma.jpg"></a></li>
-                          <li><a href="shop-product-list.html"><img title="zara" alt="zara" src="${ctx}/s_/assets/frontend/pages/img/brands/zara.jpg"></a></li>
+                          <li><a href="list.do"><img title="esprit" alt="esprit" src="${ctx}/s_/assets/frontend/pages/img/brands/esprit.jpg"></a></li>
+                          <li><a href="list.do"><img title="gap" alt="gap" src="${ctx}/s_/assets/frontend/pages/img/brands/gap.jpg"></a></li>
+                          <li><a href="list.do"><img title="next" alt="next" src="${ctx}/s_/assets/frontend/pages/img/brands/next.jpg"></a></li>
+                          <li><a href="list.do"><img title="puma" alt="puma" src="${ctx}/s_/assets/frontend/pages/img/brands/puma.jpg"></a></li>
+                          <li><a href="list.do"><img title="zara" alt="zara" src="${ctx}/s_/assets/frontend/pages/img/brands/zara.jpg"></a></li>
                         </ul>
                       </div>
                     </div>
@@ -393,7 +448,7 @@
                 <li><a href="shop-index.html">Home Default</a></li>
                 <li><a href="shop-index-header-fix.html">Home Header Fixed</a></li>
                 <li><a href="shop-index-light-footer.html">Home Light Footer</a></li>
-                <li><a href="shop-product-list.html">Product List</a></li>
+                <li><a href="list.do">Product List</a></li>
                 <li><a href="shop-search-result.html">Search Result</a></li>
                 <li class="active"><a href="shop-item.html">Product Page</a></li>
                 <li><a href="shop-shopping-cart-null.html">Shopping Cart (Null Cart)</a></li>
@@ -420,7 +475,7 @@
               <span class="sep"></span>
               <i class="fa fa-search search-btn"></i>
               <div class="search-box">
-                <form action="#">
+                <form action="search-result.do">
                   <div class="input-group">
                     <input type="text" placeholder="关键词" class="form-control">
                     <span class="input-group-btn">
