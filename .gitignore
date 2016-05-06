@@ -1,5 +1,7 @@
 /target/
 
+target/
+
 /webapp/WEB-INF/classes
 
 /.settings

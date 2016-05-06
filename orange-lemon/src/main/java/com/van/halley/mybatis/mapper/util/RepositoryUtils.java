@@ -9,7 +9,7 @@ import com.van.halley.db.persistence.entity.*;
 /**
  * @author Vangogh 自动生成Dao Imp Servcie Imp 各个javabean的对应代码
  */
-public class RepositoryEntrance {
+public class RepositoryUtils {
 
 	public static void main(String[] args) {
 		DiskInfoDo();
