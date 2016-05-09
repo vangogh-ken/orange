@@ -1,22 +1,15 @@
-package com.van.orange.apple.db.persistence.entity;
+package com.van.halley.db.persistence.entity;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class ItemSubstance implements Serializable{
+public class ItemReview implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private String id;
-	/**
-	 * 
-	 */
-	private String modelNo;
-	/**
-	 * 
-	 */
-	private String itemName;
+	private String content;
 	private String descn;
 	private String status;
 	private Date createTime;

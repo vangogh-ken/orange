@@ -6,15 +6,79 @@ import java.util.Map;
 import com.van.halley.auth.db.persistence.PrivilegeMaster;
 import com.van.halley.db.persistence.entity.*;
 
-/**
- * @author Vangogh 自动生成Dao Imp Servcie Imp 各个javabean的对应代码
- */
 public class RepositoryUtils {
 
 	public static void main(String[] args) {
-		DiskInfoDo();
-		DiskShareDo();
-		DiskAclDo();
+		ItemCategoryDo();
+		ItemSubstanceDo();
+		ItemAttributeDo();
+	}
+	
+	public static void ItemAttributeDo(){
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("id", "ID");
+		map.put("attributeName", "ATTR_NAME");
+		map.put("attributeColumn", "ATTR_COLUMN");
+		map.put("attributeType", "ATTR_TYPE");
+		map.put("isRequired", "IS_REQUIRED");
+		map.put("isSelected", "IS_SELECTED");
+		map.put("vAttrId", "VATTR_ID");
+		map.put("itemCategoryId", "ITEM_CATEGORY_ID");
+		
+		map.put("descn", "DESCN");
+		map.put("status", "STATUS");
+		map.put("createTime", "CREATE_TIME");
+		map.put("modifyTime", "MODIFY_TIME");
+		map.put("displayIndex", "DISP_INX");
+		
+		MapperCreation<ItemAttribute> deal = new MapperCreation<ItemAttribute>();
+		String content = deal.createXml(ItemAttribute.class, map, "ITEM_ATTRIBUTE");
+		FileCreation.doCreate("item-attribute-mapper.xml", content);
+		
+		DaoCreation.doCreate("ItemAttribute");
+	}
+	
+	public static void ItemSubstanceDo(){
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("id", "ID");
+		map.put("itemNumber", "ITEM_NUMBER");
+		map.put("itemModel", "ITEM_MODEL");
+		map.put("itemName", "ITEM_NAME");
+		map.put("itemCategoryId", "ITEM_CATEGORY_ID");
+		map.put("itemSupplierId", "ITEM_SUPPLIER_ID");
+		map.put("itemManufacturerId", "ITEM_MFRS_ID");
+		
+		map.put("descn", "DESCN");
+		map.put("status", "STATUS");
+		map.put("createTime", "CREATE_TIME");
+		map.put("modifyTime", "MODIFY_TIME");
+		map.put("displayIndex", "DISP_INX");
+		
+		MapperCreation<ItemSubstance> deal = new MapperCreation<ItemSubstance>();
+		String content = deal.createXml(ItemSubstance.class, map, "ITEM_SUBSTANCE");
+		FileCreation.doCreate("item-substance-mapper.xml", content);
+		
+		DaoCreation.doCreate("ItemSubstance");
+	}
+	
+	public static void ItemCategoryDo(){
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("id", "ID");
+		map.put("categoryName", "CATEGORY_NAME");
+		map.put("categoryIndex", "CATEGORY_INDEX");
+		map.put("aboveCategoryId", "ABOVE_CATEGORY_ID");
+		
+		map.put("descn", "DESCN");
+		map.put("status", "STATUS");
+		map.put("createTime", "CREATE_TIME");
+		map.put("modifyTime", "MODIFY_TIME");
+		map.put("displayIndex", "DISP_INX");
+		
+		MapperCreation<ItemCategory> deal = new MapperCreation<ItemCategory>();
+		String content = deal.createXml(ItemCategory.class, map, "ITEM_CATEGORY");
+		FileCreation.doCreate("item-category-mapper.xml", content);
+		
+		DaoCreation.doCreate("ItemCategory");
 	}
 	
 	public static void DiskAclDo(){

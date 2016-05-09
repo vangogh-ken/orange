@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="itemcategory"> 
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+<sql id="selectId"> 
+MODIFY_TIME AS modifyTime,
+CREATE_TIME AS createTime,
+ABOVE_CATEGORY_ID AS aboveCategoryId,
+ID AS id,
+CATEGORY_NAME AS categoryName,
+CATEGORY_INDEX AS categoryIndex,
+DESCN AS descn,
+DISP_INX AS displayIndex,
+STATUS AS status
+</sql>
+
+<select id="query" parameterType="java.util.HashMap" useCache="false" resultType="ItemCategory" > 
+select 
+<include refid="selectId" /> 
+ from ITEM_CATEGORY
+<where>
+<if test="t.modifyTime != null and t.modifyTime != ''">
+and MODIFY_TIME = #{t.modifyTime}
+</if>
+<if test="t.createTime != null and t.createTime != ''">
+and CREATE_TIME = #{t.createTime}
+</if>
+<if test="t.aboveCategoryId != null and t.aboveCategoryId != ''">
+and ABOVE_CATEGORY_ID = #{t.aboveCategoryId}
+</if>
+<if test="t.id != null and t.id != ''">
+and ID = #{t.id}
+</if>
+<if test="t.categoryName != null and t.categoryName != ''">
+and CATEGORY_NAME = #{t.categoryName}
+</if>
+<if test="t.categoryIndex != null and t.categoryIndex != ''">
+and CATEGORY_INDEX = #{t.categoryIndex}
+</if>
+<if test="t.descn != null and t.descn != ''">
+and DESCN = #{t.descn}
+</if>
+<if test="t.displayIndex != null and t.displayIndex != ''">
+and DISP_INX = #{t.displayIndex}
+</if>
+<if test="t.status != null and t.status != ''">
+and STATUS = #{t.status}
+</if>
+<if test="pageView.filterText != null and pageView.filterText != ''">
+and ${pageView.filterText}
+</if>
+</where>
+<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+<if test="pageView.orderBy != null and pageView.orderBy != ''">
+order by ${pageView.orderBy}
+<if test="pageView.order != null and pageView.order != ''">
+<if test="pageView.order == 'ASC'">
+ASC
+</if>
+<if test="pageView.order == 'DESC'">
+DESC
+</if>
+</if>
+</if>
+</select>
+
+<select id="queryForList" parameterType="ItemCategory" resultType="ItemCategory">
+select
+<include refid="selectId" />
+from ITEM_CATEGORY
+<where>
+<if test="modifyTime != null and modifyTime != ''">
+and MODIFY_TIME = #{modifyTime}
+</if>
+<if test="createTime != null and createTime != ''">
+and CREATE_TIME = #{createTime}
+</if>
+<if test="aboveCategoryId != null and aboveCategoryId != ''">
+and ABOVE_CATEGORY_ID = #{aboveCategoryId}
+</if>
+<if test="id != null and id != ''">
+and ID = #{id}
+</if>
+<if test="categoryName != null and categoryName != ''">
+and CATEGORY_NAME = #{categoryName}
+</if>
+<if test="categoryIndex != null and categoryIndex != ''">
+and CATEGORY_INDEX = #{categoryIndex}
+</if>
+<if test="descn != null and descn != ''">
+and DESCN = #{descn}
+</if>
+<if test="displayIndex != null and displayIndex != ''">
+and DISP_INX = #{displayIndex}
+</if>
+<if test="status != null and status != ''">
+and STATUS = #{status}
+</if>
+</where>
+</select>
+
+<select id="getAll" resultType="ItemCategory">
+select
+<include refid="selectId" />
+from ITEM_CATEGORY
+</select>
+
+<select id="count" parameterType="ItemCategory" resultType="int">
+select count(0) from ITEM_CATEGORY
+<where>
+<if test="modifyTime != null and modifyTime != ''">
+and MODIFY_TIME = #{modifyTime}
+</if>
+<if test="createTime != null and createTime != ''">
+and CREATE_TIME = #{createTime}
+</if>
+<if test="aboveCategoryId != null and aboveCategoryId != ''">
+and ABOVE_CATEGORY_ID = #{aboveCategoryId}
+</if>
+<if test="id != null and id != ''">
+and ID = #{id}
+</if>
+<if test="categoryName != null and categoryName != ''">
+and CATEGORY_NAME = #{categoryName}
+</if>
+<if test="categoryIndex != null and categoryIndex != ''">
+and CATEGORY_INDEX = #{categoryIndex}
+</if>
+<if test="descn != null and descn != ''">
+and DESCN = #{descn}
+</if>
+<if test="displayIndex != null and displayIndex != ''">
+and DISP_INX = #{displayIndex}
+</if>
+<if test="status != null and status != ''">
+and STATUS = #{status}
+</if>
+</where>
+</select>
+
+<insert id="add" parameterType="ItemCategory">
+insert into ITEM_CATEGORY(
+MODIFY_TIME,
+CREATE_TIME,
+ABOVE_CATEGORY_ID,
+ID,
+CATEGORY_NAME,
+CATEGORY_INDEX,
+DESCN,
+DISP_INX,
+STATUS
+)values (
+#{modifyTime},
+#{createTime},
+#{aboveCategoryId},
+<if test="id != null and id != '' ">
+#{id},
+</if>
+<if test="id == null or id == '' ">
+UUID(),
+</if>
+#{categoryName},
+#{categoryIndex},
+#{descn},
+#{displayIndex},
+#{status}
+)
+</insert>
+
+<delete id="deleteById" parameterType="String">
+delete from ITEM_CATEGORY where id=#{id}
+</delete>
+
+<select id="getById" parameterType="String" resultType="ItemCategory">
+select <include refid="selectId" />
+from ITEM_CATEGORY where id=#{id}
+</select>
+
+<update id="update" parameterType="ItemCategory">
+update ITEM_CATEGORY
+<set>
+MODIFY_TIME=SYSDATE(),
+<if test="createTime != null and createTime != ''">
+CREATE_TIME=#{createTime},
+</if>
+<if test="aboveCategoryId != null and aboveCategoryId != ''">
+ABOVE_CATEGORY_ID=#{aboveCategoryId},
+</if>
+<if test="categoryName != null and categoryName != ''">
+CATEGORY_NAME=#{categoryName},
+</if>
+<if test="categoryIndex != null and categoryIndex != ''">
+CATEGORY_INDEX=#{categoryIndex},
+</if>
+<if test="descn != null and descn != ''">
+DESCN=#{descn},
+</if>
+<if test="displayIndex != null and displayIndex != ''">
+DISP_INX=#{displayIndex},
+</if>
+<if test="status != null and status != ''">
+STATUS=#{status},
+</if>
+</set>
+WHERE ID=#{id} AND MODIFY_TIME=#{modifyTime} 
+</update>
+
+<delete id="deleteBatch" parameterType="java.util.List">
+delete from ITEM_CATEGORY where ID IN 
+<foreach collection="list"  item="t" index="index" open="(" separator="," close=")" >
+#{t.id}
+</foreach>
+</delete>
+
+<update id="updateBatch" parameterType="java.util.List">
+<foreach collection="list" item="t" index="index" open="" close="" separator=";">
+update ITEM_CATEGORY
+<set>
+MODIFY_TIME=SYSDATE(),
+<if test="t.createTime != null and t.createTime != ''">
+CREATE_TIME=#{t.createTime},
+</if>
+<if test="t.aboveCategoryId != null and t.aboveCategoryId != ''">
+ABOVE_CATEGORY_ID=#{t.aboveCategoryId},
+</if>
+<if test="t.categoryName != null and t.categoryName != ''">
+CATEGORY_NAME=#{t.categoryName},
+</if>
+<if test="t.categoryIndex != null and t.categoryIndex != ''">
+CATEGORY_INDEX=#{t.categoryIndex},
+</if>
+<if test="t.descn != null and t.descn != ''">
+DESCN=#{t.descn},
+</if>
+<if test="t.displayIndex != null and t.displayIndex != ''">
+DISP_INX=#{t.displayIndex},
+</if>
+<if test="t.status != null and t.status != ''">
+STATUS=#{t.status},
+</if>
+</set>
+WHERE ID=#{t.id} AND MODIFY_TIME=#{modifyTime} 
+</foreach>
+</update>
+
+<insert id="insertBatch" parameterType="java.util.List">
+insert into ITEM_CATEGORY(
+MODIFY_TIME,
+CREATE_TIME,
+ABOVE_CATEGORY_ID,
+ID,
+CATEGORY_NAME,
+CATEGORY_INDEX,
+DESCN,
+DISP_INX,
+STATUS
+)values<foreach collection="list" item="t" index="index" separator=",">
+(
+#{t.modifyTime},
+#{t.createTime},
+#{t.aboveCategoryId},
+<if test="t.id != null and t.id != '' ">
+#{t.id},
+</if>
+<if test="t.id == null or t.id == '' ">
+UUID(),
+</if>
+#{t.categoryName},
+#{t.categoryIndex},
+#{t.descn},
+#{t.displayIndex},
+#{t.status}
+)
+</foreach>
+</insert>
+</mapper>

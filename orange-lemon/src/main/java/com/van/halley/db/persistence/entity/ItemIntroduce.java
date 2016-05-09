@@ -1,4 +1,4 @@
-package com.van.orange.apple.db.persistence.entity;
+package com.van.halley.db.persistence.entity;
 
 import java.io.Serializable;
 import java.util.Date;

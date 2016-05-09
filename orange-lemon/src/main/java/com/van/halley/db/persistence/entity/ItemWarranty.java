@@ -1,9 +1,9 @@
-package com.van.orange.apple.db.persistence.entity;
+package com.van.halley.db.persistence.entity;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class ShopAddress implements Serializable{
+public class ItemWarranty implements Serializable{
 	/**
 	 * 
 	 */
@@ -13,4 +13,5 @@ public class ShopAddress implements Serializable{
 	private Date createTime;
 	private Date modifyTime;
 	private int displayIndex;
+
 }

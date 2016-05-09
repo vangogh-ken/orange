@@ -1,9 +1,9 @@
-package com.van.orange.apple.db.persistence.entity;
+package com.van.halley.db.persistence.entity;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class ItemCategory implements Serializable{
+public class ItemStock implements Serializable{
 	/**
 	 * 
 	 */
@@ -12,16 +12,19 @@ public class ItemCategory implements Serializable{
 	/**
 	 * 
 	 */
-	private String categoryName;
+	private String itemSubstanceId;
 	/**
 	 * 
 	 */
-	private int categoryIndex;
+	private int totalCount;
 	/**
 	 * 
 	 */
-	private String aboveCategoryId;
-	
+	private int soledCount;
+	/**
+	 * 
+	 */
+	private int stockCount;
 	private String descn;
 	private String status;
 	private Date createTime;

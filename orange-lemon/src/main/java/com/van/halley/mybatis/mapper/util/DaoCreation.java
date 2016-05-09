@@ -11,9 +11,9 @@ public class DaoCreation {
 
 	public static void createDao(String entityName) {
 		StringBuilder content = new StringBuilder();
-		content.append("package com.van.db.persistence;\n");
-		content.append("import com.van.db.BaseDao;\n");
-		content.append("import com.van.db.persistence.entity." + entityName
+		content.append("package com.van.halley.db.persistence;\n");
+		content.append("import com.van.halley.db.BaseDao;\n");
+		content.append("import com.van.halley.db.persistence.entity." + entityName
 				+ ";\n");
 		content.append("public interface " + entityName
 				+ "Dao extends BaseDao<" + entityName + "> {}");
@@ -25,9 +25,9 @@ public class DaoCreation {
 		StringBuilder content = new StringBuilder();
 		content.append("package com.van.db.persistence.impl;\n");
 		content.append("import org.springframework.stereotype.Repository;\n");
-		content.append("import com.van.db.impl.BaseDaoImpl;\n");
-		content.append("import com.van.db.persistence." + entityName + "Dao;\n");
-		content.append("import com.van.db.persistence.entity." + entityName
+		content.append("import com.van.halley.db.BaseDaoImpl;\n");
+		content.append("import com.van.halley.db.persistence." + entityName + "Dao;\n");
+		content.append("import com.van.halley.db.persistence.entity." + entityName
 				+ ";\n");
 		content.append("@Repository(\"" + toLowerFileChar(entityName)
 				+ "Dao\")\n");
@@ -42,7 +42,7 @@ public class DaoCreation {
 		StringBuilder content = new StringBuilder();
 		content.append("package com.van.service;\n");
 		content.append("import java.util.List;\n");
-		content.append("import com.van.db.persistence.entity." + entityName
+		content.append("import com.van.halley.db.persistence.entity." + entityName
 				+ ";\n");
 		content.append("import com.van.halley.core.page.PageView;\n");
 		content.append("public interface " + entityName + "Service{\n");
@@ -79,8 +79,8 @@ public class DaoCreation {
 		content.append("import org.springframework.beans.factory.annotation.Autowired;\n");
 		content.append("import org.springframework.stereotype.Service;\n");
 		content.append("import org.springframework.transaction.annotation.Transactional;\n");
-		content.append("import com.van.db.persistence." + entityName + "Dao;\n");
-		content.append("import com.van.db.persistence.entity." + entityName
+		content.append("import com.van.halley.db.persistence." + entityName + "Dao;\n");
+		content.append("import com.van.halley.db.persistence.entity." + entityName
 				+ ";\n");
 		content.append("import com.van.service." + entityName + "Service;\n");
 		content.append("import com.van.halley.core.page.PageView;\n");
