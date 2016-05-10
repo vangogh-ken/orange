@@ -23,7 +23,7 @@ public class DaoCreation {
 
 	public static void createDaoImpl(String entityName) {
 		StringBuilder content = new StringBuilder();
-		content.append("package com.van.db.persistence.impl;\n");
+		content.append("package com.van.halley.db.persistence.impl;\n");
 		content.append("import org.springframework.stereotype.Repository;\n");
 		content.append("import com.van.halley.db.BaseDaoImpl;\n");
 		content.append("import com.van.halley.db.persistence." + entityName + "Dao;\n");

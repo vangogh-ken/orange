@@ -30,6 +30,13 @@
 	
 	<typeAliases>
 		<!-- 给实体Bean一个别名-->
+		
+		<!-- ITEM -->
+		<typeAlias type="com.van.halley.db.persistence.entity.ItemCategory" alias="ItemCategory" />
+		<typeAlias type="com.van.halley.db.persistence.entity.ItemAttribute" alias="ItemAttribute" />
+		<typeAlias type="com.van.halley.db.persistence.entity.ItemSubstance" alias="ItemSubstance" />
+		
+		
 		<!-- AUTH -->
 		<typeAlias type="com.van.halley.db.persistence.entity.User" alias="User" />
 		<typeAlias type="com.van.halley.db.persistence.entity.UserRole" alias="UserRole"/>

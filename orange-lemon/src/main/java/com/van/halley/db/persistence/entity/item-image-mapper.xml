@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="itemimage">
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<sql id="selectId">
+		ITEM_SUBSTANCE_ID AS itemSubstanceId,
+		IMAGE_FORMAT AS imageFormat,
+		IMAGE_NAME AS imageName,
+		CREATOR_ID AS creatorId,
+		MODIFIER_ID AS modifierId,
+		DESCN AS descn,
+		MODIFY_TIME AS modifyTime,
+		CREATE_TIME AS createTime,
+		IMAGE_URL AS imageUrl,
+		ID AS id,
+		IMAGE_REF AS imageRef,
+		IMAGE_SIZE AS imageSize,
+		DISP_INX AS displayIndex,
+		STATUS AS status
+	</sql>
+
+	<select id="query" parameterType="java.util.HashMap" useCache="false"
+		resultType="ItemImage">
+		select
+		<include refid="selectId" />
+		from ITEM_IMAGE
+		<where>
+			<if test="t.itemSubstanceId != null and t.itemSubstanceId != ''">
+				and ITEM_SUBSTANCE_ID = #{t.itemSubstanceId}
+			</if>
+			<if test="t.imageFormat != null and t.imageFormat != ''">
+				and IMAGE_FORMAT = #{t.imageFormat}
+			</if>
+			<if test="t.imageName != null and t.imageName != ''">
+				and IMAGE_NAME = #{t.imageName}
+			</if>
+			<if test="t.creatorId != null and t.creatorId != ''">
+				and CREATOR_ID = #{t.creatorId}
+			</if>
+			<if test="t.modifierId != null and t.modifierId != ''">
+				and MODIFIER_ID = #{t.modifierId}
+			</if>
+			<if test="t.descn != null and t.descn != ''">
+				and DESCN = #{t.descn}
+			</if>
+			<if test="t.modifyTime != null and t.modifyTime != ''">
+				and MODIFY_TIME = #{t.modifyTime}
+			</if>
+			<if test="t.createTime != null and t.createTime != ''">
+				and CREATE_TIME = #{t.createTime}
+			</if>
+			<if test="t.imageUrl != null and t.imageUrl != ''">
+				and IMAGE_URL = #{t.imageUrl}
+			</if>
+			<if test="t.id != null and t.id != ''">
+				and ID = #{t.id}
+			</if>
+			<if test="t.imageRef != null and t.imageRef != ''">
+				and IMAGE_REF = #{t.imageRef}
+			</if>
+			<if test="t.imageSize != null and t.imageSize != ''">
+				and IMAGE_SIZE = #{t.imageSize}
+			</if>
+			<if test="t.displayIndex != null and t.displayIndex != ''">
+				and DISP_INX = #{t.displayIndex}
+			</if>
+			<if test="t.status != null and t.status != ''">
+				and STATUS = #{t.status}
+			</if>
+			<if test="pageView.filterText != null and pageView.filterText != ''">
+				and ${pageView.filterText}
+			</if>
+		</where>
+		<!-- 排序的时候不要使用预处理，不然排序无效，因此此处使用$取值，拼接SQL -->
+		<if test="pageView.orderBy != null and pageView.orderBy != ''">
+			order by ${pageView.orderBy}
+			<if test="pageView.order != null and pageView.order != ''">
+				<if test="pageView.order == 'ASC'">
+					ASC
+				</if>
+				<if test="pageView.order == 'DESC'">
+					DESC
+				</if>
+			</if>
+		</if>
+	</select>
+
+	<select id="queryForList" parameterType="ItemImage" resultType="ItemImage">
+		select
+		<include refid="selectId" />
+		from ITEM_IMAGE
+		<where>
+			<if test="itemSubstanceId != null and itemSubstanceId != ''">
+				and ITEM_SUBSTANCE_ID = #{itemSubstanceId}
+			</if>
+			<if test="imageFormat != null and imageFormat != ''">
+				and IMAGE_FORMAT = #{imageFormat}
+			</if>
+			<if test="imageName != null and imageName != ''">
+				and IMAGE_NAME = #{imageName}
+			</if>
+			<if test="creatorId != null and creatorId != ''">
+				and CREATOR_ID = #{creatorId}
+			</if>
+			<if test="modifierId != null and modifierId != ''">
+				and MODIFIER_ID = #{modifierId}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="imageUrl != null and imageUrl != ''">
+				and IMAGE_URL = #{imageUrl}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="imageRef != null and imageRef != ''">
+				and IMAGE_REF = #{imageRef}
+			</if>
+			<if test="imageSize != null and imageSize != ''">
+				and IMAGE_SIZE = #{imageSize}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAll" resultType="ItemImage">
+		select
+		<include refid="selectId" />
+		from ITEM_IMAGE
+	</select>
+
+	<select id="count" parameterType="ItemImage" resultType="int">
+		select count(0) from ITEM_IMAGE
+		<where>
+			<if test="itemSubstanceId != null and itemSubstanceId != ''">
+				and ITEM_SUBSTANCE_ID = #{itemSubstanceId}
+			</if>
+			<if test="imageFormat != null and imageFormat != ''">
+				and IMAGE_FORMAT = #{imageFormat}
+			</if>
+			<if test="imageName != null and imageName != ''">
+				and IMAGE_NAME = #{imageName}
+			</if>
+			<if test="creatorId != null and creatorId != ''">
+				and CREATOR_ID = #{creatorId}
+			</if>
+			<if test="modifierId != null and modifierId != ''">
+				and MODIFIER_ID = #{modifierId}
+			</if>
+			<if test="descn != null and descn != ''">
+				and DESCN = #{descn}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				and MODIFY_TIME = #{modifyTime}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				and CREATE_TIME = #{createTime}
+			</if>
+			<if test="imageUrl != null and imageUrl != ''">
+				and IMAGE_URL = #{imageUrl}
+			</if>
+			<if test="id != null and id != ''">
+				and ID = #{id}
+			</if>
+			<if test="imageRef != null and imageRef != ''">
+				and IMAGE_REF = #{imageRef}
+			</if>
+			<if test="imageSize != null and imageSize != ''">
+				and IMAGE_SIZE = #{imageSize}
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				and DISP_INX = #{displayIndex}
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="ItemImage">
+		insert into ITEM_IMAGE( ITEM_SUBSTANCE_ID, IMAGE_FORMAT, IMAGE_NAME,
+		CREATOR_ID, MODIFIER_ID, DESCN, MODIFY_TIME, CREATE_TIME, IMAGE_URL,
+		ID, IMAGE_REF, IMAGE_SIZE, DISP_INX, STATUS )values (
+		#{itemSubstanceId}, #{imageFormat}, #{imageName}, #{creatorId},
+		#{modifierId}, #{descn}, #{modifyTime}, #{createTime}, #{imageUrl},
+		<if test="id != null and id != '' ">
+			#{id},
+		</if>
+		<if test="id == null or id == '' ">
+			UUID(),
+		</if>
+		#{imageRef},
+		#{imageSize},
+		#{displayIndex},
+		#{status}
+		)
+	</insert>
+
+	<delete id="deleteById" parameterType="String">
+		delete from ITEM_IMAGE where id=#{id}
+	</delete>
+
+	<select id="getById" parameterType="String" resultType="ItemImage">
+		select
+		<include refid="selectId" />
+		from ITEM_IMAGE where id=#{id}
+	</select>
+
+	<update id="update" parameterType="ItemImage">
+		update ITEM_IMAGE
+		<set>
+			<if test="itemSubstanceId != null and itemSubstanceId != ''">
+				ITEM_SUBSTANCE_ID=#{itemSubstanceId},
+			</if>
+			<if test="imageFormat != null and imageFormat != ''">
+				IMAGE_FORMAT=#{imageFormat},
+			</if>
+			<if test="imageName != null and imageName != ''">
+				IMAGE_NAME=#{imageName},
+			</if>
+			<if test="creatorId != null and creatorId != ''">
+				CREATOR_ID=#{creatorId},
+			</if>
+			<if test="modifierId != null and modifierId != ''">
+				MODIFIER_ID=#{modifierId},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			MODIFY_TIME=SYSDATE(),
+			<if test="createTime != null and createTime != ''">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="imageUrl != null and imageUrl != ''">
+				IMAGE_URL=#{imageUrl},
+			</if>
+			<if test="imageRef != null and imageRef != ''">
+				IMAGE_REF=#{imageRef},
+			</if>
+			<if test="imageSize != null and imageSize != ''">
+				IMAGE_SIZE=#{imageSize},
+			</if>
+			<if test="displayIndex != null and displayIndex != ''">
+				DISP_INX=#{displayIndex},
+			</if>
+			<if test="status != null and status != ''">
+				STATUS=#{status},
+			</if>
+		</set>
+		WHERE ID=#{id} AND MODIFY_TIME=#{modifyTime}
+	</update>
+
+	<delete id="deleteBatch" parameterType="java.util.List">
+		delete from ITEM_IMAGE where ID IN
+		<foreach collection="list" item="t" index="index" open="("
+			separator="," close=")">
+			#{t.id}
+		</foreach>
+	</delete>
+
+	<update id="updateBatch" parameterType="java.util.List">
+		<foreach collection="list" item="t" index="index" open=""
+			close="" separator=";">
+			update ITEM_IMAGE
+			<set>
+				<if test="t.itemSubstanceId != null and t.itemSubstanceId != ''">
+					ITEM_SUBSTANCE_ID=#{t.itemSubstanceId},
+				</if>
+				<if test="t.imageFormat != null and t.imageFormat != ''">
+					IMAGE_FORMAT=#{t.imageFormat},
+				</if>
+				<if test="t.imageName != null and t.imageName != ''">
+					IMAGE_NAME=#{t.imageName},
+				</if>
+				<if test="t.creatorId != null and t.creatorId != ''">
+					CREATOR_ID=#{t.creatorId},
+				</if>
+				<if test="t.modifierId != null and t.modifierId != ''">
+					MODIFIER_ID=#{t.modifierId},
+				</if>
+				<if test="t.descn != null and t.descn != ''">
+					DESCN=#{t.descn},
+				</if>
+				MODIFY_TIME=SYSDATE(),
+				<if test="t.createTime != null and t.createTime != ''">
+					CREATE_TIME=#{t.createTime},
+				</if>
+				<if test="t.imageUrl != null and t.imageUrl != ''">
+					IMAGE_URL=#{t.imageUrl},
+				</if>
+				<if test="t.imageRef != null and t.imageRef != ''">
+					IMAGE_REF=#{t.imageRef},
+				</if>
+				<if test="t.imageSize != null and t.imageSize != ''">
+					IMAGE_SIZE=#{t.imageSize},
+				</if>
+				<if test="t.displayIndex != null and t.displayIndex != ''">
+					DISP_INX=#{t.displayIndex},
+				</if>
+				<if test="t.status != null and t.status != ''">
+					STATUS=#{t.status},
+				</if>
+			</set>
+			WHERE ID=#{t.id} AND MODIFY_TIME=#{modifyTime}
+		</foreach>
+	</update>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into ITEM_IMAGE( ITEM_SUBSTANCE_ID, IMAGE_FORMAT, IMAGE_NAME,
+		CREATOR_ID, MODIFIER_ID, DESCN, MODIFY_TIME, CREATE_TIME, IMAGE_URL,
+		ID, IMAGE_REF, IMAGE_SIZE, DISP_INX, STATUS )values
+		<foreach collection="list" item="t" index="index" separator=",">
+			(
+			#{t.itemSubstanceId},
+			#{t.imageFormat},
+			#{t.imageName},
+			#{t.creatorId},
+			#{t.modifierId},
+			#{t.descn},
+			#{t.modifyTime},
+			#{t.createTime},
+			#{t.imageUrl},
+			<if test="t.id != null and t.id != '' ">
+				#{t.id},
+			</if>
+			<if test="t.id == null or t.id == '' ">
+				UUID(),
+			</if>
+			#{t.imageRef},
+			#{t.imageSize},
+			#{t.displayIndex},
+			#{t.status}
+			)
+		</foreach>
+	</insert>
+</mapper>

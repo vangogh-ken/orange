@@ -9,9 +9,32 @@ import com.van.halley.db.persistence.entity.*;
 public class RepositoryUtils {
 
 	public static void main(String[] args) {
-		ItemCategoryDo();
-		ItemSubstanceDo();
-		ItemAttributeDo();
+		ItemImageDo();
+	}
+	
+	public static void ItemImageDo(){
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("id", "ID");
+		map.put("imageName", "IMAGE_NAME");
+		map.put("imageUrl", "IMAGE_URL");
+		map.put("imageRef", "IMAGE_REF");
+		map.put("imageFormat", "IMAGE_FORMAT");
+		map.put("imageSize", "IMAGE_SIZE");
+		map.put("itemSubstanceId", "ITEM_SUBSTANCE_ID");
+		map.put("creatorId", "CREATOR_ID");
+		map.put("modifierId", "MODIFIER_ID");
+		
+		map.put("descn", "DESCN");
+		map.put("status", "STATUS");
+		map.put("createTime", "CREATE_TIME");
+		map.put("modifyTime", "MODIFY_TIME");
+		map.put("displayIndex", "DISP_INX");
+		
+		MapperCreation<ItemImage> deal = new MapperCreation<ItemImage>();
+		String content = deal.createXml(ItemImage.class, map, "ITEM_IMAGE");
+		FileCreation.doCreate("item-image-mapper.xml", content);
+		
+		DaoCreation.doCreate("ItemImage");
 	}
 	
 	public static void ItemAttributeDo(){
