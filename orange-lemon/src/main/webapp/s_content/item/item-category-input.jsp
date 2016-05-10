@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <%@include file="/common/meta.jsp"%>
-    <title>类型信息</title>
+    <title>分类信息</title>
     <%@include file="/common/s2.jsp"%>
   </head>
   <body class="page-header-fixed">
@@ -19,27 +19,46 @@
 				  <div class="col-md-12">
 				  	<div class="portlet box red">
 						<div class="portlet-title">
-							<div class="caption"><i class="fa fa-align-justify"></i>类型信息</div>
+							<div class="caption"><i class="fa fa-align-justify"></i>分类信息</div>
 						</div>
 						<div class="portlet-body form">
 						<!-- BEGIN FORM-->
-							<form id="editDomainForm" method="post" action="basis-substance-type-save.do?operationMode=STORE" class="form-horizontal">
+							<form id="editDomainForm" method="post" action="item-category-save.do?operationMode=STORE" class="form-horizontal">
 								 <c:if test="${item.id != null}">
 								  <input id="id" type="hidden" name="id" value="${item.id}">
 								 </c:if>
 								 <div class="form-body">
 									<table class="table-input" style="margin-left:20%;width:60%">
 										<thead>
-											<tr><th colspan="6">类型信息</th></tr>
+											<tr><th colspan="6">分类信息</th></tr>
 										</thead>
 										<tbody>
 											<tr>
 												<td>
-													<label class="td-label" for="typeName">类型名称</label>
+													<label class="td-label" for="categoryName">分类名称</label>
 												</td>
 												<td>
-													<input id="typeName" type="text" name="typeName" value="${item.typeName}" 
+													<input id="categoryName" type="text" name="categoryName" value="${item.categoryName}" 
 													size="40" minlength="2" maxlength="50" class="form-control required" >
+												</td>
+												<td>
+													<label class="td-label" for="categoryIndex">分类顺序</label>
+												</td>
+												<td>
+													<input id="categoryIndex" type="text" name="categoryIndex" value="${item.categoryName}" 
+													size="40" minlength="1" maxlength="2" class="form-control required number" >
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<label class="td-label" for="aboveCategoryId">上级分类</label>
+												</td>
+												<td>
+													<select id="aboveCategoryId" name="aboveCategoryId" class="form-control">
+													<c:forEach items="${itemCategories}" var="itemCategory">
+													<option value="${itemCategory.id }" <c:if test="${item.aboveCategoryId == itemCategory.id }">selected</c:if>>${itemCategory.categoryName}</option>
+													</c:forEach>
+													</select>
 												</td>
 												<td>
 													<label class="td-label" for="status">状态</label>
@@ -99,9 +118,9 @@
             },
             errorClass: 'validate-error'/* ,
             rules: {
-            	typeName: {
+            	categoryName: {
    	                remote: {
-   	                    url: 'fre-action-type-check-typename.do',
+   	                    url: 'item-catetory-check-category-name.do',
    	                    data: {
    	                        <c:if test="${item.id != null}">
    	                        id: function() {
@@ -113,7 +132,7 @@
    	            }
    	        },
    	        messages: {
-   	        	typeName: {
+   	        	categoryName: {
    	                remote: "该类型已存在"
    	            }
    	        } */

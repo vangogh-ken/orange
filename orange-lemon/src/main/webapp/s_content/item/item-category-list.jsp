@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <%@include file="/common/meta.jsp"%>
-    <title>类型管理</title>
+    <title>分类管理</title>
     <%@include file="/common/s2.jsp"%>
   </head>
   <body class="page-header-fixed">
@@ -19,31 +19,22 @@
 				  <div class="col-md-12">
 				  	<div class="portlet box red">
 						<div class="portlet-title">
-							<div class="caption"><i class="fa fa-align-justify"></i>类型管理</div>
+							<div class="caption"><i class="fa fa-align-justify"></i>分类管理</div>
 						</div>
 						<div class="portlet-body">
 							<article class="m-widget" id="btnAcrticle">
 								<div class="pull-left">
-									<sec:authorize ifAnyGranted="ROLE_AUTH-USER-LIST-ADD">
-										<button class="btn btn-sm red" onclick="location.href='basis-substance-type-input.do'">
+										<button class="btn btn-sm red" onclick="location.href='item-category-input.do'">
 											新增<i class="fa fa-arrows"></i></button>
-									</sec:authorize>
 									
-									<sec:authorize ifAnyGranted="ROLE_AUTH-USER-LIST-REMOVE">
 										<button class="btn btn-sm red" onclick="table.removeAll();">
 											删除<i class="fa fa-arrows-alt"></i></button>
 											
-										<button class="btn btn-sm green" id="addBasisAttribute">
+										<button class="btn btn-sm green" id="toAddAttribute">
 											属性管理</button>
 											
-										<button class="btn btn-sm green" id="addBasisApplication">
+										<button class="btn btn-sm green" id="toAddImage">
 											应用管理</button>
-											
-										<button class="btn btn-sm green" id="addBasisSchema">
-											界面管理</button>
-											
-										<button class="btn btn-sm green" id="addBasisStatus">
-											状态管理</button>
 											
 									</sec:authorize>
 										<button class="btn btn-sm red" onclick="$('#searchAcrticle').slideToggle(200);">
@@ -63,9 +54,9 @@
 							</article>
 							
 							<article class="m-widget" id="searchAcrticle">
-								<form name="searchForm" method="post" action="basis-substance-list.do" class="form-inline">
-								    <label for="typeName">类型名称</label>
-								    <input type="text" id="typeName" name="typeName" value="${param.typeName}" class="form-control">
+								<form name="searchForm" method="post" action="item-category-list.do" class="form-inline">
+								    <label for="categoryName">分类名称</label>
+								    <input type="text" id="categoryName" name="categoryName" value="${param.categoryName}" class="form-control">
 								    
 								    <label for="status">状态</label>
 								    <select id="status" name="status" class="form-control">
@@ -77,13 +68,14 @@
 								 </form>
 							</article>
 							<article class="m-widget">
-									<form id="dynamicGridForm" name="dynamicGridForm" action="basis-substance-remove.do" class="m-form-dynamic" method="post">
+									<form id="dynamicGridForm" name="dynamicGridForm" action="item-category-remove.do" class="m-form-dynamic" method="post">
 										<table id="dynamicGrid" class="m-table table-striped table-bordered table-hover">
 											<thead>
 								                <tr>
 								                	<th class="m-table-check"><input type="checkbox" name="checkAll" onchange="toggleSelectedItems(this.checked)"></th>
-								                    <th class="sorting" name="TYPE_NAME">类型名称</th>
-								                    <th class="sorting" name="DESCN">说明</th>
+								                    <th class="sorting" name="CATEGORY_NAME">分类名称</th>
+								                    <th class="sorting" name="CATEGORY_INDEX">分类顺序</th>
+								                    <th class="sorting" name="ABOVE_CATEGORY_ID">上级分类ID</th>
 								                    <th class="sorting" name="STATUS">状态</th>
 								                    <th class="sorting" name="CREATE_TIME">创建时间</th>
 								                    <th class="sorting" name="MODIFY_TIME">修改时间</th>
@@ -94,8 +86,9 @@
 											<c:forEach items="${pageView.results}" var="item">
 								                <tr>
 								                	<td><input type="checkbox" class="selectedItem a-check" name="selectedItem" value="${item.id}"></td>
-								                    <td>${item.typeName}</td>
-								                    <td>${item.descn}</td>
+								                    <td>${item.categoryName}</td>
+								                    <td>${item.categoryIndex}</td>
+								                    <td>${item.aboveCategoryId}</td>
 								                    <td id="${item.id}status">${item.status == 'T'?'已启用':'已停用'}</td>
 								                    <td>
 								                    	<fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd"/>
@@ -104,7 +97,7 @@
 								                    	<fmt:formatDate value="${item.modifyTime}" pattern="yyyy-MM-dd"/>
 								                    </td>
 								                    <td >
-								                    	<a href="basis-substance-type-input.do?id=${item.id}" class="btn btn-sm red">编辑</a>
+								                    	<a href="item-category-input.do?id=${item.id}" class="btn btn-sm red">编辑</a>
 								                    </td>
 								                </tr>
 											</c:forEach>
@@ -129,7 +122,7 @@
 		</div>
 	</div>
 	
-	<div class="modal fade" id="basisAttributeModal" aria-hidden="true">
+	<div class="modal fade" id="itemAttributeModal" aria-hidden="true">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -259,7 +252,7 @@
 	 	    orderBy: '${pageView.orderBy == null ? "" : pageView.orderBy}',
 	 	    asc: ${pageView.asc},
 	 	    params: {
-	 	        'typeName': '${param.typeName}',
+	 	        'categoryName': '${param.categoryName}',
 	 	        'status': '${param.status}'
 	 	    },
 	 		selectedItemClass: 'selectedItem',
@@ -285,35 +278,35 @@
 	});
 	
 	////////////////////////////////////属性
-	$(document).delegate('#addBasisAttribute', 'click',function(e){
-		if(addBasisAttribute()){
+	$(document).delegate('#toAddAttribute', 'click',function(e){
+		if(toAddAttribute()){
 			var margin = (window.screen.availWidth - 1200)/2;
-			$('#basisAttributeModal').css("margin-left", margin);
-			$('#basisAttributeModal').css("width","1200px");
-			$('#basisAttributeModal').modal();
+			$('#itemAttributeModal').css("margin-left", margin);
+			$('#itemAttributeModal').css("width","1200px");
+			$('#itemAttributeModal').modal();
 		}
 	});
 	
-	function addBasisAttribute(){
+	function toAddAttribute(){
 		if($('.selectedItem:checked').length != 1){
 			alert('请选择一条数据!');
 			return false;
 		}else{
-			var basisSubstanceTypeId = $('.selectedItem:checked').val();
-			var status = $('#' + basisSubstanceTypeId + 'status').text();
+			var itemCategoryId = $('.selectedItem:checked').val();
+			var status = $('#' + itemCategoryId + 'status').text();
 			if(status != '已启用'){
 				alert('已禁用的动作不能做任何操作！');
 				return false;
 			}else{
 				$.ajax({
-					url:'basis-attribute-to-add-attribute.do?basisSubstanceTypeId=' + basisSubstanceTypeId,
+					url:'item-category-to-add-attribute.do?itemCategoryId=' + itemCategoryId,
 					type:'post',
 					dataType:'json',
 					async:true,
 					success:function(data){
-						var hasAddData = data.hasAddData;
-						var html = '<input id="basisSubstanceTypeId" type="hidden" value="' + basisSubstanceTypeId + '">';
-						html += '<input id="basisAttributeId" type="hidden" value="">';
+						var itemAttributes = data.itemAttributes;
+						var html = '<input id="itemCategoryId" type="hidden" value="' + itemCategoryId + '">';
+						html += '<input id="itemAttributeId" type="hidden" value="">';
 						html += '<table class="m-table table-bordered table-hover">';
 						html += '<thead><tr><th>字段名</th><th>字段库</th><th>字段类型</th><th>是否必须</th><th>是否可选</th><th>词典属性</th><th>词典类型</th><th>词典字段</th><th>词典过滤</th><th>顺序</th></tr></thead><tbody>';
 						html += '<tr><td><input id="attributeName" name="attributeName" value="" class="form-control required"></td>';
@@ -366,7 +359,7 @@
 		}
 	}
 	//修改字段
-	function reviseBasisAttribute(){
+	function toReviseAttribute(){
 		if($('#basisAttributeHasAddForm .selectedItemId:checked').length != 1){
 			alert('请选择一条数据！');
 			return false;

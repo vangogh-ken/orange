@@ -129,32 +129,36 @@ public class ItemAttributeController {
 		return "success";
 	}
 	
+	
+	
+	//~~ item mapping
+	
 	@ResponseBody
-	@RequestMapping(value = "item-attribute-check-attributename")
-	public boolean checkName(@RequestParam(required=true, value="attributeName") String attributeName, 
-			@RequestParam(required=true, value="basisSubstanceTypeId") String basisSubstanceTypeId, String id) {
+	@RequestMapping(value = "item-attribute-check-attribute-name")
+	public boolean checkItemName(@RequestParam(required=true, value="attributeName") String attributeName, 
+			@RequestParam(required=true, value="itemCategoryId") String itemCategoryId, String id) {
 		if(id != null){
-			String sql = "SELECT COUNT(*) AS count FROM BASIS_ATTR WHERE ATTR_NAME = ? AND BASIS_SUBSTANCE_TYPE_ID = ? AND ID <> ?";
-			int count = jdbcTemplate.queryForObject(sql, Integer.class, attributeName, basisSubstanceTypeId, id);
+			String sql = "SELECT COUNT(*) AS count FROM ITEM_ATTRIBUTE WHERE ATTR_NAME = ? AND ITEM_CATEGORY_ID = ? AND ID <> ?";
+			int count = jdbcTemplate.queryForObject(sql, Integer.class, attributeName, itemCategoryId, id);
 			return count == 0;
 		}else{
-			String sql = "SELECT COUNT(*) AS count FROM BASIS_ATTR WHERE ATTR_NAME = ? AND BASIS_SUBSTANCE_TYPE_ID = ?";
-			int count = jdbcTemplate.queryForObject(sql, Integer.class, attributeName, basisSubstanceTypeId);
+			String sql = "SELECT COUNT(*) AS count FROM ITEM_ATTRIBUTE WHERE ATTR_NAME = ? AND ITEM_CATEGORY_ID = ?";
+			int count = jdbcTemplate.queryForObject(sql, Integer.class, attributeName, itemCategoryId);
 			return count == 0;
 		}
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "item-attribute-check-attributecolumn")
-	public boolean checkColumn(@RequestParam(required=true, value="attributeColumn") String attributeColumn, 
-			@RequestParam(required=true, value="basisSubstanceTypeId") String basisSubstanceTypeId, String id) {
+	@RequestMapping(value = "item-attribute-check-attribute-column")
+	public boolean checkItemColumn(@RequestParam(required=true, value="attributeColumn") String attributeColumn, 
+			@RequestParam(required=true, value="itemCategoryId") String itemCategoryId, String id) {
 		if(!StringUtil.isNullOrEmpty(id)){
-			String sql = "SELECT COUNT(*) AS count FROM BASIS_ATTR WHERE ATTR_COLUMN = ? AND BASIS_SUBSTANCE_TYPE_ID = ? AND ID <> ?";
-			int count = jdbcTemplate.queryForObject(sql, Integer.class, attributeColumn, basisSubstanceTypeId, id);
+			String sql = "SELECT COUNT(*) AS count FROM ITEM_ATTRIBUTE WHERE ATTR_COLUMN = ? AND ITEM_CATEGORY_ID = ? AND ID <> ?";
+			int count = jdbcTemplate.queryForObject(sql, Integer.class, attributeColumn, itemCategoryId, id);
 			return count == 0;
 		}else{
-			String sql = "SELECT COUNT(*) AS count FROM BASIS_ATTR WHERE ATTR_COLUMN = ? AND BASIS_SUBSTANCE_TYPE_ID = ?";
-			int count = jdbcTemplate.queryForObject(sql, Integer.class, attributeColumn, basisSubstanceTypeId);
+			String sql = "SELECT COUNT(*) AS count FROM ITEM_ATTRIBUTE WHERE ATTR_COLUMN = ? AND ITEM_CATEGORY_ID = ?";
+			int count = jdbcTemplate.queryForObject(sql, Integer.class, attributeColumn, itemCategoryId);
 			return count == 0;
 		}
 	}

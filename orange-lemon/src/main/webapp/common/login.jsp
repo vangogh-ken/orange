@@ -28,7 +28,7 @@
 			<a href="${ctx}" >
 				<img src="${ctx}/s2/assets/img/logo-big3.png" alt="" style="margin-top:-20px;margin-left: 0%;"/>
 			</a>
-			<span style="font-size:30px;font-family: 黑体;padding-top:20px;">成都创源企业信息化平台</span>
+			<span style="font-size:30px;font-family: 黑体;padding-top:20px;"></span>
 		</div>
 	</div>
 	<div class="row" style="background-color:#fff;padding:0px 0 20px 0;">

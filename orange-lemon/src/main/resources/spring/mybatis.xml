@@ -35,6 +35,7 @@
 		<typeAlias type="com.van.halley.db.persistence.entity.ItemCategory" alias="ItemCategory" />
 		<typeAlias type="com.van.halley.db.persistence.entity.ItemAttribute" alias="ItemAttribute" />
 		<typeAlias type="com.van.halley.db.persistence.entity.ItemSubstance" alias="ItemSubstance" />
+		<typeAlias type="com.van.halley.db.persistence.entity.ItemImage" alias="ItemImage" />
 		
 		
 		<!-- AUTH -->
