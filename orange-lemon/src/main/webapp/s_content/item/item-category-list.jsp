@@ -34,7 +34,7 @@
 											属性管理</button>
 											
 										<button class="btn btn-sm green" id="toAddImage">
-											应用管理</button>
+											图片管理</button>
 											
 									</sec:authorize>
 										<button class="btn btn-sm red" onclick="$('#searchAcrticle').slideToggle(200);">
@@ -130,15 +130,17 @@
 			</div>
 			<div class="modal-body">
 				<article class="m-widget">
-				<form id="basisAttributeToAddForm" method="post" class="m-form-blank"></form>
+				<form id="toAddAttributeForm" method="post" class="m-form-blank"></form>
 				</article>
 			
 				<article class="m-widget">
 					<form id="basisAttributeBtnForm" name="basisAttributeBtnForm" method="post" action="" class="form-inline" onsubmit="return false;">
-						<button type="button" class="btn btn-sm red" onclick="$('#basisAttributeToAddForm').submit()">添加</button>
+						<button type="button" class="btn btn-sm red" onclick="$('#toAddAttributeForm').submit()">添加</button>
+						<!-- 
 						<button type="button" class="btn btn-sm red" onclick="batchBasisAttribute();">批量</button>
-						<button type="button" class="btn btn-sm red" onclick="reviseBasisAttribute();">修改</button>
-						<button type="button" class="btn btn-sm green" onclick="deleteBasisAttribute();">删除</button>
+						 -->
+						<button type="button" class="btn btn-sm red" onclick="toReviseAttribute();">修改</button>
+						<button type="button" class="btn btn-sm green" onclick="doneRemoveAttribute();">删除</button>
 					</form>
 				</article>
 				<article class="m-widget" style="max-height:300px;overflow-y: scroll;">
@@ -382,23 +384,23 @@
 		}
 	}
 	$(function() {
-		$("#basisAttributeToAddForm").validate({
+		$("#toAddAttributeForm").validate({
 	        submitHandler: function(form) {
-				var basisSubstanceTypeId = $('#basisAttributeToAddForm #basisSubstanceTypeId').val();
-				var basisAttributeId = $('#basisAttributeToAddForm #basisAttributeId').val();//修改单条费用时使用
-				if(basisSubstanceTypeId == undefined || basisSubstanceTypeId == ''){
+				var itemCategoryId = $('#toAddAttributeForm #itemCategoryId').val();
+				var itemAttributeId = $('#toAddAttributeForm #itemAttributeId').val();//修改单条费用时使用
+				if(itemCategoryId == undefined || itemCategoryId == ''){
 	    			alert('请重新操作!');
 	    			return false;
 				}
-				var data = toJsonString('basisAttributeToAddForm');
-				var url = 'basis-attribute-done-add-attribute.do?basisSubstanceTypeId=' + basisSubstanceTypeId + '&basisAttributeId=' + basisAttributeId;
+				var data = toJsonString('toAddAttributeForm');
+				var url = 'item-category-done-add-attribute.do?itemCategoryId=' + itemCategoryId + '&itemAttributeId=' + itemAttributeId;
 				$.ajax({
 	    			type: 'POST',
 	    			data: data,
 	    			url: url,
 	    			contentType: 'application/json',
 	    			success:function(data){
-	    				addBasisAttribute();
+	    				toAddAttribute();
 	    			}
 	    		});
 	        },
@@ -406,26 +408,26 @@
 	        rules: {
 	        	attributeName: {
    	                remote: {
-   	                    url: 'basis-attribute-check-attributename.do',
+   	                    url: 'item-attribute-check-attribute-name.do',
    	                    data: {
    	                    	basisSubstanceTypeId: function() {
-   	                            return $('#basisAttributeToAddForm #basisSubstanceTypeId').val();
+   	                            return $('#toAddAttributeForm #itemCategoryId').val();
    	                        },
    	                        id: function() {
-   	                            return $('#basisAttributeToAddForm #basisAttributeId').val();
+   	                            return $('#toAddAttributeForm #itemCategoryId').val();
    	                        }
    	                    }
    	                }
    	            },
    	         attributeColumn: {
 	                remote: {
-	                    url: 'basis-attribute-check-attributecolumn.do',
+	                    url: 'item-attribute-check-attribute-column.do',
 	                    data: {
 	                    	basisSubstanceTypeId: function() {
-   	                            return $('#basisAttributeToAddForm #basisSubstanceTypeId').val();
+   	                            return $('#toAddAttributeForm #itemCategoryId').val();
    	                        },
    	                     	id: function() {
-	                            return $('#basisAttributeToAddForm #basisAttributeId').val();
+	                            return $('#toAddAttributeForm #itemCategoryId').val();
 	                        }
 	                    }
 	                }
@@ -441,15 +443,15 @@
    	        }
 		});
 	});
-	function deleteBasisAttribute(){
-		var url = 'basis-attribute-done-remove-attribute.do?';
+	function doneRemoveAttribute(){
+		var url = 'basis-category-done-remove-attribute.do?';
 		if($('#basisAttributeHasAddForm .selectedItemId:checked').length == 0){
 			alert('请选择数据！');
 			return false;
 		}else{
 			$.post(url, $('#basisAttributeHasAddForm').serialize(),  function(data){
 				if(data == 'success'){
-					addBasisAttribute();
+					toAddAttribute();
 				}else{
 					alert('删除失败！');
 				}
@@ -457,7 +459,7 @@
 		}
 	}
 	//批量添加属性
-	function batchBasisAttribute(){
+	/* function batchBasisAttribute(){
 		var basisSubstanceTypeId = $('#basisAttributeToAddForm #basisSubstanceTypeId').val();
 		var batchCount = $('#basisAttributeToAddForm #batchCount').val();
 		var batchStart = $('#basisAttributeToAddForm #batchStart').val();
@@ -477,7 +479,7 @@
 				addBasisAttribute();
 			}
 		});
-	}
+	} */
 	
 ////////////////////////////////////应用
 	$(document).delegate('#addBasisApplication', 'click',function(e){

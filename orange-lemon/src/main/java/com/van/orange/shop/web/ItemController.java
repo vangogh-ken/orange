@@ -1,11 +1,27 @@
-package com.van.orange.lemon.shop.web;
+package com.van.orange.shop.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.van.halley.db.persistence.entity.ItemAttribute;
+import com.van.halley.db.persistence.entity.ItemImage;
+import com.van.halley.db.persistence.entity.ItemSubstance;
+import com.van.service.ItemAttributeService;
+import com.van.service.ItemImageService;
+import com.van.service.ItemSubstanceService;
 
 @RequestMapping(value = "/shop")
 @Controller
 public class ItemController {
+	@Autowired
+	private ItemSubstanceService itemSubstanceService;
+	@Autowired
+	private ItemAttributeService itemAttributeService;
+	@Autowired
+	private ItemImageService itemImageService;
 	
 	@RequestMapping(value = "index")
 	public String index(){
@@ -18,8 +34,26 @@ public class ItemController {
 	}
 	
 	@RequestMapping(value = "item")
-	public String item(){
+	public String item(Model model, @RequestParam String itemSubstanceId){
+		ItemSubstance itemSubstance = itemSubstanceService.getById(itemSubstanceId);
+		model.addAttribute("itemSubstance", itemSubstance);
+		
+		ItemAttribute filter = new ItemAttribute();
+		filter.setItemCategoryId(itemSubstance.getItemCategoryId());
+		model.addAttribute("itemAttributes", itemAttributeService.queryForList(filter));
+		
+		ItemImage image = new ItemImage();
+		image.setItemSubstanceId(itemSubstanceId);
+		model.addAttribute("itemAttributes", itemImageService.queryForList(image));
 		return "/s_content/shop/item";
+	}
+	
+	@RequestMapping(value = "list")
+	public String list(Model model, @RequestParam String itemCategoryId){
+		ItemSubstance filter = new ItemSubstance();
+		filter.setItemCategoryId(itemCategoryId);
+		model.addAttribute("itemSubstances", itemSubstanceService.queryForList(filter));
+		return "/s_content/shop/list";
 	}
 	
 	@RequestMapping(value = "cart")
@@ -32,10 +66,6 @@ public class ItemController {
 		return "/s_content/shop/checkout";
 	}
 	
-	@RequestMapping(value = "list")
-	public String list(){
-		return "/s_content/shop/list";
-	}
 	
 	@RequestMapping(value = "enroll")
 	public String enroll(){
